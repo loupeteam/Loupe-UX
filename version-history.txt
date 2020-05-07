@@ -1,0 +1,31 @@
+1.2.1 - Fix nav tabs that use href
+	Clean up version history
+
+1.2.0 - Add webhmi-ignore-bubbling and webhmi-confirm functionality  
+      	Add support for led with same data-led-true and data-led-false classes 
+     	Add support for nav tabs with data-target instead of href
+      	Improve databind update efficiency 
+
+1.1.1 - Fix backwards compatibility bug regarding using Machine.value() in other contexts
+
+1.1.0 - Rework client-server comms
+		Add LICENSE.txt
+		Add configurable HMI refresh rate
+		Add timeout to onDisconnect to avoid crashing of connect and disconnect
+		Add try/catch for user callbacks
+		Add document events when connection is established or lost
+
+1.0.0 - First release
+
+0.13.0 - Change webhmi-tab class name to webhmi-tab-pane
+		Remove '.arg' from the end of all event names
+
+0.12.0 - Add documentation
+		Add default implementation for led-on and led-off class styling
+		Fix bug with empty variable name in the middle of the list
+
+0.11.0 - Update version to match OMJSON for upcoming release
+
+0.2.1 -	Add additional support for less used tags
+		Add option support for .webhmi-text-value (options are not visible)
+		Add textarea support for .webhmi-text-value

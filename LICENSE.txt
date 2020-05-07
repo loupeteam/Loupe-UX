@@ -1,0 +1,4 @@
+Copyright 2019 Loupe
+
+This software is licensed under the Loupe Software License Agreement.
+Please contact Loupe for information.

@@ -1,0 +1,13 @@
+{
+    "typeAcquisition": {
+        "include": [
+          "three",
+          "jQuery"
+        ]
+      },
+    "compilerOptions": {
+        "target": "es6",
+        "checkJs": true,
+        "moduleResolution": "node"
+    }
+}

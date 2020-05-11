@@ -1,5 +1,9 @@
+1.2.3 - Ensure databinding still starts when included after dom is fully loaded
+
+1.2.2 - Add support for webhmi-num-value updating inputs on drag
+
 1.2.1 - Fix nav tabs that use href
-	Clean up version history
+		Clean up version history
 
 1.2.0 - Add webhmi-ignore-bubbling and webhmi-confirm functionality  
       	Add support for led with same data-led-true and data-led-false classes 

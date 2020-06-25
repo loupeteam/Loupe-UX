@@ -1,6 +1,11 @@
+/* eslint-disable no-restricted-globals */
+/* eslint-disable no-undef */
+// @ts-nocheck
 //------------------------------------------------------------------------------
 // Copyright 2019 Automation Resources Group
 //------------------------------------------------------------------------------
+import jQuery from "jquery"
+import $ from "jquery"
 
 // Use uppercase namespace
 var WEBHMI = {
@@ -301,7 +306,7 @@ WEBHMI.Machine = function (options) {
 			if (misc.statistics.frameNetTime > 0) {
 				misc.statistics.frameRate = 1000 / misc.statistics.frameNetTime;
 			}
-			if (misc.statistics.frameRateFiltered == 0) {
+			if (misc.statistics.frameRateFiltered === 0) {
 				misc.statistics.frameRateFiltered = misc.statistics.frameRate;
 			} else {
 				misc.statistics.frameRateFiltered = (99 * misc.statistics.frameRateFiltered + misc.statistics.frameRate) / 100;
@@ -595,6 +600,8 @@ WEBHMI.Machine = function (options) {
 					break;
 				case 'writeresponse':
 					processWriteResponse(msg.data);
+					break;
+				default:
 					break;
 				}
 				// switch(msg.type)
@@ -1063,3 +1070,5 @@ WEBHMI.jsonStringifyDeepProperty = function (obj, prop) {
 
 };
 // jsonStringifyDeepProperty()
+
+export {WEBHMI}

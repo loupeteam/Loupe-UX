@@ -197,7 +197,7 @@ WEBHMI.Machine = function (options) {
 		//-----------------------------------------------------
 
 		// TODO: Get rid of misc...
-		var thisConnection, ws, write, read, misc;
+		var thisConnection, ws, write, momentaryWrite, read, misc;
 
 		thisConnection = this;
 		thisConnection.reconnectCount = 0;
@@ -230,6 +230,31 @@ WEBHMI.Machine = function (options) {
 
 		// timer for resending on error
 		write.timeout = 0;
+
+		// write is the main structure for writing variables to the PLC
+		// TODO: Since these are block local variables, what happens if you make more than one 
+		// connection? I think this works fine
+		// Does each new WEBHMI.Machine() get a new read/write?
+		momentaryWrite = {};
+
+		// write.context is an object that is built up to be written
+		// write.context mirrors PLC variables
+		// When you call API.writeVariable(), it adds the variable to write.context
+		momentaryWrite.context = {};
+
+		// write.variableList is a list of the variable names that were added via API.writeVariable()
+		// this list of names is important to keep track of the events that need to be thrown
+		momentaryWrite.variableList = {};
+
+		// write.writing indicates that this pipe is currently writing to the PLC
+		momentaryWrite.writing = false;
+
+		// write.retryCount is the number of failed writes for the current write attempt
+		// the connection will try to write settings.maxRetryCount times before failing and trying the next write
+		momentaryWrite.retryCount = 0;
+
+		// timer for resending on error
+		momentaryWrite.timeout = 0;
 
 
 		// Reading variables
@@ -287,6 +312,13 @@ WEBHMI.Machine = function (options) {
 		misc.statistics.write.successCount = 0;
 		misc.statistics.write.errorCount = 0;
 		misc.statistics.write.totalNetTime = 0;
+
+		misc.statistics.momentaryWrite = {};
+		misc.statistics.momentaryWrite.startCount = 0;
+		misc.statistics.momentaryWrite.completeCount = 0;
+		misc.statistics.momentaryWrite.successCount = 0;
+		misc.statistics.momentaryWrite.errorCount = 0;
+		misc.statistics.momentaryWrite.totalNetTime = 0;
 
 		misc.statistics.frameRate = 0;
 		misc.statistics.frameRateFiltered = 0;
@@ -399,6 +431,47 @@ WEBHMI.Machine = function (options) {
 		}
 		// writeVariableList()
 
+		// Write a momentary variable list to the PLC
+		function momentaryVariableList(context, variableListObject) {
+
+			var variableListArray = Object.getOwnPropertyNames(variableListObject);
+
+			ws.onerror = function (event) {
+				// maybe the event can be used to resend the data outside of the momentaryVariableList function???
+				misc.writeError();
+				clearTimeout(momentaryWrite.timeout);
+
+				// Retry if appropriate, otherwise generate error events
+				if (write.retryCount < settings.maxRetryCount) {
+					write.retryCount += 1;
+					momentaryVariableList(context, variableListObject);
+				} else {
+					$(document).trigger('writeerror', [context]);
+					$(document).trigger('writecomplete', [context]);
+					// TODO: Should we get rid of these events, and the variableListArray? and the variableListObject?
+					variableListArray.forEach(function (entry) {
+						$(document).trigger(entry + "-writeerror", new Array(entry));
+						$(document).trigger(entry + "-writecomplete", new Array(entry));
+					});
+					write.writing = false;
+					processQueue();
+				}
+
+			};
+			// ws.onerror()
+
+			misc.writeBefore();
+
+			ws.send(JSON.stringify({
+				type: 'momentary',
+				data: context
+			}));
+
+			momentaryWrite.timeout = setTimeout(ws.onerror, settings.timeout_ms);
+
+		}
+		// momentaryVariableList()
+
 		function readVariableList(variableListObject) {
 
 			// Get the list of variables as a string array
@@ -455,6 +528,12 @@ WEBHMI.Machine = function (options) {
 					writeVariableList(write.context, write.variableList);
 					write.context = {};
 					write.variableList = {};
+				} else if (!WEBHMI.isEmptyObject(momentaryWrite.context)) {
+					momentaryWrite.writing = true;
+					momentaryWrite.retryCount = 0;
+					momentaryVariableList(momentaryWrite.context, momentaryWrite.variableList);
+					momentaryWrite.context = {};
+					momentaryWrite.variableList = {};
 				} else if (!WEBHMI.isEmptyObject(read.singleList[0])) {
 					read.reading = true;
 					read.retryCount = 0;
@@ -596,6 +675,9 @@ WEBHMI.Machine = function (options) {
 				case 'writeresponse':
 					processWriteResponse(msg.data);
 					break;
+				case 'momentaryresponse':
+					processWriteResponse(msg.data);
+					break;
 				}
 				// switch(msg.type)
 
@@ -644,8 +726,10 @@ WEBHMI.Machine = function (options) {
 				// Reset connection
 				read.reading = false;
 				write.writing = false;
+				momentaryWrite.writing = false;
 				clearTimeout(read.timeout);
 				clearTimeout(write.timeout);
+				clearTimeout(momentaryWrite.timeout);
 				misc.statistics.closeCount++;
 				misc.statistics.isConnected = false;
 
@@ -809,6 +893,34 @@ WEBHMI.Machine = function (options) {
 
 		};
 		// this.addVariableWrite()
+
+		// Add variable to write queue
+		thisConnection.addVariableMomentary = function (variableName, setValue, resetValue, timeout, callback) {
+
+			// Add variable name to the list of variables explicitly written by the user
+			// This is used to generate write events
+			momentaryWrite.variableList[variableName] = {};
+
+			// If there is no input setValue, then use the current value from the read context
+			if (typeof setValue === 'undefined') {
+				setValue = getDeepValue(read.context, variableName);
+			}
+
+			// Add the object to the write context, being careful to clone objects and not point to already existing objects
+			var tempObj = {};
+			setDeepValue(tempObj, variableName, setValue);
+			WEBHMI.extend(true, momentaryWrite.context, tempObj);
+
+			// Add a callback event if given
+			if (callback) {
+				$(document).one(variableName + '-writecomplete', callback);
+			}
+
+			// Process the read/write queues
+			processQueue();
+
+		};
+		// this.addVariableMomentary()
 
 		// Add variable to read once
 		thisConnection.addVariableRead = function (variableName, callback) {
@@ -982,6 +1094,11 @@ WEBHMI.Machine = function (options) {
 		thisMachine.connection.addVariableWrite(varName, value, successCallback);
 	}
 
+	// Momentary write a variable to the PLC once
+	function momentaryVariable(varName, value, resetValue, timeout, successCallback) {
+		thisMachine.connection.addVariableMomentary(varName, value, resetValue, timeout, successCallback);
+	}
+
 	
 	// Machine API definition
 	//---------------------------------------------
@@ -990,6 +1107,7 @@ WEBHMI.Machine = function (options) {
 	thisMachine.readVariable = readVariable;
 	thisMachine.initCyclicRead = initCyclicRead;
 	thisMachine.writeVariable = writeVariable;
+	thisMachine.momentaryVariable = momentaryVariable;
 
 
 	// Establish a new connection

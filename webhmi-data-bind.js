@@ -648,7 +648,7 @@ WEBHMI.addVarWriteEvents = function () {
 			mousedown: function (event) {
 				var $this = $(this);
 				var localMachine = window[WEBHMI.getMachineName($this)];
-				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+				localMachine.momentaryVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
 				$this.one('mouseleave', function () {
 					$this.trigger('mouseup');
 				});
@@ -666,7 +666,7 @@ WEBHMI.addVarWriteEvents = function () {
 				event.preventDefault();
 				var $this = $(this);
 				var localMachine = window[WEBHMI.getMachineName($this)];
-				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+				localMachine.momentaryVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
 				//$this.one('touchleave', function(){$this.trigger('touchend');});
 			},
 

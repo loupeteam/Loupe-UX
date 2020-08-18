@@ -9,6 +9,7 @@ if (typeof WEBHMI === 'undefined') {
 
 WEBHMI.dataBindVersion = '1.2.3';
 
+// TODO: Global scope bleed
 // Check for being a 'number'
 function isNumeric (obj) {
 	return !Number.isNaN(parseFloat(obj)) && isFinite(obj)
@@ -16,6 +17,7 @@ function isNumeric (obj) {
 
 WEBHMI.isNumeric = isNumeric
 
+// TODO: Global scope bleed
 // BOOLify something
 function isTrue (value) {
 
@@ -50,6 +52,7 @@ function isTrue (value) {
 
 WEBHMI.isTrue = isTrue
 
+// TODO: Global scope bleed
 // Check for custom equality
 // Types supported: Undefined, Boolean, Number, String
 function isEqual (in1, in2) {
@@ -204,14 +207,14 @@ WEBHMI.getRange = function ($element) {
 WEBHMI.getValue = function ($element) {
 	
 	//var localMachine = window[WEBHMI.getMachineName($element)];
-	var localMachine = WEBHMI.getMachine($element); // NOTE: Try this here before migrating everything else...
+	const localMachine = WEBHMI.getMachine($element); // NOTE: Try this here before migrating everything else...
 	
-	var varName = WEBHMI.getVarName($element);
+	const varName = WEBHMI.getVarName($element);
 	if (varName === undefined) {
 		return "No variable";
 	}
 	
-	var varValue = localMachine.value(varName);
+	const varValue = localMachine.value(varName);
 	if (varValue === undefined) {
 		localMachine.initCyclicRead(varName); // this might cause bad behavior if the variable does not exist on the PLC.
 	}
@@ -223,14 +226,14 @@ WEBHMI.getValue = function ($element) {
 WEBHMI.getHideValue = function ($element) {
 	
 	//var localMachine = window[WEBHMI.getMachineName($element)];
-	var localMachine = WEBHMI.getMachine($element); // NOTE: Try this here before migrating everything else...
+	const localMachine = WEBHMI.getMachine($element); // NOTE: Try this here before migrating everything else...
 	
-	var varName = WEBHMI.getHideVarName($element);
+	const varName = WEBHMI.getHideVarName($element);
 	if (varName === undefined) {
 		return "No variable";
 	}
 	
-	var varValue = localMachine.value(varName);
+	const varValue = localMachine.value(varName);
 	if (varValue === undefined) {
 		localMachine.initCyclicRead(varName); // this might cause bad behavior if the variable does not exist on the PLC.
 	}
@@ -242,14 +245,14 @@ WEBHMI.getHideValue = function ($element) {
 WEBHMI.getLockValue = function ($element) {
 	
 	//var localMachine = window[WEBHMI.getMachineName($element)];
-	var localMachine = WEBHMI.getMachine($element); // NOTE: Try this here before migrating everything else...
+	const localMachine = WEBHMI.getMachine($element); // NOTE: Try this here before migrating everything else...
 	
-	var varName = WEBHMI.getLockVarName($element);
+	const varName = WEBHMI.getLockVarName($element);
 	if (varName === undefined) {
 		return "No variable";
 	}
 	
-	var varValue = localMachine.value(varName);
+	const varValue = localMachine.value(varName);
 	if (varValue === undefined) {
 		localMachine.initCyclicRead(varName); // this might cause bad behavior if the variable does not exist on the PLC.
 	}
@@ -400,9 +403,9 @@ WEBHMI.updateToggleButtons = function () {
 
 	WEBHMI.visibleElems.toggleButton.forEach(function (element) {
 
-		var $this = $(element);
+		const $this = $(element);
 
-		var varValue = WEBHMI.getValue($this);
+		const varValue = WEBHMI.getValue($this);
 		if (!isEqual($this.attr('data-machine-value-toggle'), varValue)) {
 			$this.attr('data-machine-value-toggle', varValue)
 			if (isEqual(varValue, WEBHMI.getSetValue($this))) {
@@ -429,11 +432,11 @@ WEBHMI.updateCheckboxes = function () {
 
 	WEBHMI.visibleElems.checkbox.forEach(function (element) {
 
-		var $this = $(element);
+		const $this = $(element);
 
-		var isChecked = $this.prop('checked');
+		const isChecked = $this.prop('checked');
 
-		var varValue = WEBHMI.getValue($this);
+		const varValue = WEBHMI.getValue($this);
 		if (!isEqual($this.attr('data-machine-value-checkbox'), varValue)) {
 			$this.attr('data-machine-value-checkbox', varValue)
 			if (isEqual(varValue, WEBHMI.getSetValue($this)) && !isChecked) {
@@ -458,13 +461,13 @@ WEBHMI.updateTabs = function () {
 
 	WEBHMI.elems.tab.forEach(function (element) {
 
-		var $this = $(element);
+		const $this = $(element);
 
-		var varValue = WEBHMI.getValue($this);
+		const varValue = WEBHMI.getValue($this);
 		if (!isEqual($this.attr('data-machine-value-tab'), varValue)) {
 			$this.attr('data-machine-value-tab', varValue)
 			if ((varValue == WEBHMI.getSetValue($this))) {
-				var tabs = $('.nav-tabs');
+				const tabs = $('.nav-tabs');
 				var tab = tabs.find('a[data-target="#' + $this[0].id + '"]');
 				if (tab.length == 0)
 					tab = tabs.find('a[href="#' + $this[0].id + '"]');
@@ -484,14 +487,14 @@ WEBHMI.updateRange = function () {
 
 	WEBHMI.visibleElems.range.forEach(function (element) {
 
-		var $this = $(element);
+		const $this = $(element);
 
-		var varValue = WEBHMI.getValue($this);
+		const varValue = WEBHMI.getValue($this);
 		if (!isEqual($this.attr('data-machine-value-range'), varValue)) {
 			$this.attr('data-machine-value-range', varValue)
-			var Range = WEBHMI.getRange($this);
+			const Range = WEBHMI.getRange($this);
 
-			var rangeNumber = -1;
+			let rangeNumber = -1;
 
 			if (Range.some(function (element) {
 				if (varValue < element) {
@@ -518,11 +521,11 @@ WEBHMI.updateInputs = function () {
 
 	WEBHMI.visibleElems.num.forEach(function (element) {
 		
-		var $this = $(element);
+		const $this = $(element);
 
 		if (!$this.is(":focus") && !$this.hasClass("editing")) {
 
-			var varValue = WEBHMI.getValue($this);
+			let varValue = WEBHMI.getValue($this);
 			if (!isEqual($this.attr('data-machine-value-num'), varValue)) {
 				$this.attr('data-machine-value-num', varValue)
 				if (varValue === false) {
@@ -535,37 +538,37 @@ WEBHMI.updateInputs = function () {
 				}
 				else {
 
-					var unitFactor = $this.attr('data-unit-factor');
+					let unitFactor = $this.attr('data-unit-factor');
 					if (Object.prototype.toString.call(unitFactor) === '[object Undefined]') {
 						unitFactor = 1;
 					}
 
-					var unitOffset = $this.attr('data-unit-offset');
+					let unitOffset = $this.attr('data-unit-offset');
 					if (Object.prototype.toString.call(unitOffset) === '[object Undefined]') {
 						unitOffset = 0;
 					}
 
 					varValue = varValue * unitFactor + unitOffset;
 
-					var fixed = $this.attr('data-fixed');
+					let fixed = $this.attr('data-fixed');
 					if (Object.prototype.toString.call(fixed) !== '[object Undefined]') {
 						varValue = varValue.toFixed(fixed);
 					}
 
-					var precision = $this.attr('data-precision');
+					let precision = $this.attr('data-precision');
 					if (Object.prototype.toString.call(precision) !== '[object Undefined]') {
 						varValue = varValue.toPrecision(precision);
 					}
 
-					var exponent = $this.attr('data-exponent');
+					let exponent = $this.attr('data-exponent');
 					if (Object.prototype.toString.call(exponent) !== '[object Undefined]') {
 						varValue = varValue.toExponential(exponent);
 					}
-					var digits = $this.attr('data-pad');
+					let digits = $this.attr('data-pad');
 					if (Object.prototype.toString.call(digits) !== '[object Undefined]') {
 						varValue = (digits + varValue).slice(-digits.length)
 					}
-					var unitText = $this.attr('data-unit-text');
+					let unitText = $this.attr('data-unit-text');
 					if (Object.prototype.toString.call(unitText) === '[object Undefined]') {
 						unitText = '';
 					}
@@ -585,11 +588,11 @@ WEBHMI.updateInputs = function () {
 
 	WEBHMI.visibleElems.text.forEach(function (element) {
 
-		var $this = $(element);
+		const $this = $(element);
 
 		if (!$this.is(":focus")) {
 
-			var varValue = WEBHMI.getValue($this);
+			const varValue = WEBHMI.getValue($this);
 
 			if (!isEqual($this.attr('data-machine-value-text'), varValue)) {
 				$this.attr('data-machine-value-text', varValue)
@@ -606,11 +609,11 @@ WEBHMI.updateInputs = function () {
 
 	WEBHMI.elems.textOption.forEach(function (element) {
 
-		var $this = $(element);
+		const $this = $(element);
 
 		if (!$this.is(":focus")) {
 
-			var varValue = WEBHMI.getValue($this);
+			const varValue = WEBHMI.getValue($this);
 
 			if (!isEqual($this.attr('data-machine-value-text-option'), varValue)) {
 				$this.attr('data-machine-value-text-option', varValue)
@@ -627,11 +630,11 @@ WEBHMI.updateInputs = function () {
 
 	WEBHMI.visibleElems.dropdown.forEach(function (element){
 		
-		var $this = $(element);
+		const $this = $(element);
 
 		if (!$this.is(":focus")) {
 
-			var varValue = WEBHMI.getValue($this);
+			const varValue = WEBHMI.getValue($this);
 			if (!isEqual($this.attr('data-machine-value-dropdown'), varValue)) {
 				$this.attr('data-machine-value-dropdown', varValue)
 				element.options.selectedIndex = varValue;
@@ -646,8 +649,8 @@ WEBHMI.addVarWriteEvents = function () {
 	$(document).on(
 		{
 			mousedown: function (event) {
-				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
+				const $this = $(this);
+				const localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
 				$this.one('mouseleave', function () {
 					$this.trigger('mouseup');
@@ -655,8 +658,8 @@ WEBHMI.addVarWriteEvents = function () {
 			},
 
 			mouseup: function (event) {
-				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
+				const $this = $(this);
+				const localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
 				$this.blur();
 				$this.off('mouseleave');
@@ -664,16 +667,16 @@ WEBHMI.addVarWriteEvents = function () {
 
 			touchstart: function (event) {
 				event.preventDefault();
-				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
+				const $this = $(this);
+				const localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
 				//$this.one('touchleave', function(){$this.trigger('touchend');});
 			},
 
 			touchend: function (event) {
 				event.preventDefault();
-				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
+				const $this = $(this);
+				const localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
 				$this.blur();
 				//$this.off('touchleave');
@@ -685,8 +688,8 @@ WEBHMI.addVarWriteEvents = function () {
 	$(document).on(
 		{
 			click: function (event) {
-				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
+				const $this = $(this);
+				const localMachine = window[WEBHMI.getMachineName($this)];
 
 				if ($this.hasClass("webhmi-ignore-bubbling") && (this !== event.target)) {
 					return;
@@ -751,8 +754,8 @@ WEBHMI.addVarWriteEvents = function () {
 		{
 			click: function (event) {
 
-				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
+				const $this = $(this);
+				const localMachine = window[WEBHMI.getMachineName($this)];
 
 				if ($this.hasClass("webhmi-ignore-bubbling") && (this !== event.target)) {
 					return;
@@ -798,8 +801,8 @@ WEBHMI.addVarWriteEvents = function () {
 				// 'checked' is changed between clicking and executing this event handler.
 				// So, checkboxes do not behave like toggles.
 
-				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
+				const $this = $(this);
+				const localMachine = window[WEBHMI.getMachineName($this)];
 
 				if ($this.prop('checked')) {
 					localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
@@ -815,7 +818,7 @@ WEBHMI.addVarWriteEvents = function () {
 		{
 			change: function (event) {
 
-				var $this = $(this);
+				const $this = $(this);
 
 				var varValue = parseFloat($this.val());
 
@@ -845,7 +848,7 @@ WEBHMI.addVarWriteEvents = function () {
 		{
 			input: function (event) {
 
-				var $this = $(this);
+				const $this = $(this);
 
 				if($this.attr('data-prevent-drag')) return
 
@@ -876,8 +879,8 @@ WEBHMI.addVarWriteEvents = function () {
 	$(document).on(
 		{
 			change: function (event) {
-				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
+				const $this = $(this);
+				const localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), $this.val());
 				localMachine.readVariable(WEBHMI.getVarName($this));
 			}
@@ -888,8 +891,8 @@ WEBHMI.addVarWriteEvents = function () {
 	$(document).on(
 		{
 			change: function (event) {
-				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
+				const $this = $(this);
+				const localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), $this[0].options.selectedIndex);
 				localMachine.readVariable(WEBHMI.getVarName($this));
 			}
@@ -971,8 +974,8 @@ WEBHMI.includeFiles = function (successCallback) {
 	var numberFiles = 0;
 	$("[data-include]").each(function (index, element) {
 		numberFiles++;
-		var $this = $(this);
-		var fileName = $this.attr("data-include");
+		const $this = $(this);
+		const fileName = $this.attr("data-include");
 		console.log("loading " + fileName);
 		$this.load(fileName, function () {
 			numberFiles--;
@@ -1027,11 +1030,11 @@ WEBHMI.addVarWriteEvents();
 (function () {
 	// DOM observer to trigger queries
 	// TODO: handle adding or removing webhmi class from existing node
-	var observer = new MutationObserver(function (mutations) {
+	const observer = new MutationObserver(function (mutations) {
 
 		// Was a new webhmi element added to the DOM?
 		// Use Arrray.some() instead of Array.forEach() for easy loop break when we find a webhmi element added or remove from DOM
-		var requestQuery = Array.prototype.slice.call(mutations).some(function (mutation) {
+		const requestQuery = Array.prototype.slice.call(mutations).some(function (mutation) {
 			// check added nodes for webhmi changes
 			var changed = Array.prototype.slice.call(mutation.addedNodes).some(function (node) {
 				if (node.nodeType == node.ELEMENT_NODE) {

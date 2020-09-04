@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-// Copyright 2019 Loupe
+// Copyright 2020 Loupe
 //------------------------------------------------------------------------------
 
 // Check for webHMI global object
@@ -7,7 +7,7 @@ if (typeof WEBHMI === 'undefined') {
 	throw new Error('WEBHMI data binding requires WEBHMI core');
 }
 
-WEBHMI.dataBindVersion = '1.2.1';
+WEBHMI.dataBindVersion = '1.3.0';
 
 // Check for being a 'number'
 function isNumeric (obj) {
@@ -843,6 +843,38 @@ WEBHMI.addVarWriteEvents = function () {
 
 	$(document).on(
 		{
+			input: function (event) {
+
+				var $this = $(this);
+
+				if($this.attr('data-prevent-drag')) return
+
+				var varValue = parseFloat($this.val());
+
+				var unitFactor = $this.attr('data-unit-factor');
+				if (Object.prototype.toString.call(unitFactor) === '[object Undefined]') {
+					unitFactor = 1;
+				}
+
+				var unitOffset = $this.attr('data-unit-offset');
+				if (Object.prototype.toString.call(unitOffset) === '[object Undefined]') {
+					unitOffset = 0;
+				}
+
+				varValue = (varValue - unitOffset) / unitFactor;
+
+				var localMachine = window[WEBHMI.getMachineName($this)];
+				localMachine.writeVariable(WEBHMI.getVarName($this), varValue);
+				$this.blur();
+
+			}
+
+		},
+		'input.webhmi-num-value.ondrag');
+	// num-value continuous change
+
+	$(document).on(
+		{
 			change: function (event) {
 				var $this = $(this);
 				var localMachine = window[WEBHMI.getMachineName($this)];
@@ -1054,6 +1086,9 @@ WEBHMI.addVarWriteEvents();
 	observer.observe(document, observerOptions);
 
 	WEBHMI.observers.push(observer);
+
+	// run initial query in case DOM is already loaded
+	WEBHMI.queryDom();
 
 })();
 

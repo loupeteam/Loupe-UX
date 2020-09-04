@@ -1,10 +1,10 @@
 //------------------------------------------------------------------------------
-// Copyright 2019 Loupe
+// Copyright 2020 Loupe
 //------------------------------------------------------------------------------
 
 // Use uppercase namespace
 var WEBHMI = {
-	version: '1.2.1'
+	version: '1.3.0'
 };
 
 // UMD (Universal Module Definition)

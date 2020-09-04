@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-// Copyright 2019 Loupe
+// Copyright 2020 Loupe
 //------------------------------------------------------------------------------
 
 // Check for webHMI global object
@@ -7,7 +7,7 @@ if (typeof WEBHMI === 'undefined') {
 	throw new Error('WEBHMI data binding requires WEBHMI core');
 }
 
-WEBHMI.dataBindVersion = '1.2.3';
+WEBHMI.dataBindVersion = '1.3.0';
 
 // Check for being a 'number'
 function isNumeric (obj) {

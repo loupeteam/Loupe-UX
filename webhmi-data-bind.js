@@ -901,7 +901,27 @@ WEBHMI.addVarWriteEvents = function () {
 
 WEBHMI.observers = [];
 
-// Declare arrays of webhmi elements 
+/**
+ * Webhmi databinding types
+ * @typedef {Object} DataBinding_types
+ * @property {Element[]} num
+ * @property {Element[]} text
+ * @property {Element[]} textOption
+ * @property {Element[]} dropdown
+ * @property {Element[]} checkbox
+ * @property {Element[]} toggleButton
+ * @property {Element[]} led
+ * @property {Element[]} range
+ * @property {Element[]} tab
+ * @property {Element[]} hide
+ * @property {Element[]} show
+ * @property {Element[]} lock
+ * @property {Element[]} unlock
+ */
+
+/** Current webhmi elements in DOM
+ * @type {DataBinding_types}
+ */
 WEBHMI.elems = {
 	num: [], 
 	text: [],
@@ -918,15 +938,24 @@ WEBHMI.elems = {
 	unlock: [] 
 };
 
+/** Currently visible webhmi elements in DOM
+ * @type {DataBinding_types}
+ */
 WEBHMI.visibleElems = {
 	num: [], 
 	text: [],
+	textOption: [],
 	dropdown: [],
 	checkbox: [],
 	toggleButton: [],
 	led: [],
-	range: []
-}
+	range: [],
+	tab: [],
+	hide: [],
+	show: [],
+	lock: [],
+	unlock: [] 
+};
 
 // FORCES LAYOUT REFLOW
 WEBHMI.checkVisibility = function () {

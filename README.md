@@ -2,6 +2,10 @@
 
 Documentation can be found at https://loupeteam.github.io/Sandbox/libraries/webhmi.html.
 
+## Contributing
+
+- Install typescript compiler `npm install -g typescript`
+
 ## Revision
 
 - 1.3.0 - Synchronize release version with OMJSON

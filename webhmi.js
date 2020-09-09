@@ -25,20 +25,38 @@ if (typeof jQuery === 'undefined') {
 	WEBHMI.each = jQuery.each;
 }
 
+/**
+ * The complete machine-options.
+ * @typedef {Object} Machine_Options
+ * @property {'ws'} protocol 'ws' - Protocol to be used
+ * @property {?string} ipAddress location.hostname - Server Address
+ * @property {?number} port 8000 - Server Port
+ * @property {?number} timeout_ms 250 - Connection timeout in ms
+ * @property {?number} maxRetryCount 5 - Max retry count before throwing disconnect
+ * @property {?number} maxReconnectCount 5 - Max reconnect 
+ */
+
 // Machine constructor
 //-----------------------------------------------------
 
+/**
+ * 
+ * @param {Machine_Options} options 
+ */
 WEBHMI.Machine = function (options) {
-
 	'use strict';
 
-	var thisMachine, defaults, settings;
+	var thisMachine;
 
 	// Grab machine scope for lower functions
 	thisMachine = this;
 
+	/** @type {Machine_Options} */
+	var settings;
+
 	// Set defaults and extend with options, without modifying defaults
-	defaults = {
+	/** @type {Machine_Options} */
+	var defaults = {
 		protocol: 'ws',
 		ipAddress: location.hostname,
 		port: 8000,

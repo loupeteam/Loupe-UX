@@ -26,7 +26,8 @@ interface Machine_Options {
 	port?: number,
 	timeout_ms?: number,
 	maxRetryCount?: number,
-	maxReconnectCount?: number
+	maxReconnectCount?: number,
+	[key: string]: any
 }
 
 /*
@@ -55,7 +56,7 @@ var Machine = function (options:Machine_Options) {
 	thisMachine = this;
 
 	/** @type {Machine_Options} */
-	var settings;
+	var settings:Machine_Options;
 
 	// Set defaults and extend with options, without modifying defaults
 	/** @type {Machine_Options} */

@@ -4,6 +4,7 @@ Documentation can be found at https://loupeteam.github.io/Sandbox/libraries/webh
 
 ## Revision
 
+- 1.3.1 - Fix missing write callbacks for root variables
 - 1.3.0 - Synchronize release version with OMJSON
 - 1.2.3 - Ensure databinding still starts when included after dom is fully loaded
 - 1.2.2 - Add support for webhmi-num-value updating inputs on drag

@@ -4,7 +4,7 @@
 
 // Use uppercase namespace
 var WEBHMI = {
-	version: '1.3.0'
+	version: '1.3.1'
 };
 
 // UMD (Universal Module Definition)
@@ -519,10 +519,11 @@ WEBHMI.Machine = function (options) {
 			var variableList = [];
 			if (responseData.forEach !== undefined) {
 				responseData.forEach(function (property) {
-					variableList.push(Object.getOwnPropertyNames(property)[0]);
+					Array.prototype.push.apply(variableList, Object.getOwnPropertyNames(property))
 				});
 			} else {
-				variableList.push(Object.getOwnPropertyNames(responseData)[0]);
+				// This is not currently used by reads
+				Array.prototype.push.apply(variableList, Object.getOwnPropertyNames(responseData))
 			}
 
 			$(document).trigger('readsuccess', [variableList]);
@@ -552,11 +553,12 @@ WEBHMI.Machine = function (options) {
 			// want to do something different here
 			var variableList = [];
 			if (responseData.forEach !== undefined) {
+				// This is not currently used for writes
 				responseData.forEach(function (property) {
-					variableList.push(Object.getOwnPropertyNames(property)[0]);
+					Array.prototype.push.apply(variableList, Object.getOwnPropertyNames(property))
 				});
 			} else {
-				variableList.push(Object.getOwnPropertyNames(responseData)[0]);
+				Array.prototype.push.apply(variableList, Object.getOwnPropertyNames(responseData))
 			}
 
 			$(document).trigger('writesuccess', [variableList]);

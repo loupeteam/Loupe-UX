@@ -579,7 +579,7 @@ WEBHMI.Machine = function (options) {
 
 		function openWebSocket() {
 
-			ws = new WebSocket("ws://" + settings.ipAddress + ':' + settings.port);
+			ws = new WebSocket(settings.protocol + "://" + settings.ipAddress + ':' + settings.port);
 
 			ws.onopen = function () {
 				clearTimeout(read.timeout);

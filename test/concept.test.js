@@ -6,5 +6,5 @@ test('Import successful', ()=>{
 
 test('Variables defined', ()=>{
     expect(WEBHMI.Machine).toBeDefined()
-    expect(WEBHMI.version).toBeInstanceOf('String')
+    expect(WEBHMI.version).toBeInstanceOf('string')
 })

@@ -2,10 +2,14 @@
 // Copyright 2020 Loupe
 //------------------------------------------------------------------------------
 
+import jQuery from 'jquery'
+
 // Use uppercase namespace
 var WEBHMI = {
 	version: '1.3.1'
 };
+
+// export default WEBHMI
 
 // UMD (Universal Module Definition)
 if (typeof define === 'function' && define.amd) {

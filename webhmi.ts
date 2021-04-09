@@ -4,7 +4,7 @@
 import 'jquery'
 import { type } from 'jquery';
 
-var version = '1.3.0'
+const version = '1.3.0'
 
 // UMD (Universal Module Definition)
 // if (typeof define === 'function' && define.amd) {
@@ -21,7 +21,7 @@ if (typeof jQuery === 'undefined') {
 }
 
 interface Machine_Options {
-	protocol?: 'ws',
+	protocol?: ('http'|'ws'|'wss'),
 	ipAddress?: string, // Sever IP
 	port?: number,
 	timeout_ms?: number,
@@ -55,12 +55,10 @@ var Machine = function (options:Machine_Options) {
 	// Grab machine scope for lower functions
 	thisMachine = this;
 
-	/** @type {Machine_Options} */
 	var settings:Machine_Options;
 
 	// Set defaults and extend with options, without modifying defaults
-	/** @type {Machine_Options} */
-	var defaults = {
+	var defaults:Machine_Options = {
 		protocol: 'ws',
 		ipAddress: location.hostname,
 		port: 8000,
@@ -75,13 +73,17 @@ var Machine = function (options:Machine_Options) {
 
 	// Set a value deep within a structure
 	// Return the object that was set
-	function setDeepValue(obj, prop, value) {
+	function setDeepValue(obj:object, property:(string|Array<string>), value:any) {
 
-		var e, startArrayIndex, type, i;
+		var e:string, startArrayIndex:number, type: string, i: number;
+		var prop:Array<string> = [];
 
 		// First time through, split prop
-		if (typeof prop === "string") {
-			prop = prop.split(".");
+		if (typeof property === "string") {
+			prop = property.split(".");
+		}
+		else if(Array.isArray(property)) {
+			prop = property;
 		}
 
 		if (prop.length > 1) {
@@ -141,13 +143,18 @@ var Machine = function (options:Machine_Options) {
 
 	// Get the value of a property deep within a structure or array
 	// Return the value of the property
-	function getDeepValue(obj, prop) {
+	function getDeepValue(obj:object, property:(string|Array<string>)) {
 
-		var e, startArrayIndex, type, i;
+		var startArrayIndex:number, type:string, i: number;
+		var e:string;
+		var prop:Array<string> = [];
 
 		// First time through, split prop
-		if (typeof prop === "string") {
-			prop = prop.split(".");
+		if (typeof property === "string") {
+			prop = property.split(".");
+		}
+		else if(Array.isArray(property)) {
+			prop = property
 		}
 
 		if (prop.length > 1) {
@@ -200,7 +207,7 @@ var Machine = function (options:Machine_Options) {
 
 	// Get or set a value from an object using a string
 	// Return the object that was set
-	function value(name, setValue) {
+	function value(name:(string|Array<string>), setValue:any):any {
 		if (setValue !== undefined) {
 			return setDeepValue(this, name, setValue);
 		} else {
@@ -501,17 +508,22 @@ var Machine = function (options:Machine_Options) {
 			responseData.forEach(function (entry) {
 				// Check for objects or arrays to extend objects at their highest level, instead of the highest level read ('gAxis' vs 'gAxis.OUT.STAT')
 				// REVIEW THIS
-				var name, parsed;
+				var name:string[], parsed:object;
 
 				// TODO: If you send down an empty var name, then you will get an empty object back
 				// This does not handle that scenario, because name[0] is undefined.
 				name = Object.getOwnPropertyNames(entry);
-				if (name.length === 0) return
+				if (name.length === 0) return;
 				if (name[0].indexOf('.') >= 0 || name[0].indexOf('[') >= 0) {
 					parsed = {};
 					WEBHMI.each(entry, function (prop, value) {
-						setDeepValue(parsed, prop, value);
-						entry = parsed;
+						if (typeof prop === "string") {
+							setDeepValue(parsed, prop, value);
+							entry = parsed;
+						}
+						else {
+							throw new Error("Expected string. Got: " + typeof prop);
+						}
 					});
 				}
 				// Extend the read context with the variable read back
@@ -1033,13 +1045,16 @@ var Machine = function (options:Machine_Options) {
 
 // JSON stringify a property within a structure or array
 // TODO: Why are you out here?
-var jsonStringifyDeepProperty = function (obj, prop) {
+var jsonStringifyDeepProperty = function (obj:object, property:(string|Array<string>)) {
 
-	var e, startArrayIndex, type, i;
+	var e:string, startArrayIndex:number, type: string, i: number;
+	var prop:Array<string> = []
 
 	// First time through, split prop
-	if (typeof prop === "string")
-		prop = prop.split(".");
+	if (typeof property === "string")
+		prop = property.split(".");
+	else if(Array.isArray(property))
+		prop = property
 
 	if (prop.length > 1) {
 

@@ -213,6 +213,10 @@ WEBHMI.Machine = function (options) {
 	// Connection functions
 	//-----------------------------------------------------
 
+	/**
+	 * @param {any} context WEBHMI.Machine
+	 * @param {Machine_Options} settings 
+	 */
 	function WebSocketConnection(context, settings) {
 
 		// Private variables

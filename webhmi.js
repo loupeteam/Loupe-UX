@@ -38,6 +38,7 @@ if (typeof jQuery === 'undefined') {
  * @property {?number} timeout_ms 250 - Connection timeout in ms
  * @property {?number} maxRetryCount 5 - Max retry count before throwing disconnect
  * @property {?number} maxReconnectCount 5 - Max reconnect 
+ * @property {?number} messageRateDelay 0 - How long to delay sending new messages in ms
  */
 
 // Machine constructor
@@ -66,7 +67,8 @@ WEBHMI.Machine = function (options) {
 		port: 8000,
 		timeout_ms: 250,
 		maxRetryCount: 5,
-		maxReconnectCount: 5
+		maxReconnectCount: 5,
+		messageRateDelay: 0
 	};
 	settings = WEBHMI.extend({}, defaults, options);
 
@@ -632,7 +634,11 @@ WEBHMI.Machine = function (options) {
 				// And it doesn't really get rid of missed requests :(
 				//setTimeout(processQueue, 50);
 				
-				processQueue();
+				// Allow users to slow the message rate 
+				// This is maybe a temporary fix
+				// This also has the effect of adding processQue to the end of the thread instead of running it now
+				setTimeout(processQueue, settings.messageRateDelay)
+				// processQueue();
 
 			};
 			// ws.onmessage()

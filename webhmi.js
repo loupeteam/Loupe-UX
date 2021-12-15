@@ -1016,6 +1016,12 @@ WEBHMI.Machine = function (options) {
 		thisMachine.connection.addVariableWrite(varName, value, successCallback);
 	}
 
+	/**
+	 * @param {Machine_Options} settings 
+	 */
+	function updateSettings(settings) {
+		thisMachine.settings = WEBHMI.extend({}, thisMachine.settings, settings);
+	}
 	
 	// Machine API definition
 	//---------------------------------------------
@@ -1024,6 +1030,7 @@ WEBHMI.Machine = function (options) {
 	thisMachine.readVariable = readVariable;
 	thisMachine.initCyclicRead = initCyclicRead;
 	thisMachine.writeVariable = writeVariable;
+	thisMachine.updateSettings = updateSettings
 
 
 	// Establish a new connection

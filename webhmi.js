@@ -1017,10 +1017,10 @@ WEBHMI.Machine = function (options) {
 	}
 
 	/**
-	 * @param {Machine_Options} settings 
+	 * @param {Machine_Options} options 
 	 */
-	function updateSettings(settings) {
-		thisMachine.settings = WEBHMI.extend({}, thisMachine.settings, settings);
+	function updateSettings(options) {
+		WEBHMI.extend(settings, options); // Overwrite current settings but do not create a new object
 	}
 	
 	// Machine API definition

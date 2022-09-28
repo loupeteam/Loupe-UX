@@ -804,7 +804,7 @@ WEBHMI.addVarWriteEvents = function () {
 				if ($this.prop('checked')) {
 					localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
 				} else {
-					localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this)); //TODO: This can't be right...
+					localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
 				}
 			}
 		},

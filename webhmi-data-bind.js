@@ -590,15 +590,18 @@ WEBHMI.updateInputs = function () {
 		if (!$this.is(":focus")) {
 
 			var varValue = WEBHMI.getValue($this);
-
-			if (!isEqual($this.attr('data-machine-value-text'), varValue)) {
+			var string = varValue
+			if( typeof varValue === 'object' ){
+				string = JSON.stringify(varValue, null, 4)
+			}
+			if (!isEqual($this.attr('data-machine-value-text'), string )) {
 				$this.attr('data-machine-value-text', varValue)
 				if (varValue === false) {
 					$this.html('false');
 					$this.val('false');
 				} else {
-					$this.html(varValue);
-					$this.val(varValue);
+					$this.html(string);
+					$this.val(string);
 				}
 			}
 		}

@@ -7,7 +7,7 @@ if (typeof WEBHMI === 'undefined') {
 	throw new Error('WEBHMI data binding requires WEBHMI core');
 }
 
-WEBHMI.dataBindVersion = '1.3.1';
+WEBHMI.dataBindVersion = '1.3.2';
 
 // Check for being a 'number'
 function isNumeric (obj) {
@@ -841,7 +841,7 @@ WEBHMI.addVarWriteEvents = function () {
 			}
 
 		},
-		'input.webhmi-num-value');
+		'input.webhmi-num-value, invisible-input.webhmi-num-value');
 	// num-value input
 
 	$(document).on(
@@ -873,7 +873,7 @@ WEBHMI.addVarWriteEvents = function () {
 			}
 
 		},
-		'input.webhmi-num-value.ondrag');
+		'input.webhmi-num-value.ondrag, invisible-input.webhmi-num-value.ondrag');
 	// num-value continuous change
 
 	$(document).on(
@@ -885,7 +885,7 @@ WEBHMI.addVarWriteEvents = function () {
 				localMachine.readVariable(WEBHMI.getVarName($this));
 			}
 		},
-		'input.webhmi-text-value, textarea.webhmi-text-value');
+		'input.webhmi-text-value, invisible-input.webhmi-text-value, textarea.webhmi-text-value');
 	// text-value input or textarea
 
 	$(document).on(
@@ -965,7 +965,7 @@ WEBHMI.checkVisibility = function () {
 	// TODO: Don't rebuild array from scratch each call
 	Object.keys(WEBHMI.elems).forEach(function (key) {
 		if (WEBHMI.visibleElems.hasOwnProperty(key)) {
-			WEBHMI.visibleElems[key] = WEBHMI.elems[key].filter(elem => (elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length));
+			WEBHMI.visibleElems[key] = WEBHMI.elems[key].filter(elem => (elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length || (elem.getAttribute('force-hmi-update') == 'true') ));
 		}
 	});
 };
@@ -1132,3 +1132,25 @@ $(document).one({
 		setInterval(WEBHMI.updateHMI, refresh);	
 	}
 });
+
+//This element can be used to catch value changed events on elements that wouldn't normally have an "Input"
+class invisibleInput extends HTMLElement {
+    constructor() {
+        super()
+		this.setAttribute('force-hmi-update',true)
+    }
+    set value( v ){
+        this._value = v
+        this.setAttribute('value', v)
+        let evt = new Event("change", {
+            "bubbles": true,
+            "cancelable": true
+        });
+        this.dispatchEvent(evt);
+    }
+    get value( ){
+        return this._value || 0
+    }
+}
+      
+customElements.define('invisible-input', invisibleInput);

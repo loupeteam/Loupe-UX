@@ -192,6 +192,24 @@ WEBHMI.getLockSetValue = function ($element) {
 	return value;
 };
 
+WEBHMI.getUserHideLevel = function ($element) {
+	var value = $element.attr('user-hide-level');
+	if (value === undefined) {
+		value = 1; // Is this a reasonable default?
+		$element.attr('user-hide-level', value);
+	}
+	return value;
+};
+
+WEBHMI.getUserLockLevel = function ($element) {
+	var value = $element.attr('user-lock-level');
+	if (value === undefined) {
+		value = 1; // Is this a reasonable default?
+		$element.attr('user-lock-level', value);
+	}
+	return value;
+};
+
 WEBHMI.getRange = function ($element) {
 	var value = $element.attr('data-range');
 	if (value === undefined) {
@@ -263,9 +281,97 @@ WEBHMI.getCyclicReads = function () {
 		WEBHMI.getValue($(this));
 	});
 }
+// Update user access
+//----------------------
+
+WEBHMI.userLevelPV = undefined;
+WEBHMI.currentUserLevel = undefined; // Should this default to 0 instead?
+
+WEBHMI.setUserLevel = function (level) {
+	WEBHMI.currentUserLevel = level;
+}
+
+WEBHMI.setUserLevelPV = function (levelPV) {
+	if (levelPV === undefined) {
+		return; // Don't set PV to something that doesn't exist; that's what clearUserLevelPV is for
+	}
+	WEBHMI.userLevelPV = levelPV;
+}
+
+WEBHMI.clearUserLevelPV = function () {
+	WEBHMI.userLevelPV = undefined;
+}
+
+WEBHMI.getUserLevel = function ($element) {
+
+	//var localMachine = window[WEBHMI.getMachineName($element)];
+	var localMachine = WEBHMI.getMachine($element); // NOTE: elements with different machine names will use the same PV in this function
+	
+	var varName = WEBHMI.userLevelPV;
+	if (varName === undefined) {
+		// Not using PV; use internal value instead
+		return WEBHMI.currentUserLevel;
+	}
+	
+	var varValue = localMachine.value(varName);
+	if (varValue === undefined) {
+		localMachine.initCyclicRead(varName); // this might cause bad behavior if the variable does not exist on the PLC.
+	}
+
+	return varValue;
+
+}
 
 // Update page elements
 //----------------------
+
+// find all user level elems
+WEBHMI.queryUserLevel = function () {
+	WEBHMI.elems.userHide = Array.prototype.slice.call(document.querySelectorAll('.webhmi-user-hide'));
+	WEBHMI.elems.userLock = Array.prototype.slice.call(document.querySelectorAll('.webhmi-user-lock'));
+}
+
+WEBHMI.updateUserLevel = function () {
+
+	WEBHMI.elems.userHide.forEach(function (element) {
+
+		const $this = $(element);
+
+		const varValue = WEBHMI.getUserLevel($this);
+		if (!isEqual($this.attr('data-machine-value-user-hide'), varValue)) {
+			$this.attr('data-machine-value-user-hide', varValue)
+
+			const setValue = WEBHMI.getUserHideLevel($this);
+
+			if (varValue >= setValue) {
+				$this.removeClass(WEBHMI.getHideTrue($this));
+			} else {
+				$this.addClass(WEBHMI.getHideTrue($this));
+			}
+		}
+	})
+	
+
+	WEBHMI.elems.userLock.forEach(function (element) {
+
+		const $this = $(element);
+
+		const varValue = WEBHMI.getUserLevel($this);
+		if (!isEqual($this.attr('data-machine-value-user-lock'), varValue)) {
+			$this.attr('data-machine-value-user-lock', varValue)
+
+			const setValue = WEBHMI.getUserLockLevel($this);
+
+			if (varValue >= setValue) {
+				$this.removeClass(WEBHMI.getLockTrue($this));
+				$this.prop('disabled', false);
+			} else {
+				$this.addClass(WEBHMI.getLockTrue($this));
+				$this.prop('disabled', true);
+			}
+		}
+	})
+}
 
 // find all LED elems
 WEBHMI.queryLEDs = function () {
@@ -1054,6 +1160,7 @@ WEBHMI.queryDom = function () {
 	// TODO: insted of querying document for each class, first query document for class*=webhmi and then sort based on the different types
 	WEBHMI.queryInputs();
 	WEBHMI.queryToggleButtons();
+	WEBHMI.queryUserLevel();
 	WEBHMI.queryLEDs();
 	WEBHMI.queryRange();
 	WEBHMI.queryTabs();
@@ -1066,6 +1173,7 @@ WEBHMI.updateHMI = function () {
 	WEBHMI.trigger("update-hmi");
 	WEBHMI.updateInputs();
 	WEBHMI.updateToggleButtons();
+	WEBHMI.updateUserLevel();
 	WEBHMI.updateLEDs();
 	WEBHMI.updateRange();
 	WEBHMI.updateTabs();

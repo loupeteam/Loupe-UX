@@ -384,8 +384,10 @@ WEBHMI.updateLock = function () {
 
 			if (isEqual(varValue, setValue)) {
 				$this.removeClass(WEBHMI.getLockTrue($this));
+				$this.prop('disabled', false);
 			} else {
 				$this.addClass(WEBHMI.getLockTrue($this));
+				$this.prop('disabled', true);
 			}
 		}
 	})

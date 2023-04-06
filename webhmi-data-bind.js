@@ -303,7 +303,9 @@ WEBHMI.updateLEDs = function () {
 // find hide/show elems
 WEBHMI.queryHide = function () {
 	WEBHMI.elems.hide = Array.prototype.slice.call(document.querySelectorAll('.webhmi-hide'));
+	WEBHMI.elems.hideLevel = Array.prototype.slice.call(document.querySelectorAll('.webhmi-hide-level'));
 	WEBHMI.elems.show = Array.prototype.slice.call(document.querySelectorAll('.webhmi-show'));
+	WEBHMI.elems.showLevel = Array.prototype.slice.call(document.querySelectorAll('.webhmi-show-level'));
 }
 
 WEBHMI.updateHide = function () {
@@ -319,6 +321,24 @@ WEBHMI.updateHide = function () {
 			const setValue = WEBHMI.getHideSetValue($this);
 
 			if (isEqual(varValue, setValue)) {
+				$this.addClass(WEBHMI.getHideTrue($this));
+			} else {
+				$this.removeClass(WEBHMI.getHideTrue($this));
+			}
+		}
+	})
+	
+	WEBHMI.elems.hideLevel.forEach(function (element) {
+
+		const $this = $(element);
+
+		const varValue = WEBHMI.getHideValue($this);
+		if (!isEqual($this.attr('data-machine-value-hide'), varValue)) {
+			$this.attr('data-machine-value-hide', varValue)
+
+			const setValue = WEBHMI.getHideSetValue($this);
+
+			if (varValue >= setValue) {
 				$this.addClass(WEBHMI.getHideTrue($this));
 			} else {
 				$this.removeClass(WEBHMI.getHideTrue($this));
@@ -342,13 +362,33 @@ WEBHMI.updateHide = function () {
 				$this.addClass(WEBHMI.getHideTrue($this));
 			}
 		}
+	})
+	
+	WEBHMI.elems.showLevel.forEach(function (element) {
+
+		const $this = $(element);
+
+		const varValue = WEBHMI.getHideValue($this);
+		if (!isEqual($this.attr('data-machine-value-show'), varValue)) {
+			$this.attr('data-machine-value-show', varValue)
+
+			const setValue = WEBHMI.getHideSetValue($this);
+
+			if (varValue >= setValue) {
+				$this.removeClass(WEBHMI.getHideTrue($this));
+			} else {
+				$this.addClass(WEBHMI.getHideTrue($this));
+			}
+		}
 	})	
 }
 
 // find lock/unlock elems
 WEBHMI.queryLock = function () {
 	WEBHMI.elems.lock = Array.prototype.slice.call(document.querySelectorAll('.webhmi-lock'));
+	WEBHMI.elems.lockLevel = Array.prototype.slice.call(document.querySelectorAll('.webhmi-lock-level'));
 	WEBHMI.elems.unlock = Array.prototype.slice.call(document.querySelectorAll('.webhmi-unlock'));
+	WEBHMI.elems.unlockLevel = Array.prototype.slice.call(document.querySelectorAll('.webhmi-unlock-level'));
 }
 
 WEBHMI.updateLock = function () {
@@ -372,6 +412,25 @@ WEBHMI.updateLock = function () {
 			}
 		}
 	})
+	WEBHMI.elems.lockLevel.forEach(function (element) {
+
+		const $this = $(element);
+	
+		const varValue = WEBHMI.getLockValue($this);
+		
+		if (!isEqual($this.attr('data-machine-value-lock'), varValue)) {
+			$this.attr('data-machine-value-lock', varValue)
+			const setValue = WEBHMI.getLockSetValue($this);
+
+			if (varValue >= setValue) {
+				$this.addClass(WEBHMI.getLockTrue($this));
+				$this.prop('disabled', true);
+			} else {
+				$this.removeClass(WEBHMI.getLockTrue($this));
+				$this.prop('disabled', false);
+			}
+		}
+	})
 	WEBHMI.elems.unlock.forEach(function (element) {
 
 		const $this = $(element);
@@ -383,6 +442,25 @@ WEBHMI.updateLock = function () {
 			const setValue = WEBHMI.getLockSetValue($this);
 
 			if (isEqual(varValue, setValue)) {
+				$this.removeClass(WEBHMI.getLockTrue($this));
+				$this.prop('disabled', false);
+			} else {
+				$this.addClass(WEBHMI.getLockTrue($this));
+				$this.prop('disabled', true);
+			}
+		}
+	})
+	WEBHMI.elems.unlockLevel.forEach(function (element) {
+
+		const $this = $(element);
+
+		const varValue = WEBHMI.getLockValue($this);
+		if (!isEqual($this.attr('data-machine-value-unlock'), varValue)) {
+			$this.attr('data-machine-value-unlock', varValue)
+		
+			const setValue = WEBHMI.getLockSetValue($this);
+
+			if (varValue >= setValue) {
 				$this.removeClass(WEBHMI.getLockTrue($this));
 				$this.prop('disabled', false);
 			} else {

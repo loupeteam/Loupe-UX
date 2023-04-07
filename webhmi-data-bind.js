@@ -195,7 +195,7 @@ WEBHMI.getLockSetValue = function ($element) {
 WEBHMI.getUserHideLevel = function ($element) {
 	var value = $element.attr('user-hide-level');
 	if (value === undefined) {
-		value = 1; // Is this a reasonable default?
+		value = 0;
 		$element.attr('user-hide-level', value);
 	}
 	return value;
@@ -204,7 +204,7 @@ WEBHMI.getUserHideLevel = function ($element) {
 WEBHMI.getUserLockLevel = function ($element) {
 	var value = $element.attr('user-lock-level');
 	if (value === undefined) {
-		value = 1; // Is this a reasonable default?
+		value = 0;
 		$element.attr('user-lock-level', value);
 	}
 	return value;
@@ -285,7 +285,7 @@ WEBHMI.getCyclicReads = function () {
 //----------------------
 
 WEBHMI.userLevelPV = undefined;
-WEBHMI.currentUserLevel = undefined; // Should this default to 0 instead?
+WEBHMI.currentUserLevel = 0;
 
 WEBHMI.setUserLevel = function (level) {
 	WEBHMI.currentUserLevel = level;

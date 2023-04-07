@@ -284,35 +284,38 @@ WEBHMI.getCyclicReads = function () {
 // Update user access
 //----------------------
 
-WEBHMI.userLevelPV = undefined;
+WEBHMI.userLevelPV = {};
 WEBHMI.currentUserLevel = 0;
 
 WEBHMI.setUserLevel = function (level) {
 	WEBHMI.currentUserLevel = level;
 }
 
-WEBHMI.setUserLevelPV = function (levelPV) {
+WEBHMI.setUserLevelPV = function (machineName, levelPV) {
 	if (levelPV === undefined) {
 		return; // Don't set PV to something that doesn't exist; that's what clearUserLevelPV is for
 	}
-	WEBHMI.userLevelPV = levelPV;
+	WEBHMI.userLevelPV[machineName] = levelPV;
 }
 
-WEBHMI.clearUserLevelPV = function () {
-	WEBHMI.userLevelPV = undefined;
+WEBHMI.clearUserLevelPV = function (machineName) {
+	delete WEBHMI.userLevelPV[machineName];
 }
 
 WEBHMI.getUserLevel = function ($element) {
 
 	//var localMachine = window[WEBHMI.getMachineName($element)];
-	var localMachine = WEBHMI.getMachine($element); // NOTE: elements with different machine names will use the same PV in this function
-	
-	var varName = WEBHMI.userLevelPV;
-	if (varName === undefined) {
+	var localMachine = WEBHMI.getMachine($element);
+	if (!(WEBHMI.getMachineName($element) in WEBHMI.userLevelPV)) {
 		// Not using PV; use internal value instead
 		return WEBHMI.currentUserLevel;
 	}
 	
+	var varName = WEBHMI.userLevelPV[WEBHMI.getMachineName($element)];
+	if (varName === undefined) {
+		return undefined; // PV is set to undefined explicitly; we can't work with that
+	}
+
 	var varValue = localMachine.value(varName);
 	if (varValue === undefined) {
 		localMachine.initCyclicRead(varName); // this might cause bad behavior if the variable does not exist on the PLC.

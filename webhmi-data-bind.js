@@ -192,20 +192,20 @@ WEBHMI.getLockSetValue = function ($element) {
 	return value;
 };
 
-WEBHMI.getUserHideLevel = function ($element) {
-	var value = $element.attr('user-hide-level');
+WEBHMI.getUserLevelShow = function ($element) {
+	var value = $element.attr('min-user-level-show');
 	if (value === undefined) {
 		value = 0;
-		$element.attr('user-hide-level', value);
+		$element.attr('min-user-level-show', value);
 	}
 	return value;
 };
 
-WEBHMI.getUserLockLevel = function ($element) {
-	var value = $element.attr('user-lock-level');
+WEBHMI.getUserLevelUnlock = function ($element) {
+	var value = $element.attr('min-user-level-unlock');
 	if (value === undefined) {
 		value = 0;
-		$element.attr('user-lock-level', value);
+		$element.attr('min-user-level-unlock', value);
 	}
 	return value;
 };
@@ -275,6 +275,15 @@ WEBHMI.getLockValue = function ($element) {
 	return varValue;
 
 }
+
+WEBHMI.getUserLevel = function ($element) {
+
+	//var localMachine = window[WEBHMI.getMachineName($element)];
+	var localMachine = WEBHMI.getMachine($element); // NOTE: Try this here before migrating everything else...
+	
+	return localMachine.getUserLevel(); // Handles everything we need it to
+
+}
 // NOTE: What is the point of this function? I guess it will init things that are not already in the list, but that is a funny name if that is the point.
 WEBHMI.getCyclicReads = function () {
 	$("[data-var-name]").each(function (index, element) { 
@@ -284,54 +293,6 @@ WEBHMI.getCyclicReads = function () {
 
 // Update page elements
 //----------------------
-
-// find all user level elems
-WEBHMI.queryUserLevel = function () {
-	WEBHMI.elems.userHide = Array.prototype.slice.call(document.querySelectorAll('.webhmi-user-hide'));
-	WEBHMI.elems.userLock = Array.prototype.slice.call(document.querySelectorAll('.webhmi-user-lock'));
-}
-
-WEBHMI.updateUserLevel = function () {
-
-	WEBHMI.elems.userHide.forEach(function (element) {
-
-		const $this = $(element);
-
-		const varValue = WEBHMI.getUserLevel($this);
-		if (!isEqual($this.attr('data-machine-value-user-hide'), varValue)) {
-			$this.attr('data-machine-value-user-hide', varValue)
-
-			const setValue = WEBHMI.getUserHideLevel($this);
-
-			if (varValue >= setValue) {
-				$this.removeClass(WEBHMI.getHideTrue($this));
-			} else {
-				$this.addClass(WEBHMI.getHideTrue($this));
-			}
-		}
-	})
-	
-
-	WEBHMI.elems.userLock.forEach(function (element) {
-
-		const $this = $(element);
-
-		const varValue = WEBHMI.getUserLevel($this);
-		if (!isEqual($this.attr('data-machine-value-user-lock'), varValue)) {
-			$this.attr('data-machine-value-user-lock', varValue)
-
-			const setValue = WEBHMI.getUserLockLevel($this);
-
-			if (varValue >= setValue) {
-				$this.removeClass(WEBHMI.getLockTrue($this));
-				$this.prop('disabled', false);
-			} else {
-				$this.addClass(WEBHMI.getLockTrue($this));
-				$this.prop('disabled', true);
-			}
-		}
-	})
-}
 
 // find all LED elems
 WEBHMI.queryLEDs = function () {
@@ -368,10 +329,8 @@ WEBHMI.updateLEDs = function () {
 
 // find hide/show elems
 WEBHMI.queryHide = function () {
-	WEBHMI.elems.hide = Array.prototype.slice.call(document.querySelectorAll('.webhmi-hide'));
-	WEBHMI.elems.hideLevel = Array.prototype.slice.call(document.querySelectorAll('.webhmi-hide-level'));
-	WEBHMI.elems.show = Array.prototype.slice.call(document.querySelectorAll('.webhmi-show'));
-	WEBHMI.elems.showLevel = Array.prototype.slice.call(document.querySelectorAll('.webhmi-show-level'));
+	WEBHMI.elems.hide = Array.prototype.slice.call(document.querySelectorAll('.webhmi-hide, [min-user-level-show]'));
+	WEBHMI.elems.show = Array.prototype.slice.call(document.querySelectorAll('.webhmi-show, [min-user-level-show]'));
 }
 
 WEBHMI.updateHide = function () {
@@ -380,81 +339,120 @@ WEBHMI.updateHide = function () {
 
 		const $this = $(element);
 
-		const varValue = WEBHMI.getHideValue($this);
-		if (!isEqual($this.attr('data-machine-value-hide'), varValue)) {
-			$this.attr('data-machine-value-hide', varValue)
-
-			const setValue = WEBHMI.getHideSetValue($this);
-
-			if (isEqual(varValue, setValue)) {
-				$this.addClass(WEBHMI.getHideTrue($this));
-			} else {
-				$this.removeClass(WEBHMI.getHideTrue($this));
-			}
-		}
-	})
+		if ($this.attr('min-user-level-show') === undefined) { // No user level, just webhmi-hide
 	
-	WEBHMI.elems.hideLevel.forEach(function (element) {
-
-		const $this = $(element);
-
-		const varValue = WEBHMI.getHideValue($this);
-		if (!isEqual($this.attr('data-machine-value-hide'), varValue)) {
-			$this.attr('data-machine-value-hide', varValue)
-
-			const setValue = WEBHMI.getHideSetValue($this);
-
-			if (varValue >= setValue) {
-				$this.addClass(WEBHMI.getHideTrue($this));
-			} else {
-				$this.removeClass(WEBHMI.getHideTrue($this));
+			const varValue = WEBHMI.getHideValue($this);
+			if (!isEqual($this.attr('data-machine-value-hide'), varValue)) {
+				$this.attr('data-machine-value-hide', varValue);
+	
+				const setValue = WEBHMI.getHideSetValue($this);
+	
+				if (isEqual(varValue, setValue)) {
+					$this.addClass(WEBHMI.getHideTrue($this));
+				} else {
+					$this.removeClass(WEBHMI.getHideTrue($this));
+				}
 			}
+
+		} else if (!$this.hasClass('webhmi-hide')) { // No webhmi-hide, just user level
+	
+			const userLevel = WEBHMI.getUserLevel($this);
+			if (!isEqual($this.attr('data-machine-value-user-level-show'), userLevel)) {
+				$this.attr('data-machine-value-user-level-show', userLevel);
+	
+				const userLevelShow = WEBHMI.getUserLevelShow($this);
+	
+				if (userLevel < userLevelShow) {
+					$this.addClass(WEBHMI.getHideTrue($this));
+				} else {
+					$this.removeClass(WEBHMI.getHideTrue($this));
+				}
+			}
+
+		} else { // Both webhmi-hide and user level
+	
+			const varValue = WEBHMI.getHideValue($this);
+			const userLevel = WEBHMI.getUserLevel($this);
+			if (!isEqual($this.attr('data-machine-value-hide'), varValue) || !isEqual($this.attr('data-machine-value-user-level-show'), userLevel)) {
+				$this.attr('data-machine-value-hide', varValue);
+				$this.attr('data-machine-value-user-level-show', userLevel);
+	
+				const setValue = WEBHMI.getHideSetValue($this);
+				const userLevelShow = WEBHMI.getUserLevelShow($this);
+	
+				if (isEqual(varValue, setValue) || (userLevel < userLevelShow)) {
+					$this.addClass(WEBHMI.getHideTrue($this));
+				} else {
+					$this.removeClass(WEBHMI.getHideTrue($this));
+				}
+			}
+
 		}
+
 	})
 	
 	WEBHMI.elems.show.forEach(function (element) {
 
 		const $this = $(element);
 
-		const varValue = WEBHMI.getHideValue($this);
-		if (!isEqual($this.attr('data-machine-value-show'), varValue)) {
-			$this.attr('data-machine-value-show', varValue)
-
-			const setValue = WEBHMI.getHideSetValue($this);
-
-			if (isEqual(varValue, setValue)) {
-				$this.removeClass(WEBHMI.getHideTrue($this));
-			} else {
-				$this.addClass(WEBHMI.getHideTrue($this));
+		if ($this.attr('min-user-level-show') === undefined) { // No user level, just webhmi-show
+	
+			const varValue = WEBHMI.getHideValue($this);
+			if (!isEqual($this.attr('data-machine-value-hide'), varValue)) {
+				$this.attr('data-machine-value-hide', varValue);
+	
+				const setValue = WEBHMI.getHideSetValue($this);
+	
+				if (!isEqual(varValue, setValue)) {
+					$this.addClass(WEBHMI.getHideTrue($this));
+				} else {
+					$this.removeClass(WEBHMI.getHideTrue($this));
+				}
 			}
+
+		} else if (!$this.hasClass('webhmi-show')) { // No webhmi-show, just user level
+	
+			const userLevel = WEBHMI.getUserLevel($this);
+			if (!isEqual($this.attr('data-machine-value-user-level-show'), userLevel)) {
+				$this.attr('data-machine-value-user-level-show', userLevel);
+	
+				const userLevelShow = WEBHMI.getUserLevelShow($this);
+	
+				if (userLevel < userLevelShow) {
+					$this.addClass(WEBHMI.getHideTrue($this));
+				} else {
+					$this.removeClass(WEBHMI.getHideTrue($this));
+				}
+			}
+
+		} else { // Both webhmi-show and user level
+	
+			const varValue = WEBHMI.getHideValue($this);
+			const userLevel = WEBHMI.getUserLevel($this);
+			if (!isEqual($this.attr('data-machine-value-hide'), varValue) || !isEqual($this.attr('data-machine-value-user-level-show'), userLevel)) {
+				$this.attr('data-machine-value-hide', varValue);
+				$this.attr('data-machine-value-user-level-show', userLevel);
+	
+				const setValue = WEBHMI.getHideSetValue($this);
+				const userLevelShow = WEBHMI.getUserLevelShow($this);
+	
+				if (!isEqual(varValue, setValue) || (userLevel < userLevelShow)) {
+					$this.addClass(WEBHMI.getHideTrue($this));
+				} else {
+					$this.removeClass(WEBHMI.getHideTrue($this));
+				}
+			}
+
 		}
+
 	})
 	
-	WEBHMI.elems.showLevel.forEach(function (element) {
-
-		const $this = $(element);
-
-		const varValue = WEBHMI.getHideValue($this);
-		if (!isEqual($this.attr('data-machine-value-show'), varValue)) {
-			$this.attr('data-machine-value-show', varValue)
-
-			const setValue = WEBHMI.getHideSetValue($this);
-
-			if (varValue >= setValue) {
-				$this.removeClass(WEBHMI.getHideTrue($this));
-			} else {
-				$this.addClass(WEBHMI.getHideTrue($this));
-			}
-		}
-	})	
 }
 
 // find lock/unlock elems
 WEBHMI.queryLock = function () {
-	WEBHMI.elems.lock = Array.prototype.slice.call(document.querySelectorAll('.webhmi-lock'));
-	WEBHMI.elems.lockLevel = Array.prototype.slice.call(document.querySelectorAll('.webhmi-lock-level'));
-	WEBHMI.elems.unlock = Array.prototype.slice.call(document.querySelectorAll('.webhmi-unlock'));
-	WEBHMI.elems.unlockLevel = Array.prototype.slice.call(document.querySelectorAll('.webhmi-unlock-level'));
+	WEBHMI.elems.lock = Array.prototype.slice.call(document.querySelectorAll('.webhmi-lock, [min-user-level-unlock]'));
+	WEBHMI.elems.unlock = Array.prototype.slice.call(document.querySelectorAll('.webhmi-unlock, [min-user-level-unlock]'));
 }
 
 WEBHMI.updateLock = function () {
@@ -462,79 +460,126 @@ WEBHMI.updateLock = function () {
 	WEBHMI.elems.lock.forEach(function (element) {
 
 		const $this = $(element);
+
+		if ($this.attr('min-user-level-unlock') === undefined) { // No user level, just webhmi-lock
 	
-		const varValue = WEBHMI.getLockValue($this);
-		
-		if (!isEqual($this.attr('data-machine-value-lock'), varValue)) {
-			$this.attr('data-machine-value-lock', varValue)
-			const setValue = WEBHMI.getLockSetValue($this);
-
-			if (isEqual(varValue, setValue)) {
-				$this.addClass(WEBHMI.getLockTrue($this));
-				$this.prop('disabled', true);
-			} else {
-				$this.removeClass(WEBHMI.getLockTrue($this));
-				$this.prop('disabled', false);
-			}
-		}
-	})
-	WEBHMI.elems.lockLevel.forEach(function (element) {
-
-		const $this = $(element);
+			const varValue = WEBHMI.getLockValue($this);
+			if (!isEqual($this.attr('data-machine-value-lock'), varValue)) {
+				$this.attr('data-machine-value-lock', varValue);
 	
-		const varValue = WEBHMI.getLockValue($this);
-		
-		if (!isEqual($this.attr('data-machine-value-lock'), varValue)) {
-			$this.attr('data-machine-value-lock', varValue)
-			const setValue = WEBHMI.getLockSetValue($this);
-
-			if (varValue >= setValue) {
-				$this.addClass(WEBHMI.getLockTrue($this));
-				$this.prop('disabled', true);
-			} else {
-				$this.removeClass(WEBHMI.getLockTrue($this));
-				$this.prop('disabled', false);
+				const setValue = WEBHMI.getLockSetValue($this);
+	
+				if (isEqual(varValue, setValue)) {
+					$this.addClass(WEBHMI.getLockTrue($this));
+					$this.prop('disabled', true);
+				} else {
+					$this.removeClass(WEBHMI.getLockTrue($this));
+					$this.prop('disabled', false);
+				}
 			}
+
+		} else if (!$this.hasClass('webhmi-lock')) { // No webhmi-lock, just user level
+	
+			const userLevel = WEBHMI.getUserLevel($this);
+			if (!isEqual($this.attr('data-machine-value-user-level-unlock'), userLevel)) {
+				$this.attr('data-machine-value-user-level-unlock', userLevel);
+	
+				const userLevelUnlock = WEBHMI.getUserLevelUnlock($this);
+	
+				if (userLevel < userLevelUnlock) {
+					$this.addClass(WEBHMI.getLockTrue($this));
+					$this.prop('disabled', true);
+				} else {
+					$this.removeClass(WEBHMI.getLockTrue($this));
+					$this.prop('disabled', false);
+				}
+			}
+
+		} else { // Both webhmi-lock and user level
+	
+			const varValue = WEBHMI.getLockValue($this);
+			const userLevel = WEBHMI.getUserLevel($this);
+			if (!isEqual($this.attr('data-machine-value-lock'), varValue) || !isEqual($this.attr('data-machine-value-user-level-unlock'), userLevel)) {
+				$this.attr('data-machine-value-lock', varValue);
+				$this.attr('data-machine-value-user-level-unlock', userLevel);
+	
+				const setValue = WEBHMI.getLockSetValue($this);
+				const userLevelUnlock = WEBHMI.getUserLevelUnlock($this);
+	
+				if (isEqual(varValue, setValue) || (userLevel < userLevelUnlock)) {
+					$this.addClass(WEBHMI.getLockTrue($this));
+					$this.prop('disabled', true);
+				} else {
+					$this.removeClass(WEBHMI.getLockTrue($this));
+					$this.prop('disabled', false);
+				}
+			}
+
 		}
+
 	})
+	
 	WEBHMI.elems.unlock.forEach(function (element) {
 
 		const $this = $(element);
 
-		const varValue = WEBHMI.getLockValue($this);
-		if (!isEqual($this.attr('data-machine-value-unlock'), varValue)) {
-			$this.attr('data-machine-value-unlock', varValue)
-		
-			const setValue = WEBHMI.getLockSetValue($this);
-
-			if (isEqual(varValue, setValue)) {
-				$this.removeClass(WEBHMI.getLockTrue($this));
-				$this.prop('disabled', false);
-			} else {
-				$this.addClass(WEBHMI.getLockTrue($this));
-				$this.prop('disabled', true);
+		if ($this.attr('min-user-level-unlock') === undefined) { // No user level, just webhmi-lock
+	
+			const varValue = WEBHMI.getLockValue($this);
+			if (!isEqual($this.attr('data-machine-value-unlock'), varValue)) {
+				$this.attr('data-machine-value-unlock', varValue);
+	
+				const setValue = WEBHMI.getLockSetValue($this);
+	
+				if (!isEqual(varValue, setValue)) {
+					$this.addClass(WEBHMI.getLockTrue($this));
+					$this.prop('disabled', true);
+				} else {
+					$this.removeClass(WEBHMI.getLockTrue($this));
+					$this.prop('disabled', false);
+				}
 			}
+
+		} else if (!$this.hasClass('webhmi-lock')) { // No webhmi-lock, just user level
+	
+			const userLevel = WEBHMI.getUserLevel($this);
+			if (!isEqual($this.attr('data-machine-value-user-level-unlock'), userLevel)) {
+				$this.attr('data-machine-value-user-level-unlock', userLevel);
+	
+				const userLevelUnlock = WEBHMI.getUserLevelUnlock($this);
+	
+				if (userLevel < userLevelUnlock) {
+					$this.addClass(WEBHMI.getLockTrue($this));
+					$this.prop('disabled', true);
+				} else {
+					$this.removeClass(WEBHMI.getLockTrue($this));
+					$this.prop('disabled', false);
+				}
+			}
+
+		} else { // Both webhmi-lock and user level
+	
+			const varValue = WEBHMI.getLockValue($this);
+			const userLevel = WEBHMI.getUserLevel($this);
+			if (!isEqual($this.attr('data-machine-value-unlock'), varValue) || !isEqual($this.attr('data-machine-value-user-level-unlock'), userLevel)) {
+				$this.attr('data-machine-value-unlock', varValue);
+				$this.attr('data-machine-value-user-level-unlock', userLevel);
+	
+				const setValue = WEBHMI.getLockSetValue($this);
+				const userLevelUnlock = WEBHMI.getUserLevelUnlock($this);
+	
+				if (!isEqual(varValue, setValue) || (userLevel < userLevelUnlock)) {
+					$this.addClass(WEBHMI.getLockTrue($this));
+					$this.prop('disabled', true);
+				} else {
+					$this.removeClass(WEBHMI.getLockTrue($this));
+					$this.prop('disabled', false);
+				}
+			}
+
 		}
 	})
-	WEBHMI.elems.unlockLevel.forEach(function (element) {
-
-		const $this = $(element);
-
-		const varValue = WEBHMI.getLockValue($this);
-		if (!isEqual($this.attr('data-machine-value-unlock'), varValue)) {
-			$this.attr('data-machine-value-unlock', varValue)
-		
-			const setValue = WEBHMI.getLockSetValue($this);
-
-			if (varValue >= setValue) {
-				$this.removeClass(WEBHMI.getLockTrue($this));
-				$this.prop('disabled', false);
-			} else {
-				$this.addClass(WEBHMI.getLockTrue($this));
-				$this.prop('disabled', true);
-			}
-		}
-	})
+	
 }
 
 // find all toggle btn elems
@@ -1063,15 +1108,9 @@ WEBHMI.observers = [];
  * @property {Element[]} range
  * @property {Element[]} tab
  * @property {Element[]} hide
- * @property {Element[]} hideLevel
  * @property {Element[]} show
- * @property {Element[]} showLevel
  * @property {Element[]} lock
- * @property {Element[]} lockLevel
  * @property {Element[]} unlock
- * @property {Element[]} unlockLevel
- * @property {Element[]} userHide
- * @property {Element[]} userLock
  */
 
 /** Current webhmi elements in DOM
@@ -1088,15 +1127,9 @@ WEBHMI.elems = {
 	range: [],
 	tab: [],
 	hide: [],
-	hideLevel: [],
 	show: [],
-	showLevel: [],
 	lock: [],
-	lockLevel: [],
-	unlock: [],
-	unlockLevel: [],
-	userHide: [],
-	userLock: [] 
+	unlock: []
 };
 
 /** Currently visible webhmi elements in DOM
@@ -1113,15 +1146,9 @@ WEBHMI.visibleElems = {
 	range: [],
 	tab: [],
 	hide: [],
-	hideLevel: [],
 	show: [],
-	showLevel: [],
 	lock: [],
-	lockLevel: [],
-	unlock: [],
-	unlockLevel: [],
-	userHide: [],
-	userLock: [] 
+	unlock: []
 };
 
 // FORCES LAYOUT REFLOW

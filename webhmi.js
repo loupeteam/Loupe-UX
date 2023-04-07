@@ -1010,6 +1010,35 @@ WEBHMI.Machine = function (options) {
 		thisMachine.connection.addVariableWrite(varName, value, successCallback);
 	}
 
+	// User level
+	//---------------------------------------------
+
+	var userLevelPV;
+	var currentUserLevel = 0;
+
+	function setUserLevel(level) {
+		currentUserLevel = level;
+	}
+
+	function setUserLevelPV(levelPV) {
+		if (levelPV !== undefined) { // Don't set PV to something that doesn't exist; that's what clearUserLevelPV is for
+			userLevelPV = levelPV;
+			initCyclicRead(levelPV);
+		}
+	}
+
+	function clearUserLevelPV() {
+		userLevelPV = undefined;
+	}
+
+	function getUserLevel() {
+		if (userLevelPV === undefined) {
+			// Not using PV; use internal value instead
+			return currentUserLevel;
+		}
+		return value(userLevelPV);
+	}
+
 	
 	// Machine API definition
 	//---------------------------------------------
@@ -1018,6 +1047,11 @@ WEBHMI.Machine = function (options) {
 	thisMachine.readVariable = readVariable;
 	thisMachine.initCyclicRead = initCyclicRead;
 	thisMachine.writeVariable = writeVariable;
+
+	thisMachine.setUserLevel = setUserLevel;
+	thisMachine.setUserLevelPV = setUserLevelPV;
+	thisMachine.clearUserLevelPV = clearUserLevelPV;
+	thisMachine.getUserLevel = getUserLevel;
 
 
 	// Establish a new connection

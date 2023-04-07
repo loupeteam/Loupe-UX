@@ -1106,9 +1106,15 @@ WEBHMI.observers = [];
  * @property {Element[]} range
  * @property {Element[]} tab
  * @property {Element[]} hide
+ * @property {Element[]} hideLevel
  * @property {Element[]} show
+ * @property {Element[]} showLevel
  * @property {Element[]} lock
+ * @property {Element[]} lockLevel
  * @property {Element[]} unlock
+ * @property {Element[]} unlockLevel
+ * @property {Element[]} userHide
+ * @property {Element[]} userLock
  */
 
 /** Current webhmi elements in DOM
@@ -1125,9 +1131,15 @@ WEBHMI.elems = {
 	range: [],
 	tab: [],
 	hide: [],
+	hideLevel: [],
 	show: [],
+	showLevel: [],
 	lock: [],
-	unlock: [] 
+	lockLevel: [],
+	unlock: [],
+	unlockLevel: [],
+	userHide: [],
+	userLock: [] 
 };
 
 /** Currently visible webhmi elements in DOM
@@ -1144,9 +1156,15 @@ WEBHMI.visibleElems = {
 	range: [],
 	tab: [],
 	hide: [],
+	hideLevel: [],
 	show: [],
+	showLevel: [],
 	lock: [],
-	unlock: [] 
+	lockLevel: [],
+	unlock: [],
+	unlockLevel: [],
+	userHide: [],
+	userLock: [] 
 };
 
 // FORCES LAYOUT REFLOW

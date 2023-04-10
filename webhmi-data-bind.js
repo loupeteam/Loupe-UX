@@ -1165,7 +1165,6 @@ WEBHMI.queryDom = function () {
 	// TODO: insted of querying document for each class, first query document for class*=webhmi and then sort based on the different types
 	WEBHMI.queryInputs();
 	WEBHMI.queryToggleButtons();
-	WEBHMI.queryUserLevel();
 	WEBHMI.queryLEDs();
 	WEBHMI.queryRange();
 	WEBHMI.queryTabs();
@@ -1178,7 +1177,6 @@ WEBHMI.updateHMI = function () {
 	WEBHMI.trigger("update-hmi");
 	WEBHMI.updateInputs();
 	WEBHMI.updateToggleButtons();
-	WEBHMI.updateUserLevel();
 	WEBHMI.updateLEDs();
 	WEBHMI.updateRange();
 	WEBHMI.updateTabs();

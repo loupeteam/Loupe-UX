@@ -1036,7 +1036,7 @@ WEBHMI.Machine = function (options) {
 			// Not using PV; use internal value instead
 			return currentUserLevel;
 		}
-		return value(userLevelPV);
+		return thisMachine.value(userLevelPV);
 	}
 
 	

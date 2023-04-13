@@ -193,21 +193,11 @@ WEBHMI.getLockSetValue = function ($element) {
 };
 
 WEBHMI.getUserLevelShow = function ($element) {
-	var value = $element.attr('min-user-level-show');
-	if (value === undefined) {
-		value = 0;
-		$element.attr('min-user-level-show', value);
-	}
-	return value;
+	return $element.attr('min-user-level-show');
 };
 
 WEBHMI.getUserLevelUnlock = function ($element) {
-	var value = $element.attr('min-user-level-unlock');
-	if (value === undefined) {
-		value = 0;
-		$element.attr('min-user-level-unlock', value);
-	}
-	return value;
+	return $element.attr('min-user-level-unlock');
 };
 
 WEBHMI.getRange = function ($element) {

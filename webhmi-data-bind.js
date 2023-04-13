@@ -523,7 +523,7 @@ WEBHMI.updateLock = function () {
 
 		const $this = $(element);
 
-		if ($this.attr('min-user-level-unlock') === undefined) { // No user level, just webhmi-lock
+		if ($this.attr('min-user-level-unlock') === undefined) { // No user level, just webhmi-unlock
 	
 			const varValue = WEBHMI.getLockValue($this);
 			if (!isEqual($this.attr('data-machine-value-unlock'), varValue)) {
@@ -540,7 +540,7 @@ WEBHMI.updateLock = function () {
 				}
 			}
 
-		} else if (!$this.hasClass('webhmi-lock')) { // No webhmi-lock, just user level
+		} else if (!$this.hasClass('webhmi-unlock')) { // No webhmi-unlock, just user level
 	
 			const userLevel = WEBHMI.getUserLevel($this);
 			if (!isEqual($this.attr('data-machine-value-user-level-unlock'), userLevel)) {
@@ -557,7 +557,7 @@ WEBHMI.updateLock = function () {
 				}
 			}
 
-		} else { // Both webhmi-lock and user level
+		} else { // Both webhmi-unlock and user level
 	
 			const varValue = WEBHMI.getLockValue($this);
 			const userLevel = WEBHMI.getUserLevel($this);

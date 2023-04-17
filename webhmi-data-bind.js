@@ -7,7 +7,7 @@ if (typeof WEBHMI === 'undefined') {
 	throw new Error('WEBHMI data binding requires WEBHMI core');
 }
 
-WEBHMI.dataBindVersion = '1.3.1';
+WEBHMI.dataBindVersion = '1.3.2';
 
 // Check for being a 'number'
 function isNumeric (obj) {
@@ -192,6 +192,14 @@ WEBHMI.getLockSetValue = function ($element) {
 	return value;
 };
 
+WEBHMI.getUserLevelShow = function ($element) {
+	return $element.attr('min-user-level-show');
+};
+
+WEBHMI.getUserLevelUnlock = function ($element) {
+	return $element.attr('min-user-level-unlock');
+};
+
 WEBHMI.getRange = function ($element) {
 	var value = $element.attr('data-range');
 	if (value === undefined) {
@@ -257,6 +265,15 @@ WEBHMI.getLockValue = function ($element) {
 	return varValue;
 
 }
+
+WEBHMI.getUserLevel = function ($element) {
+
+	//var localMachine = window[WEBHMI.getMachineName($element)];
+	var localMachine = WEBHMI.getMachine($element); // NOTE: Try this here before migrating everything else...
+	
+	return localMachine.getUserLevel(); // Handles everything we need it to
+
+}
 // NOTE: What is the point of this function? I guess it will init things that are not already in the list, but that is a funny name if that is the point.
 WEBHMI.getCyclicReads = function () {
 	$("[data-var-name]").each(function (index, element) { 
@@ -302,8 +319,7 @@ WEBHMI.updateLEDs = function () {
 
 // find hide/show elems
 WEBHMI.queryHide = function () {
-	WEBHMI.elems.hide = Array.prototype.slice.call(document.querySelectorAll('.webhmi-hide'));
-	WEBHMI.elems.show = Array.prototype.slice.call(document.querySelectorAll('.webhmi-show'));
+	WEBHMI.elems.hide = Array.prototype.slice.call(document.querySelectorAll('.webhmi-hide, .webhmi-show, [min-user-level-show]'));
 }
 
 WEBHMI.updateHide = function () {
@@ -311,44 +327,37 @@ WEBHMI.updateHide = function () {
 	WEBHMI.elems.hide.forEach(function (element) {
 
 		const $this = $(element);
+		
+		const hasHideUserLevel = ($this.attr('min-user-level-show') !== undefined);
+		const hasHide = $this.hasClass('webhmi-hide');
+		const hasShow = $this.hasClass('webhmi-show');
 
 		const varValue = WEBHMI.getHideValue($this);
-		if (!isEqual($this.attr('data-machine-value-hide'), varValue)) {
-			$this.attr('data-machine-value-hide', varValue)
+		const userLevel = WEBHMI.getUserLevel($this);
 
-			const setValue = WEBHMI.getHideSetValue($this);
+		if (((hasHide || hasShow) && !isEqual($this.attr('data-machine-value-hide'), varValue)) || (hasHideUserLevel && !isEqual($this.attr('data-machine-value-user-level-show'), userLevel))) {
+		
+			if(hasHide || hasShow) $this.attr('data-machine-value-hide', varValue);
+			if(hasHideUserLevel) $this.attr('data-machine-value-user-level-show', userLevel);
 
-			if (isEqual(varValue, setValue)) {
+			const setValue = WEBHMI.getHideSetValue($this); // elements that only have user level will get data-hide-set here; this is fine
+			const userLevelShow = WEBHMI.getUserLevelShow($this);
+
+			if ((hasHide && isEqual(varValue, setValue)) || (hasShow && !isEqual(varValue, setValue)) || (hasHideUserLevel && (userLevel < userLevelShow))) {
 				$this.addClass(WEBHMI.getHideTrue($this));
 			} else {
 				$this.removeClass(WEBHMI.getHideTrue($this));
 			}
+
 		}
+
 	})
-	
-	WEBHMI.elems.show.forEach(function (element) {
 
-		const $this = $(element);
-
-		const varValue = WEBHMI.getHideValue($this);
-		if (!isEqual($this.attr('data-machine-value-show'), varValue)) {
-			$this.attr('data-machine-value-show', varValue)
-
-			const setValue = WEBHMI.getHideSetValue($this);
-
-			if (isEqual(varValue, setValue)) {
-				$this.removeClass(WEBHMI.getHideTrue($this));
-			} else {
-				$this.addClass(WEBHMI.getHideTrue($this));
-			}
-		}
-	})	
 }
 
 // find lock/unlock elems
 WEBHMI.queryLock = function () {
-	WEBHMI.elems.lock = Array.prototype.slice.call(document.querySelectorAll('.webhmi-lock'));
-	WEBHMI.elems.unlock = Array.prototype.slice.call(document.querySelectorAll('.webhmi-unlock'));
+	WEBHMI.elems.lock = Array.prototype.slice.call(document.querySelectorAll('.webhmi-lock, .webhmi-unlock, [min-user-level-unlock]'));
 }
 
 WEBHMI.updateLock = function () {
@@ -356,39 +365,34 @@ WEBHMI.updateLock = function () {
 	WEBHMI.elems.lock.forEach(function (element) {
 
 		const $this = $(element);
-	
-		const varValue = WEBHMI.getLockValue($this);
-		
-		if (!isEqual($this.attr('data-machine-value-lock'), varValue)) {
-			$this.attr('data-machine-value-lock', varValue)
-			const setValue = WEBHMI.getLockSetValue($this);
 
-			if (isEqual(varValue, setValue)) {
+		const hasLockUserLevel = ($this.attr('min-user-level-unlock') !== undefined);
+		const hasLock = $this.hasClass('webhmi-lock');
+		const hasUnlock = $this.hasClass('webhmi-unlock');
+
+		const varValue = WEBHMI.getLockValue($this);
+		const userLevel = WEBHMI.getUserLevel($this);
+
+		if (((hasLock || hasUnlock) && !isEqual($this.attr('data-machine-value-lock'), varValue)) || (hasLockUserLevel && !isEqual($this.attr('data-machine-value-user-level-unlock'), userLevel))) {
+		
+			if(hasLock || hasUnlock) $this.attr('data-machine-value-lock', varValue);
+			if(hasLockUserLevel) $this.attr('data-machine-value-user-level-unlock', userLevel);
+
+			const setValue = WEBHMI.getLockSetValue($this); // elements that only have user level will get data-lock-set here; this is fine
+			const userLevelUnlock = WEBHMI.getUserLevelUnlock($this);
+
+			if ((hasLock && isEqual(varValue, setValue)) || (hasUnlock && !isEqual(varValue, setValue)) || (hasLockUserLevel && (userLevel < userLevelUnlock))) {
 				$this.addClass(WEBHMI.getLockTrue($this));
 				$this.prop('disabled', true);
 			} else {
 				$this.removeClass(WEBHMI.getLockTrue($this));
 				$this.prop('disabled', false);
 			}
+
 		}
+
 	})
-	WEBHMI.elems.unlock.forEach(function (element) {
-
-		const $this = $(element);
-
-		const varValue = WEBHMI.getLockValue($this);
-		if (!isEqual($this.attr('data-machine-value-unlock'), varValue)) {
-			$this.attr('data-machine-value-unlock', varValue)
-		
-			const setValue = WEBHMI.getLockSetValue($this);
-
-			if (isEqual(varValue, setValue)) {
-				$this.removeClass(WEBHMI.getLockTrue($this));
-			} else {
-				$this.addClass(WEBHMI.getLockTrue($this));
-			}
-		}
-	})
+	
 }
 
 // find all toggle btn elems
@@ -917,9 +921,7 @@ WEBHMI.observers = [];
  * @property {Element[]} range
  * @property {Element[]} tab
  * @property {Element[]} hide
- * @property {Element[]} show
  * @property {Element[]} lock
- * @property {Element[]} unlock
  */
 
 /** Current webhmi elements in DOM
@@ -936,9 +938,7 @@ WEBHMI.elems = {
 	range: [],
 	tab: [],
 	hide: [],
-	show: [],
-	lock: [],
-	unlock: [] 
+	lock: []
 };
 
 /** Currently visible webhmi elements in DOM
@@ -955,9 +955,7 @@ WEBHMI.visibleElems = {
 	range: [],
 	tab: [],
 	hide: [],
-	show: [],
-	lock: [],
-	unlock: [] 
+	lock: [] 
 };
 
 // FORCES LAYOUT REFLOW

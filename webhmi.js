@@ -2,7 +2,7 @@
 // Copyright 2020 Loupe
 //------------------------------------------------------------------------------
 
-import jQuery from 'jquery'
+// import jQuery from 'jquery'
 
 // Use uppercase namespace
 var WEBHMI = {

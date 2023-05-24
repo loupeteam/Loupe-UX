@@ -15,7 +15,13 @@ function isNumeric (obj) {
 }
 
 WEBHMI.isNumeric = isNumeric
-WEBHMI.convert = convert.convert
+let convertFeatEnable = false;
+if (typeof convert === 'undefined'){
+	console.log('Convert library not defined in index.html and will be disabled')
+}else{
+	WEBHMI.convert = convert.convert
+	convertFeatEnable = true;
+}
 
 // BOOLify something
 function isTrue (value) {
@@ -558,6 +564,7 @@ WEBHMI.updateInputs = function () {
 					// make sure both source and target units are defined
 					if ((Object.prototype.toString.call(sourceUnits) !== '[object Undefined]') && 
 						(Object.prototype.toString.call(displayUnits) !== '[object Undefined]') &&
+						convertFeatEnable){
 							varValue = WEBHMI.convert(varValue, sourceUnits).to(displayUnits);
 					}
 
@@ -584,6 +591,7 @@ WEBHMI.updateInputs = function () {
 						unitText = '';
 						// fallback to target units if none specified
 						if ((Object.prototype.toString.call(displayUnits) !== '[object Undefined]') &&
+							(convertFeatEnable)){
 							unitText = displayUnits;
 						}
 					}
@@ -858,6 +866,7 @@ WEBHMI.addVarWriteEvents = function () {
 				// make sure both source and target units are defined
 				if ((Object.prototype.toString.call(sourceUnits) !== '[object Undefined]') && 
 					(Object.prototype.toString.call(displayUnits) !== '[object Undefined]') &&
+					convertFeatEnable){
 						varValue = WEBHMI.convert(varValue, displayUnits).to(sourceUnits);
 				}
 
@@ -899,6 +908,7 @@ WEBHMI.addVarWriteEvents = function () {
 				// make sure both source and target units are defined
 				if ((Object.prototype.toString.call(sourceUnits) !== '[object Undefined]') && 
 					(Object.prototype.toString.call(displayUnits) !== '[object Undefined]') &&
+					convertFeatEnable){
 						varValue = WEBHMI.convert(varValue, displayUnits).to(sourceUnits);
 				}
 

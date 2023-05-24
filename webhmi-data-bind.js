@@ -558,10 +558,7 @@ WEBHMI.updateInputs = function () {
 					// make sure both source and target units are defined
 					if ((Object.prototype.toString.call(sourceUnits) !== '[object Undefined]') && 
 						(Object.prototype.toString.call(targetUnits) !== '[object Undefined]')){
-							let src = $this.attr('data-source-units');
-							let dest = $this.attr('data-target-units');
-							let dispValue = WEBHMI.convert(varValue, src).to(dest);
-							varValue = dispValue;
+							varValue = WEBHMI.convert(varValue, sourceUnits).to(targetUnits);
 					}
 
 					var fixed = $this.attr('data-fixed');
@@ -861,10 +858,7 @@ WEBHMI.addVarWriteEvents = function () {
 				// make sure both source and target units are defined
 				if ((Object.prototype.toString.call(sourceUnits) !== '[object Undefined]') && 
 					(Object.prototype.toString.call(targetUnits) !== '[object Undefined]')){
-						let src = $this.attr('data-source-units');
-						let dest = $this.attr('data-target-units');
-						let dispValue = WEBHMI.convert(varValue, dest).to(src);
-						varValue = dispValue;
+						varValue = WEBHMI.convert(varValue, targetUnits).to(sourceUnits);
 				}
 
 				var localMachine = window[WEBHMI.getMachineName($this)];
@@ -905,10 +899,7 @@ WEBHMI.addVarWriteEvents = function () {
 				// make sure both source and target units are defined
 				if ((Object.prototype.toString.call(sourceUnits) !== '[object Undefined]') && 
 					(Object.prototype.toString.call(targetUnits) !== '[object Undefined]')){
-						let src = $this.attr('data-source-units');
-						let dest = $this.attr('data-target-units');
-						let dispValue = WEBHMI.convert(varValue, dest).to(src);
-						varValue = dispValue;
+						varValue = WEBHMI.convert(varValue, targetUnits).to(sourceUnits);
 				}
 
 				var localMachine = window[WEBHMI.getMachineName($this)];

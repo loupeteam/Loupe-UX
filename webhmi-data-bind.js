@@ -18,6 +18,7 @@ WEBHMI.isNumeric = isNumeric
 let convertFeatEnable = false;
 if (typeof convert === 'undefined'){
 	console.log('Convert library not defined in index.html and will be disabled')
+	console.log('Inclusion Example: <script src="../../../../../../Loupe/webHMI/convert.prod.js"></script>')
 }else{
 	WEBHMI.convert = convert.convert
 	convertFeatEnable = true;

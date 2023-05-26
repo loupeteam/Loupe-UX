@@ -624,7 +624,7 @@ WEBHMI.updateInputs = function () {
 						varValue = ' ' + varValue;
 					}
 
-					$this.html(varValue + unitText);
+					$this.html(varValue + ' ' + unitText);
 					$this.val(parseFloat(varValue));
 
 				}

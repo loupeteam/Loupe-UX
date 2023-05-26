@@ -587,11 +587,9 @@ WEBHMI.updateInputs = function () {
 										WEBHMI.convert(1, sourceDenominatorUnits).to(displayDenominatorUnits);
 						}
 						// divisor in one element but not the other so warning
-						else if ($this.attr('data-complex-unit-warning') != '1') {
-							console.warn('Issue converting the complex units ' + sourceUnits + ' to ' + 
-								displayUnits + '. The data-var-name for element is <' + $this.attr('data-var-name') + 
-								'>. For complex units, a "/" is required in both data-source-units and data-display-units.');
-							$this.attr('data-complex-unit-warning', '1');
+						else if (+$this.attr('data-complex-unit-warning') != 1) {
+							console.warn(`Issue converting the complex units ${sourceUnits} to ${displayUnits}. The data-var-name for element is <${$this.attr('data-var-name')}>. For complex units, a "/" is required in both data-source-units and data-display-units.`);
+							$this.attr('data-complex-unit-warning', 1);
 						}
 					}
 
@@ -914,9 +912,7 @@ WEBHMI.addVarWriteEvents = function () {
 					}
 					// divisor in one element but not the other so warning
 					else if ($this.attr('data-complex-unit-warning') != '1') {
-						console.warn('Issue converting the complex units ' + sourceUnits + ' to ' + 
-							displayUnits + '. The data-var-name for element is <' + $this.attr('data-var-name') + 
-							'>. For complex units, a "/" is required in both data-source-units and data-display-units.');
+						cconsole.warn(`Issue converting the complex units ${sourceUnits} to ${displayUnits}. The data-var-name for element is <${$this.attr('data-var-name')}>. For complex units, a "/" is required in both data-source-units and data-display-units.`);
 						$this.attr('data-complex-unit-warning', '1');
 					}
 				}
@@ -980,9 +976,7 @@ WEBHMI.addVarWriteEvents = function () {
 					}
 					// divisor in one element but not the other so warning
 					else if ($this.attr('data-complex-unit-warning') != '1') {
-						console.warn('Issue converting the complex units ' + sourceUnits + ' to ' + 
-							displayUnits + '. The data-var-name for element is <' + $this.attr('data-var-name') + 
-							'>. For complex units, a "/" is required in both data-source-units and data-display-units.');
+						console.warn(`Issue converting the complex units ${sourceUnits} to ${displayUnits}. The data-var-name for element is <${$this.attr('data-var-name')}>. For complex units, a "/" is required in both data-source-units and data-display-units.`);
 						$this.attr('data-complex-unit-warning', '1');
 					}
 				}

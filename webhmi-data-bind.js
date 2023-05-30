@@ -569,22 +569,18 @@ WEBHMI.updateInputs = function () {
 						(Object.prototype.toString.call(displayUnits) !== '[object Undefined]') &&
 						convertFeatEnable){
 						
-						// search for divisor symbol in elements
-						let sourceDivisorPosition = sourceUnits.search('/');
-						let displayDivisorPosition = displayUnits.search('/');
-
+						// split the units into string arrays
+						let sourceUnitsSplit = sourceUnits.split('/');
+						let displayUnitsSplit = displayUnits.split('/');
+					
 						// no divisor in either element so convert as normal
-						if ((sourceDivisorPosition == -1) && (displayDivisorPosition == -1)){
-							varValue = WEBHMI.convert(varValue, sourceUnits).to(displayUnits);
+						if ((sourceUnitsSplit.length == 1) && (displayUnitsSplit.length == 1)){
+							varValue = WEBHMI.convert(varValue, sourceUnitsSplit[0]).to(displayUnitsSplit[0]);
 						}
 						// divisor in both elements so do dimentional analysis
-						else if((sourceDivisorPosition != -1) && (displayDivisorPosition != -1)){
-							let sourceNumeratorUnits = sourceUnits.slice(0,sourceDivisorPosition);
-							let sourceDenominatorUnits = sourceUnits.slice(sourceDivisorPosition+1);
-							let displayNumeratorUnits = displayUnits.slice(0,displayDivisorPosition);
-							let displayDenominatorUnits = displayUnits.slice(displayDivisorPosition+1);
-							varValue = WEBHMI.convert(varValue, sourceNumeratorUnits).to(displayNumeratorUnits) /
-										WEBHMI.convert(1, sourceDenominatorUnits).to(displayDenominatorUnits);
+						else if ((sourceUnitsSplit.length == 2) && (displayUnitsSplit.length == 2)){
+							varValue = WEBHMI.convert(varValue, sourceUnitsSplit[0]).to(displayUnitsSplit[0]) /
+						 				WEBHMI.convert(1, sourceUnitsSplit[1]).to(displayUnitsSplit[1]);
 						}
 						// divisor in one element but not the other so warning
 						else if (+$this.attr('data-complex-unit-warning') != 1) {
@@ -893,27 +889,23 @@ WEBHMI.addVarWriteEvents = function () {
 					(Object.prototype.toString.call(displayUnits) !== '[object Undefined]') &&
 					convertFeatEnable){
 				
-					// search for divisor symbol in elements
-					let sourceDivisorPosition = sourceUnits.search('/');
-					let displayDivisorPosition = displayUnits.search('/');
+					// split the units into string array
+					let sourceUnitsSplit = sourceUnits.split('/');
+					let displayUnitsSplit = displayUnits.split('/');
 
 					// no divisor in either element so convert as normal
-					if ((sourceDivisorPosition == -1) && (displayDivisorPosition == -1)){
-						varValue = WEBHMI.convert(varValue, displayUnits).to(sourceUnits);
+					if ((sourceUnitsSplit.length == 1) && (displayUnitsSplit.length == 1)){
+						varValue = WEBHMI.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]);
 					}
 					// divisor in both elements so do dimentional analysis
-					else if((sourceDivisorPosition != -1) && (displayDivisorPosition != -1)){
-						let sourceNumeratorUnits = sourceUnits.slice(0,sourceDivisorPosition);
-						let sourceDenominatorUnits = sourceUnits.slice(sourceDivisorPosition+1);
-						let displayNumeratorUnits = displayUnits.slice(0,displayDivisorPosition);
-						let displayDenominatorUnits = displayUnits.slice(displayDivisorPosition+1);
-						varValue = WEBHMI.convert(varValue, displayNumeratorUnits).to(sourceNumeratorUnits) /
-									WEBHMI.convert(1, displayDenominatorUnits).to(sourceDenominatorUnits);
+					else if ((sourceUnitsSplit.length == 2) && (displayUnitsSplit.length == 2)){
+						varValue = WEBHMI.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]) /
+									WEBHMI.convert(1, displayUnitsSplit[1]).to(sourceUnitsSplit[1]);
 					}
 					// divisor in one element but not the other so warning
-					else if ($this.attr('data-complex-unit-warning') != '1') {
-						cconsole.warn(`Issue converting the complex units ${sourceUnits} to ${displayUnits}. The data-var-name for element is <${$this.attr('data-var-name')}>. For complex units, a "/" is required in both data-source-units and data-display-units.`);
-						$this.attr('data-complex-unit-warning', '1');
+					else if (+$this.attr('data-complex-unit-warning') != 1) {
+						console.warn(`Issue converting the complex units ${sourceUnits} to ${displayUnits}. The data-var-name for element is <${$this.attr('data-var-name')}>. For complex units, a "/" is required in both data-source-units and data-display-units.`);
+						$this.attr('data-complex-unit-warning', 1);
 					}
 				}
 
@@ -957,27 +949,23 @@ WEBHMI.addVarWriteEvents = function () {
 					(Object.prototype.toString.call(displayUnits) !== '[object Undefined]') &&
 					convertFeatEnable){
 				
-					// search for divisor symbol in elements
-					let sourceDivisorPosition = sourceUnits.search('/');
-					let displayDivisorPosition = displayUnits.search('/');
+					// split the units into string array
+					let sourceUnitsSplit = sourceUnits.split('/');
+					let displayUnitsSplit = displayUnits.split('/');
 
 					// no divisor in either element so convert as normal
-					if ((sourceDivisorPosition == -1) && (displayDivisorPosition == -1)){
-						varValue = WEBHMI.convert(varValue, displayUnits).to(sourceUnits);
+					if ((sourceUnitsSplit.length == 1) && (displayUnitsSplit.length == 1)){
+						varValue = WEBHMI.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]);
 					}
 					// divisor in both elements so do dimentional analysis
-					else if((sourceDivisorPosition != -1) && (displayDivisorPosition != -1)){
-						let sourceNumeratorUnits = sourceUnits.slice(0,sourceDivisorPosition);
-						let sourceDenominatorUnits = sourceUnits.slice(sourceDivisorPosition+1);
-						let displayNumeratorUnits = displayUnits.slice(0,displayDivisorPosition);
-						let displayDenominatorUnits = displayUnits.slice(displayDivisorPosition+1);
-						varValue = WEBHMI.convert(varValue, displayNumeratorUnits).to(sourceNumeratorUnits) /
-									WEBHMI.convert(1, displayDenominatorUnits).to(sourceDenominatorUnits);
+					else if ((sourceUnitsSplit.length == 2) && (displayUnitsSplit.length == 2)){
+						varValue = WEBHMI.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]) /
+									WEBHMI.convert(1, displayUnitsSplit[1]).to(sourceUnitsSplit[1]);
 					}
 					// divisor in one element but not the other so warning
-					else if ($this.attr('data-complex-unit-warning') != '1') {
+					else if (+$this.attr('data-complex-unit-warning') != 1) {
 						console.warn(`Issue converting the complex units ${sourceUnits} to ${displayUnits}. The data-var-name for element is <${$this.attr('data-var-name')}>. For complex units, a "/" is required in both data-source-units and data-display-units.`);
-						$this.attr('data-complex-unit-warning', '1');
+						$this.attr('data-complex-unit-warning', 1);
 					}
 				}
 

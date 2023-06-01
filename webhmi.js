@@ -1070,10 +1070,10 @@ WEBHMI.Machine = function (options) {
 // Machine()
 
 
-// Local Machine
+// HMI (Local Machine)
 //---------------------------------------------
 
-// Compose Local Machine update function from list of all custom callbacks
+// Compose HMI data update function from list of all custom callbacks
 WEBHMI.localDataCallbacks = [];
 
 // Execute list of custom callbacks
@@ -1096,7 +1096,7 @@ WEBHMI.updateLocalData = function () {
 
 };
 
-// Local Data Machine constructor
+// HMI (Local Machine) constructor
 WEBHMI.HMI = function (...dataCallbacks) {
 
 	// add custom callback[s] to list of all local machine callbacks

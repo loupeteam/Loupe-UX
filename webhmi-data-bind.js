@@ -7,7 +7,7 @@ if (typeof WEBHMI === 'undefined') {
 	throw new Error('WEBHMI data binding requires WEBHMI core');
 }
 
-WEBHMI.dataBindVersion = '1.3.2';
+WEBHMI.dataBindVersion = '1.4.0-rc';
 
 // Check for being a 'number'
 function isNumeric (obj) {
@@ -989,6 +989,8 @@ WEBHMI.updateHMI = function () {
 	WEBHMI.updateTabs();
 	WEBHMI.updateHide();
 	WEBHMI.updateLock();
+	// run custom callbacks last so that machine data is up to date for references in user callbacks
+	WEBHMI.updateLocalData();
 }
 
 WEBHMI.updateBindings = function () {

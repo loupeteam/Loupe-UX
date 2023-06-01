@@ -2,11 +2,11 @@
 // Copyright 2020 Loupe
 //------------------------------------------------------------------------------
 
-import jQuery from 'jquery'
+// import jQuery from 'jquery' Why do we use import?
 
 // Use uppercase namespace
 var WEBHMI = {
-	version: '1.3.1'
+	version: '1.4.0-rc'
 };
 
 // export default WEBHMI
@@ -1060,12 +1060,91 @@ WEBHMI.Machine = function (options) {
 	if (settings.protocol.toLowerCase() === 'http') {
 		// DEPRECATED. WILL NOT FUNCTION.
 		thisMachine.connection = new HttpConnection(thisMachine, settings);
+	} else if (settings.protocol.toLowerCase() === 'none') {
+		// no connection
 	} else {
 		thisMachine.connection = new WebSocketConnection(thisMachine, settings);
 	}
 
 };
 // Machine()
+
+
+// Local Machine
+//---------------------------------------------
+
+// Compose Local Machine update function from list of all custom callbacks
+WEBHMI.localDataCallbacks = [];
+
+// Execute list of custom callbacks
+// Used by data-binding cyclic update loop
+WEBHMI.updateLocalData = function () {
+
+	this.localDataCallbacks.forEach( function (cb) {
+		
+		try {
+
+			cb();
+
+		} catch (err) {
+
+			console.error("HMI custom data callback failed - " + err.message);
+
+		}
+
+	});
+
+};
+
+// Local Data Machine constructor
+WEBHMI.HMI = function (...dataCallbacks) {
+
+	// add custom callback[s] to list of all local machine callbacks
+	WEBHMI.localDataCallbacks.push(...dataCallbacks);
+
+	var machineOptions = {
+		protocol: 'none',
+		port: 0,
+		ipAddress: '',
+		maxReconnectCount: 0 
+	  };
+	// use Machine constructor with this scope then override some functions (fancy)
+	WEBHMI.Machine.call(this, machineOptions);
+
+	this.writeVariable = function (variableName, setValue, successCallback) {
+
+		// Add the object to the write context, being careful to clone objects and not point to already existing objects
+		var tempObj = {};
+		this.value.call(tempObj, variableName, setValue);
+		WEBHMI.extend(true, this, tempObj);
+
+		// don't register callback, just call it immediately because there's no comms or anything
+		if (successCallback) {
+			setTimeout(successCallback, 0);
+		}
+
+	}
+
+	this.readVariable = this.initCyclicRead = function (variableName, successCallback) {
+
+		if (variableName) {
+			
+			// add variable if it doesn't exist yet
+			if ( this.value.call(this, variableName) === undefined) {
+				this.writeVariable(variableName, 'undefined');
+			}
+
+		}
+
+		// don't register callback, just call it immediately because there's no comms or anything
+		if (successCallback) {
+			setTimeout(successCallback, 0);
+		}
+
+	}
+
+ };
+// HMI()
 
 
 // Auxiliary functions

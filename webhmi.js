@@ -18,6 +18,8 @@ if (typeof define === 'function' && define.amd) {
 	module.exports = WEBHMI;
 }
 
+var jQueryImport = jQuery;
+
 // jQuery polyfills - Later
 if (typeof jQuery === 'undefined') {
 
@@ -25,21 +27,17 @@ if (typeof jQuery === 'undefined') {
 		
 		// appease jenkins if possible
 		// jest runs tests in a node environment without the wrapping app that "includes" jQuery
-		const jQuery = require('jquery');
-
-		WEBHMI.extend = jQuery.extend;
-		WEBHMI.isEmptyObject = jQuery.isEmptyObject;
-		WEBHMI.each = jQuery.each;
+		jQueryImport = require('jquery');
 
 	} catch {
 		throw new Error('Polyfill not done! Get jQuery!');
 	}
 
-} else {
-	WEBHMI.extend = jQuery.extend;
-	WEBHMI.isEmptyObject = jQuery.isEmptyObject;
-	WEBHMI.each = jQuery.each;
 }
+
+WEBHMI.extend = jQueryImport.extend;
+WEBHMI.isEmptyObject = jQueryImport.isEmptyObject;
+WEBHMI.each = jQueryImport.each;
 
 /**
  * The complete machine-options.

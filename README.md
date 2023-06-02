@@ -3,7 +3,9 @@
 Documentation can be found at https://loupeteam.github.io/Sandbox/libraries/webhmi.html.
 
 ## Revision
-- 1.4.0 - Add support for databinding to hmi-side data
+- 1.4.0 - Add unit conversion feature for webhmi-num-value using
+		https://convert.js.org/ library
+		Add support for databinding to hmi-side data
 	   	Add user levels
 - 1.3.1 - Fix missing write callbacks for root variables
 		Fix checkbox behavior to reset var when unchecked

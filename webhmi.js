@@ -2,8 +2,6 @@
 // Copyright 2020 Loupe
 //------------------------------------------------------------------------------
 
-// import jQuery from 'jquery' Why do we use import?
-
 // Use uppercase namespace
 var WEBHMI = {
 	version: '1.4.0-rc'
@@ -22,7 +20,19 @@ if (typeof define === 'function' && define.amd) {
 
 // jQuery polyfills - Later
 if (typeof jQuery === 'undefined') {
-	throw new Error('Polyfill not done! Get jQuery!');
+
+	try {
+		
+		const jQuery = require('jquery');
+
+		WEBHMI.extend = jQuery.extend;
+		WEBHMI.isEmptyObject = jQuery.isEmptyObject;
+		WEBHMI.each = jQuery.each;
+
+	} catch {
+		throw new Error('Polyfill not done! Get jQuery!');
+	}
+
 } else {
 	WEBHMI.extend = jQuery.extend;
 	WEBHMI.isEmptyObject = jQuery.isEmptyObject;

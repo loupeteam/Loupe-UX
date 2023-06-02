@@ -980,6 +980,7 @@ WEBHMI.queryDom = function () {
 };
 
 WEBHMI.updateHMI = function () {
+	WEBHMI.updateLocalData(); // run custom callbacks first so that local data is up-to-date for our element updates
 	WEBHMI.checkVisibility(); // FORCES LAYOUT REFLOW
 	WEBHMI.trigger("update-hmi");
 	WEBHMI.updateInputs();
@@ -989,8 +990,6 @@ WEBHMI.updateHMI = function () {
 	WEBHMI.updateTabs();
 	WEBHMI.updateHide();
 	WEBHMI.updateLock();
-	// run custom callbacks last so that machine data is up to date for references in user callbacks
-	WEBHMI.updateLocalData();
 }
 
 WEBHMI.updateBindings = function () {

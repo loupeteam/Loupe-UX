@@ -7,7 +7,7 @@ if (typeof WEBHMI === 'undefined') {
 	throw new Error('WEBHMI data binding requires WEBHMI core');
 }
 
-WEBHMI.dataBindVersion = '1.3.0';
+WEBHMI.dataBindVersion = '1.4.0';
 
 // Check for being a 'number'
 function isNumeric (obj) {
@@ -15,6 +15,16 @@ function isNumeric (obj) {
 }
 
 WEBHMI.isNumeric = isNumeric
+
+// Make sure the convert library is included
+let convertFeatEnable = false;
+if ((typeof convert === 'undefined') || (typeof convert.convert !== 'function')){
+	console.warn('Convert library not defined in index.html and will be disabled')
+	console.warn('Inclusion Example: <script src="webHMI/convert.prod.js"></script>')
+}else{
+	WEBHMI.convert = convert.convert
+	convertFeatEnable = true;
+}
 
 // BOOLify something
 function isTrue (value) {
@@ -192,6 +202,14 @@ WEBHMI.getLockSetValue = function ($element) {
 	return value;
 };
 
+WEBHMI.getUserLevelShow = function ($element) {
+	return $element.attr('min-user-level-show');
+};
+
+WEBHMI.getUserLevelUnlock = function ($element) {
+	return $element.attr('min-user-level-unlock');
+};
+
 WEBHMI.getRange = function ($element) {
 	var value = $element.attr('data-range');
 	if (value === undefined) {
@@ -257,6 +275,15 @@ WEBHMI.getLockValue = function ($element) {
 	return varValue;
 
 }
+
+WEBHMI.getUserLevel = function ($element) {
+
+	//var localMachine = window[WEBHMI.getMachineName($element)];
+	var localMachine = WEBHMI.getMachine($element); // NOTE: Try this here before migrating everything else...
+	
+	return localMachine.getUserLevel(); // Handles everything we need it to
+
+}
 // NOTE: What is the point of this function? I guess it will init things that are not already in the list, but that is a funny name if that is the point.
 WEBHMI.getCyclicReads = function () {
 	$("[data-var-name]").each(function (index, element) { 
@@ -302,8 +329,7 @@ WEBHMI.updateLEDs = function () {
 
 // find hide/show elems
 WEBHMI.queryHide = function () {
-	WEBHMI.elems.hide = Array.prototype.slice.call(document.querySelectorAll('.webhmi-hide'));
-	WEBHMI.elems.show = Array.prototype.slice.call(document.querySelectorAll('.webhmi-show'));
+	WEBHMI.elems.hide = Array.prototype.slice.call(document.querySelectorAll('.webhmi-hide, .webhmi-show, [min-user-level-show]'));
 }
 
 WEBHMI.updateHide = function () {
@@ -311,44 +337,37 @@ WEBHMI.updateHide = function () {
 	WEBHMI.elems.hide.forEach(function (element) {
 
 		const $this = $(element);
+		
+		const hasHideUserLevel = ($this.attr('min-user-level-show') !== undefined);
+		const hasHide = $this.hasClass('webhmi-hide');
+		const hasShow = $this.hasClass('webhmi-show');
 
 		const varValue = WEBHMI.getHideValue($this);
-		if (!isEqual($this.attr('data-machine-value-hide'), varValue)) {
-			$this.attr('data-machine-value-hide', varValue)
+		const userLevel = WEBHMI.getUserLevel($this);
 
-			const setValue = WEBHMI.getHideSetValue($this);
+		if (((hasHide || hasShow) && !isEqual($this.attr('data-machine-value-hide'), varValue)) || (hasHideUserLevel && !isEqual($this.attr('data-machine-value-user-level-show'), userLevel))) {
+		
+			if(hasHide || hasShow) $this.attr('data-machine-value-hide', varValue);
+			if(hasHideUserLevel) $this.attr('data-machine-value-user-level-show', userLevel);
 
-			if (isEqual(varValue, setValue)) {
+			const setValue = WEBHMI.getHideSetValue($this); // elements that only have user level will get data-hide-set here; this is fine
+			const userLevelShow = WEBHMI.getUserLevelShow($this);
+
+			if ((hasHide && isEqual(varValue, setValue)) || (hasShow && !isEqual(varValue, setValue)) || (hasHideUserLevel && (userLevel < userLevelShow))) {
 				$this.addClass(WEBHMI.getHideTrue($this));
 			} else {
 				$this.removeClass(WEBHMI.getHideTrue($this));
 			}
+
 		}
+
 	})
-	
-	WEBHMI.elems.show.forEach(function (element) {
 
-		const $this = $(element);
-
-		const varValue = WEBHMI.getHideValue($this);
-		if (!isEqual($this.attr('data-machine-value-show'), varValue)) {
-			$this.attr('data-machine-value-show', varValue)
-
-			const setValue = WEBHMI.getHideSetValue($this);
-
-			if (isEqual(varValue, setValue)) {
-				$this.removeClass(WEBHMI.getHideTrue($this));
-			} else {
-				$this.addClass(WEBHMI.getHideTrue($this));
-			}
-		}
-	})	
 }
 
 // find lock/unlock elems
 WEBHMI.queryLock = function () {
-	WEBHMI.elems.lock = Array.prototype.slice.call(document.querySelectorAll('.webhmi-lock'));
-	WEBHMI.elems.unlock = Array.prototype.slice.call(document.querySelectorAll('.webhmi-unlock'));
+	WEBHMI.elems.lock = Array.prototype.slice.call(document.querySelectorAll('.webhmi-lock, .webhmi-unlock, [min-user-level-unlock]'));
 }
 
 WEBHMI.updateLock = function () {
@@ -356,39 +375,34 @@ WEBHMI.updateLock = function () {
 	WEBHMI.elems.lock.forEach(function (element) {
 
 		const $this = $(element);
-	
-		const varValue = WEBHMI.getLockValue($this);
-		
-		if (!isEqual($this.attr('data-machine-value-lock'), varValue)) {
-			$this.attr('data-machine-value-lock', varValue)
-			const setValue = WEBHMI.getLockSetValue($this);
 
-			if (isEqual(varValue, setValue)) {
+		const hasLockUserLevel = ($this.attr('min-user-level-unlock') !== undefined);
+		const hasLock = $this.hasClass('webhmi-lock');
+		const hasUnlock = $this.hasClass('webhmi-unlock');
+
+		const varValue = WEBHMI.getLockValue($this);
+		const userLevel = WEBHMI.getUserLevel($this);
+
+		if (((hasLock || hasUnlock) && !isEqual($this.attr('data-machine-value-lock'), varValue)) || (hasLockUserLevel && !isEqual($this.attr('data-machine-value-user-level-unlock'), userLevel))) {
+		
+			if(hasLock || hasUnlock) $this.attr('data-machine-value-lock', varValue);
+			if(hasLockUserLevel) $this.attr('data-machine-value-user-level-unlock', userLevel);
+
+			const setValue = WEBHMI.getLockSetValue($this); // elements that only have user level will get data-lock-set here; this is fine
+			const userLevelUnlock = WEBHMI.getUserLevelUnlock($this);
+
+			if ((hasLock && isEqual(varValue, setValue)) || (hasUnlock && !isEqual(varValue, setValue)) || (hasLockUserLevel && (userLevel < userLevelUnlock))) {
 				$this.addClass(WEBHMI.getLockTrue($this));
 				$this.prop('disabled', true);
 			} else {
 				$this.removeClass(WEBHMI.getLockTrue($this));
 				$this.prop('disabled', false);
 			}
+
 		}
+
 	})
-	WEBHMI.elems.unlock.forEach(function (element) {
-
-		const $this = $(element);
-
-		const varValue = WEBHMI.getLockValue($this);
-		if (!isEqual($this.attr('data-machine-value-unlock'), varValue)) {
-			$this.attr('data-machine-value-unlock', varValue)
-		
-			const setValue = WEBHMI.getLockSetValue($this);
-
-			if (isEqual(varValue, setValue)) {
-				$this.removeClass(WEBHMI.getLockTrue($this));
-			} else {
-				$this.addClass(WEBHMI.getLockTrue($this));
-			}
-		}
-	})
+	
 }
 
 // find all toggle btn elems
@@ -546,6 +560,34 @@ WEBHMI.updateInputs = function () {
 					}
 
 					varValue = varValue * unitFactor + unitOffset;
+					
+					var sourceUnits = $this.attr('data-source-units');
+					var displayUnits = $this.attr('data-display-units');
+
+					// make sure both source and target units are defined
+					if ((Object.prototype.toString.call(sourceUnits) !== '[object Undefined]') && 
+						(Object.prototype.toString.call(displayUnits) !== '[object Undefined]') &&
+						convertFeatEnable){
+						
+						// split the units into string arrays
+						let sourceUnitsSplit = sourceUnits.split('/');
+						let displayUnitsSplit = displayUnits.split('/');
+					
+						// no divisor in either element so convert as normal
+						if ((sourceUnitsSplit.length == 1) && (displayUnitsSplit.length == 1)){
+							varValue = WEBHMI.convert(varValue, sourceUnitsSplit[0]).to(displayUnitsSplit[0]);
+						}
+						// divisor in both elements so do dimentional analysis
+						else if ((sourceUnitsSplit.length == 2) && (displayUnitsSplit.length == 2)){
+							varValue = WEBHMI.convert(varValue, sourceUnitsSplit[0]).to(displayUnitsSplit[0]) /
+						 				WEBHMI.convert(1, sourceUnitsSplit[1]).to(displayUnitsSplit[1]);
+						}
+						// divisor in one element but not the other so warning
+						else if (+$this.attr('data-complex-unit-warning') != 1) {
+							console.warn(`Issue converting the complex units ${sourceUnits} to ${displayUnits}. The data-var-name for element is <${$this.attr('data-var-name')}>. For complex units, a "/" is required in both data-source-units and data-display-units.`);
+							$this.attr('data-complex-unit-warning', 1);
+						}
+					}
 
 					var fixed = $this.attr('data-fixed');
 					if (Object.prototype.toString.call(fixed) !== '[object Undefined]') {
@@ -568,12 +610,17 @@ WEBHMI.updateInputs = function () {
 					var unitText = $this.attr('data-unit-text');
 					if (Object.prototype.toString.call(unitText) === '[object Undefined]') {
 						unitText = '';
+						// fallback to target units if none specified
+						if ((Object.prototype.toString.call(displayUnits) !== '[object Undefined]') &&
+							(convertFeatEnable)){
+							unitText = displayUnits;
+						}
 					}
 					if (varValue >= 0) {
 						varValue = ' ' + varValue;
 					}
 
-					$this.html(varValue + unitText);
+					$this.html(varValue + ' ' + unitText);
 					$this.val(parseFloat(varValue));
 
 				}
@@ -590,15 +637,18 @@ WEBHMI.updateInputs = function () {
 		if (!$this.is(":focus")) {
 
 			var varValue = WEBHMI.getValue($this);
-
-			if (!isEqual($this.attr('data-machine-value-text'), varValue)) {
+			var string = varValue
+			if( typeof varValue === 'object' ){
+				string = JSON.stringify(varValue, null, 4)
+			}
+			if (!isEqual($this.attr('data-machine-value-text'), string )) {
 				$this.attr('data-machine-value-text', varValue)
 				if (varValue === false) {
 					$this.html('false');
 					$this.val('false');
 				} else {
-					$this.html(varValue);
-					$this.val(varValue);
+					$this.html(string);
+					$this.val(string);
 				}
 			}
 		}
@@ -804,7 +854,7 @@ WEBHMI.addVarWriteEvents = function () {
 				if ($this.prop('checked')) {
 					localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
 				} else {
-					localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this)); //TODO: This can't be right...
+					localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
 				}
 			}
 		},
@@ -831,6 +881,34 @@ WEBHMI.addVarWriteEvents = function () {
 
 				varValue = (varValue - unitOffset) / unitFactor;
 
+				var sourceUnits = $this.attr('data-source-units');
+				var displayUnits = $this.attr('data-display-units');
+
+				// make sure both source and target units are defined
+				if ((Object.prototype.toString.call(sourceUnits) !== '[object Undefined]') && 
+					(Object.prototype.toString.call(displayUnits) !== '[object Undefined]') &&
+					convertFeatEnable){
+				
+					// split the units into string array
+					let sourceUnitsSplit = sourceUnits.split('/');
+					let displayUnitsSplit = displayUnits.split('/');
+
+					// no divisor in either element so convert as normal
+					if ((sourceUnitsSplit.length == 1) && (displayUnitsSplit.length == 1)){
+						varValue = WEBHMI.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]);
+					}
+					// divisor in both elements so do dimentional analysis
+					else if ((sourceUnitsSplit.length == 2) && (displayUnitsSplit.length == 2)){
+						varValue = WEBHMI.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]) /
+									WEBHMI.convert(1, displayUnitsSplit[1]).to(sourceUnitsSplit[1]);
+					}
+					// divisor in one element but not the other so warning
+					else if (+$this.attr('data-complex-unit-warning') != 1) {
+						console.warn(`Issue converting the complex units ${sourceUnits} to ${displayUnits}. The data-var-name for element is <${$this.attr('data-var-name')}>. For complex units, a "/" is required in both data-source-units and data-display-units.`);
+						$this.attr('data-complex-unit-warning', 1);
+					}
+				}
+
 				var localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), varValue);
 				$this.blur();
@@ -838,7 +916,7 @@ WEBHMI.addVarWriteEvents = function () {
 			}
 
 		},
-		'input.webhmi-num-value');
+		'input.webhmi-num-value, invisible-input.webhmi-num-value');
 	// num-value input
 
 	$(document).on(
@@ -863,6 +941,34 @@ WEBHMI.addVarWriteEvents = function () {
 
 				varValue = (varValue - unitOffset) / unitFactor;
 
+				var sourceUnits = $this.attr('data-source-units');
+				var displayUnits = $this.attr('data-display-units');
+
+				// make sure both source and target units are defined
+				if ((Object.prototype.toString.call(sourceUnits) !== '[object Undefined]') && 
+					(Object.prototype.toString.call(displayUnits) !== '[object Undefined]') &&
+					convertFeatEnable){
+				
+					// split the units into string array
+					let sourceUnitsSplit = sourceUnits.split('/');
+					let displayUnitsSplit = displayUnits.split('/');
+
+					// no divisor in either element so convert as normal
+					if ((sourceUnitsSplit.length == 1) && (displayUnitsSplit.length == 1)){
+						varValue = WEBHMI.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]);
+					}
+					// divisor in both elements so do dimentional analysis
+					else if ((sourceUnitsSplit.length == 2) && (displayUnitsSplit.length == 2)){
+						varValue = WEBHMI.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]) /
+									WEBHMI.convert(1, displayUnitsSplit[1]).to(sourceUnitsSplit[1]);
+					}
+					// divisor in one element but not the other so warning
+					else if (+$this.attr('data-complex-unit-warning') != 1) {
+						console.warn(`Issue converting the complex units ${sourceUnits} to ${displayUnits}. The data-var-name for element is <${$this.attr('data-var-name')}>. For complex units, a "/" is required in both data-source-units and data-display-units.`);
+						$this.attr('data-complex-unit-warning', 1);
+					}
+				}
+
 				var localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), varValue);
 				$this.blur();
@@ -870,7 +976,7 @@ WEBHMI.addVarWriteEvents = function () {
 			}
 
 		},
-		'input.webhmi-num-value.ondrag');
+		'input.webhmi-num-value.ondrag, invisible-input.webhmi-num-value.ondrag');
 	// num-value continuous change
 
 	$(document).on(
@@ -882,7 +988,7 @@ WEBHMI.addVarWriteEvents = function () {
 				localMachine.readVariable(WEBHMI.getVarName($this));
 			}
 		},
-		'input.webhmi-text-value, textarea.webhmi-text-value');
+		'input.webhmi-text-value, invisible-input.webhmi-text-value, textarea.webhmi-text-value');
 	// text-value input or textarea
 
 	$(document).on(
@@ -901,7 +1007,25 @@ WEBHMI.addVarWriteEvents = function () {
 
 WEBHMI.observers = [];
 
-// Declare arrays of webhmi elements 
+/**
+ * Webhmi databinding types
+ * @typedef {Object} DataBinding_types
+ * @property {Element[]} num
+ * @property {Element[]} text
+ * @property {Element[]} textOption
+ * @property {Element[]} dropdown
+ * @property {Element[]} checkbox
+ * @property {Element[]} toggleButton
+ * @property {Element[]} led
+ * @property {Element[]} range
+ * @property {Element[]} tab
+ * @property {Element[]} hide
+ * @property {Element[]} lock
+ */
+
+/** Current webhmi elements in DOM
+ * @type {DataBinding_types}
+ */
 WEBHMI.elems = {
 	num: [], 
 	text: [],
@@ -913,27 +1037,32 @@ WEBHMI.elems = {
 	range: [],
 	tab: [],
 	hide: [],
-	show: [],
-	lock: [],
-	unlock: [] 
+	lock: []
 };
 
+/** Currently visible webhmi elements in DOM
+ * @type {DataBinding_types}
+ */
 WEBHMI.visibleElems = {
 	num: [], 
 	text: [],
+	textOption: [],
 	dropdown: [],
 	checkbox: [],
 	toggleButton: [],
 	led: [],
-	range: []
-}
+	range: [],
+	tab: [],
+	hide: [],
+	lock: [] 
+};
 
 // FORCES LAYOUT REFLOW
 WEBHMI.checkVisibility = function () {
 	// TODO: Don't rebuild array from scratch each call
 	Object.keys(WEBHMI.elems).forEach(function (key) {
 		if (WEBHMI.visibleElems.hasOwnProperty(key)) {
-			WEBHMI.visibleElems[key] = WEBHMI.elems[key].filter(elem => (elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length));
+			WEBHMI.visibleElems[key] = WEBHMI.elems[key].filter(elem => (elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length || (elem.getAttribute('force-hmi-update') == 'true') ));
 		}
 	});
 };
@@ -950,6 +1079,7 @@ WEBHMI.queryDom = function () {
 };
 
 WEBHMI.updateHMI = function () {
+	WEBHMI.updateLocalData(); // run custom callbacks first so that local data is up-to-date for our element updates
 	WEBHMI.checkVisibility(); // FORCES LAYOUT REFLOW
 	WEBHMI.trigger("update-hmi");
 	WEBHMI.updateInputs();
@@ -1100,3 +1230,25 @@ $(document).one({
 		setInterval(WEBHMI.updateHMI, refresh);	
 	}
 });
+
+//This element can be used to catch value changed events on elements that wouldn't normally have an "Input"
+class invisibleInput extends HTMLElement {
+    constructor() {
+        super()
+		this.setAttribute('force-hmi-update',true)
+    }
+    set value( v ){
+        this._value = v
+        this.setAttribute('value', v)
+        let evt = new Event("change", {
+            "bubbles": true,
+            "cancelable": true
+        });
+        this.dispatchEvent(evt);
+    }
+    get value( ){
+        return this._value || 0
+    }
+}
+      
+customElements.define('invisible-input', invisibleInput);

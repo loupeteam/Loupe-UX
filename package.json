@@ -1,0 +1,28 @@
+{
+  "name": "webhmi",
+  "version": "1.4.0",
+  "description": "The Loupe webHMI javascript library provides functionality for implementing a web-based HMI for machines",
+  "main": "webhmi.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loupeteam/webHMI.git"
+  },
+  "author": "sClaiborne",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "bugs": {
+    "url": "https://github.com/loupeteam/webHMI/issues"
+  },
+  "homepage": "https://github.com/loupeteam/webHMI#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/preset-env": "^7.11.5",
+    "babel-jest": "^26.3.0",
+    "jest": "^26.4.2",
+    "jquery": "^3.5.1",
+    "@types/jest": "^26.0.13",
+    "@types/jquery": "^3.5.1"
+  }
+}

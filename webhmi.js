@@ -2,11 +2,9 @@
 // Copyright 2020 Loupe
 //------------------------------------------------------------------------------
 
-// import jQuery from 'jquery'
-
 // Use uppercase namespace
 var WEBHMI = {
-	version: '1.3.1'
+	version: '1.4.0'
 };
 
 // export default WEBHMI
@@ -20,14 +18,28 @@ if (typeof define === 'function' && define.amd) {
 	module.exports = WEBHMI;
 }
 
+var jQueryImport;
+
 // jQuery polyfills - Later
 if (typeof jQuery === 'undefined') {
-	throw new Error('Polyfill not done! Get jQuery!');
+
+	try {
+		
+		// appease jenkins if possible
+		// jest runs tests in a node environment without the wrapping app that "includes" jQuery
+		jQueryImport = require('jquery');
+
+	} catch {
+		throw new Error('Polyfill not done! Get jQuery!');
+	}
+
 } else {
-	WEBHMI.extend = jQuery.extend;
-	WEBHMI.isEmptyObject = jQuery.isEmptyObject;
-	WEBHMI.each = jQuery.each;
+	jQueryImport = jQuery;
 }
+
+WEBHMI.extend = jQueryImport.extend;
+WEBHMI.isEmptyObject = jQueryImport.isEmptyObject;
+WEBHMI.each = jQueryImport.each;
 
 /**
  * The complete machine-options.
@@ -1060,12 +1072,91 @@ WEBHMI.Machine = function (options) {
 	if (settings.protocol.toLowerCase() === 'http') {
 		// DEPRECATED. WILL NOT FUNCTION.
 		thisMachine.connection = new HttpConnection(thisMachine, settings);
+	} else if (settings.protocol.toLowerCase() === 'none') {
+		// no connection
 	} else {
 		thisMachine.connection = new WebSocketConnection(thisMachine, settings);
 	}
 
 };
 // Machine()
+
+
+// HMI (Local Machine)
+//---------------------------------------------
+
+// Compose HMI data update function from list of all custom callbacks
+WEBHMI.localDataCallbacks = [];
+
+// Execute list of custom callbacks
+// Used by data-binding cyclic update loop
+WEBHMI.updateLocalData = function () {
+
+	this.localDataCallbacks.forEach( function (cb) {
+		
+		try {
+
+			cb();
+
+		} catch (err) {
+
+			console.error("HMI custom data callback failed - " + err.message);
+
+		}
+
+	});
+
+};
+
+// HMI (Local Machine) constructor
+WEBHMI.HMI = function (...dataCallbacks) {
+
+	// add custom callback[s] to list of all local machine callbacks
+	WEBHMI.localDataCallbacks.push(...dataCallbacks);
+
+	var machineOptions = {
+		protocol: 'none',
+		port: 0,
+		ipAddress: '',
+		maxReconnectCount: 0 
+	  };
+	// use Machine constructor with this scope then override some functions (fancy)
+	WEBHMI.Machine.call(this, machineOptions);
+
+	this.writeVariable = function (variableName, setValue, successCallback) {
+
+		// Add the object to the write context, being careful to clone objects and not point to already existing objects
+		var tempObj = {};
+		this.value.call(tempObj, variableName, setValue);
+		WEBHMI.extend(true, this, tempObj);
+
+		// don't register callback, just call it immediately because there's no comms or anything
+		if (successCallback) {
+			setTimeout(successCallback, 0);
+		}
+
+	}
+
+	this.readVariable = this.initCyclicRead = function (variableName, successCallback) {
+
+		if (variableName) {
+			
+			// add variable if it doesn't exist yet
+			if ( this.value.call(this, variableName) === undefined) {
+				this.writeVariable(variableName, 'undefined');
+			}
+
+		}
+
+		// don't register callback, just call it immediately because there's no comms or anything
+		if (successCallback) {
+			setTimeout(successCallback, 0);
+		}
+
+	}
+
+ };
+// HMI()
 
 
 // Auxiliary functions

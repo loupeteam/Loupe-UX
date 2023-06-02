@@ -7,7 +7,7 @@ if (typeof WEBHMI === 'undefined') {
 	throw new Error('WEBHMI data binding requires WEBHMI core');
 }
 
-WEBHMI.dataBindVersion = '1.4.0-rc';
+WEBHMI.dataBindVersion = '1.4.0';
 
 // Check for being a 'number'
 function isNumeric (obj) {

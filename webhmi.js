@@ -4,7 +4,7 @@
 
 // Use uppercase namespace
 var WEBHMI = {
-	version: '1.4.0-rc'
+	version: '1.4.0'
 };
 
 // export default WEBHMI
@@ -23,6 +23,8 @@ if (typeof jQuery === 'undefined') {
 
 	try {
 		
+		// appease jenkins if possible
+		// jest runs tests in a node environment without the wrapping app that "includes" jQuery
 		const jQuery = require('jquery');
 
 		WEBHMI.extend = jQuery.extend;

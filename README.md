@@ -3,7 +3,8 @@
 Documentation can be found at https://loupeteam.github.io/Sandbox/libraries/webhmi.html.
 
 ## Revision
-
+- 1.4.0-rc - Add support for databinding to hmi-side data
+	   	Add user levels
 - 1.3.1 - Fix missing write callbacks for root variables
 		Fix checkbox behavior to reset var when unchecked
 		Add invisible input custom element

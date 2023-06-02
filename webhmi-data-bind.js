@@ -16,6 +16,16 @@ function isNumeric (obj) {
 
 WEBHMI.isNumeric = isNumeric
 
+// Make sure the convert library is included
+let convertFeatEnable = false;
+if ((typeof convert === 'undefined') || (typeof convert.convert !== 'function')){
+	console.warn('Convert library not defined in index.html and will be disabled')
+	console.warn('Inclusion Example: <script src="webHMI/convert.prod.js"></script>')
+}else{
+	WEBHMI.convert = convert.convert
+	convertFeatEnable = true;
+}
+
 // BOOLify something
 function isTrue (value) {
 
@@ -550,6 +560,34 @@ WEBHMI.updateInputs = function () {
 					}
 
 					varValue = varValue * unitFactor + unitOffset;
+					
+					var sourceUnits = $this.attr('data-source-units');
+					var displayUnits = $this.attr('data-display-units');
+
+					// make sure both source and target units are defined
+					if ((Object.prototype.toString.call(sourceUnits) !== '[object Undefined]') && 
+						(Object.prototype.toString.call(displayUnits) !== '[object Undefined]') &&
+						convertFeatEnable){
+						
+						// split the units into string arrays
+						let sourceUnitsSplit = sourceUnits.split('/');
+						let displayUnitsSplit = displayUnits.split('/');
+					
+						// no divisor in either element so convert as normal
+						if ((sourceUnitsSplit.length == 1) && (displayUnitsSplit.length == 1)){
+							varValue = WEBHMI.convert(varValue, sourceUnitsSplit[0]).to(displayUnitsSplit[0]);
+						}
+						// divisor in both elements so do dimentional analysis
+						else if ((sourceUnitsSplit.length == 2) && (displayUnitsSplit.length == 2)){
+							varValue = WEBHMI.convert(varValue, sourceUnitsSplit[0]).to(displayUnitsSplit[0]) /
+						 				WEBHMI.convert(1, sourceUnitsSplit[1]).to(displayUnitsSplit[1]);
+						}
+						// divisor in one element but not the other so warning
+						else if (+$this.attr('data-complex-unit-warning') != 1) {
+							console.warn(`Issue converting the complex units ${sourceUnits} to ${displayUnits}. The data-var-name for element is <${$this.attr('data-var-name')}>. For complex units, a "/" is required in both data-source-units and data-display-units.`);
+							$this.attr('data-complex-unit-warning', 1);
+						}
+					}
 
 					var fixed = $this.attr('data-fixed');
 					if (Object.prototype.toString.call(fixed) !== '[object Undefined]') {
@@ -572,12 +610,17 @@ WEBHMI.updateInputs = function () {
 					var unitText = $this.attr('data-unit-text');
 					if (Object.prototype.toString.call(unitText) === '[object Undefined]') {
 						unitText = '';
+						// fallback to target units if none specified
+						if ((Object.prototype.toString.call(displayUnits) !== '[object Undefined]') &&
+							(convertFeatEnable)){
+							unitText = displayUnits;
+						}
 					}
 					if (varValue >= 0) {
 						varValue = ' ' + varValue;
 					}
 
-					$this.html(varValue + unitText);
+					$this.html(varValue + ' ' + unitText);
 					$this.val(parseFloat(varValue));
 
 				}
@@ -838,6 +881,34 @@ WEBHMI.addVarWriteEvents = function () {
 
 				varValue = (varValue - unitOffset) / unitFactor;
 
+				var sourceUnits = $this.attr('data-source-units');
+				var displayUnits = $this.attr('data-display-units');
+
+				// make sure both source and target units are defined
+				if ((Object.prototype.toString.call(sourceUnits) !== '[object Undefined]') && 
+					(Object.prototype.toString.call(displayUnits) !== '[object Undefined]') &&
+					convertFeatEnable){
+				
+					// split the units into string array
+					let sourceUnitsSplit = sourceUnits.split('/');
+					let displayUnitsSplit = displayUnits.split('/');
+
+					// no divisor in either element so convert as normal
+					if ((sourceUnitsSplit.length == 1) && (displayUnitsSplit.length == 1)){
+						varValue = WEBHMI.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]);
+					}
+					// divisor in both elements so do dimentional analysis
+					else if ((sourceUnitsSplit.length == 2) && (displayUnitsSplit.length == 2)){
+						varValue = WEBHMI.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]) /
+									WEBHMI.convert(1, displayUnitsSplit[1]).to(sourceUnitsSplit[1]);
+					}
+					// divisor in one element but not the other so warning
+					else if (+$this.attr('data-complex-unit-warning') != 1) {
+						console.warn(`Issue converting the complex units ${sourceUnits} to ${displayUnits}. The data-var-name for element is <${$this.attr('data-var-name')}>. For complex units, a "/" is required in both data-source-units and data-display-units.`);
+						$this.attr('data-complex-unit-warning', 1);
+					}
+				}
+
 				var localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), varValue);
 				$this.blur();
@@ -869,6 +940,34 @@ WEBHMI.addVarWriteEvents = function () {
 				}
 
 				varValue = (varValue - unitOffset) / unitFactor;
+
+				var sourceUnits = $this.attr('data-source-units');
+				var displayUnits = $this.attr('data-display-units');
+
+				// make sure both source and target units are defined
+				if ((Object.prototype.toString.call(sourceUnits) !== '[object Undefined]') && 
+					(Object.prototype.toString.call(displayUnits) !== '[object Undefined]') &&
+					convertFeatEnable){
+				
+					// split the units into string array
+					let sourceUnitsSplit = sourceUnits.split('/');
+					let displayUnitsSplit = displayUnits.split('/');
+
+					// no divisor in either element so convert as normal
+					if ((sourceUnitsSplit.length == 1) && (displayUnitsSplit.length == 1)){
+						varValue = WEBHMI.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]);
+					}
+					// divisor in both elements so do dimentional analysis
+					else if ((sourceUnitsSplit.length == 2) && (displayUnitsSplit.length == 2)){
+						varValue = WEBHMI.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]) /
+									WEBHMI.convert(1, displayUnitsSplit[1]).to(sourceUnitsSplit[1]);
+					}
+					// divisor in one element but not the other so warning
+					else if (+$this.attr('data-complex-unit-warning') != 1) {
+						console.warn(`Issue converting the complex units ${sourceUnits} to ${displayUnits}. The data-var-name for element is <${$this.attr('data-var-name')}>. For complex units, a "/" is required in both data-source-units and data-display-units.`);
+						$this.attr('data-complex-unit-warning', 1);
+					}
+				}
 
 				var localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), varValue);

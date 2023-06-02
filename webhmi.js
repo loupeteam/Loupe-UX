@@ -18,7 +18,7 @@ if (typeof define === 'function' && define.amd) {
 	module.exports = WEBHMI;
 }
 
-var jQueryImport = jQuery;
+var jQueryImport;
 
 // jQuery polyfills - Later
 if (typeof jQuery === 'undefined') {
@@ -33,6 +33,8 @@ if (typeof jQuery === 'undefined') {
 		throw new Error('Polyfill not done! Get jQuery!');
 	}
 
+} else {
+	jQueryImport = jQuery;
 }
 
 WEBHMI.extend = jQueryImport.extend;

@@ -58,8 +58,12 @@ $(document).on({
             menu.append(new MenuItem({
                 label: 'Paste',
                 click() {
-
-                    document.execCommand('paste');
+                    if (navigator.clipboard) {
+                        navigator.clipboard.readText();
+                    } 
+                    else {
+                        document.execCommand('paste');
+                    }
                 }
             }))
             menu.append(new MenuItem({
@@ -92,8 +96,12 @@ $(document).on({
             menu.append(new MenuItem({
                 label: 'Paste',
                 click() {
-
-                    document.execCommand('paste');
+                    if (navigator.clipboard) {
+                        navigator.clipboard.readText();
+                    } 
+                    else {
+                        document.execCommand('paste');
+                    }
                 }
             }))
             menu.popup(remote.getCurrentWindow())

@@ -1,0 +1,19 @@
+{
+  "name": "@loupeteam/errorlib",
+  "version": "0.23.3",
+  "description": "Loupe's errorlib library for Automation Runtime",
+  "homepage": "https://loupeteam.github.io/Sandbox/libraries/errorlib.html",
+  "scripts": {},
+  "keywords": [],
+  "author": "Loupe",
+  "license": "Loupe Software License Agreement",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loupeteam/errorlib"
+  },
+  "dependencies": {
+    "@loupeteam/hmitools": ">=0.11.4 <=0.11.9",
+    "@loupeteam/stringext": ">=0.14.1 <=0.14.9",
+    "@loupeteam/logthat": ">=0.5.0 <=0.5.9"
+  }
+}

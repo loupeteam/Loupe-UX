@@ -1,0 +1,11 @@
+VAR
+	i : UINT;
+	jsonCache : ARRAY[0..MAI_CLIENTS] OF jsonCache_typ;
+END_VAR
+VAR CONSTANT
+	MAI_CLIENTS : USINT := MAX_CLIENTS-1;
+	MAX_CLIENTS : USINT := 2;
+END_VAR
+VAR
+	oldClientInfo : ARRAY[0..JSON_MAI_CLIENTS] OF jsonWSS_client_info_typ;
+END_VAR

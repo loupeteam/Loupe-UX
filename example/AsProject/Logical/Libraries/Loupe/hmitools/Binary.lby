@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Library xmlns="http://br-automation.co.at/AS/Library" Version="0.11.4" SubType="Binary">
+  <Files>
+    <File>HMITools.html</File>
+    <File>HMITools.md</File>
+    <File>VersionHistory.txt</File>
+    <File>Coffee_Machine.png</File>
+    <File Description="Exported data types">HMITools.typ</File>
+    <File Description="Exported constants">HMITools.var</File>
+    <File Description="Exported functions and function blocks">HMITools.fun</File>
+    <File Description="Exported data types">HMI_Basic.typ</File>
+    <File Description="Exported constants">HMI_Basic.var</File>
+    <File Description="Exported data types">HMI_File_Browse.typ</File>
+    <File Description="Exported data types">LogViewer.typ</File>
+    <File Description="Local data types">EditorControl.typ</File>
+    <File Description="Exported data types">HMI_Trend.typ</File>
+    <File Description="Exported data types">RecipeMgr.typ</File>
+    <File Description="Local data types">Updater.typ</File>
+  </Files>
+  <Dependencies>
+    <Dependency ObjectName="FileIO" />
+    <Dependency ObjectName="standard" />
+    <Dependency ObjectName="RingBufLib" FromVersion="0.02.0" />
+    <Dependency ObjectName="AsArLog" />
+    <Dependency ObjectName="LogThat" />
+    <Dependency ObjectName="AsBrStr" />
+    <Dependency ObjectName="StringExt" FromVersion="0.04.0" />
+  </Dependencies>
+</Library>

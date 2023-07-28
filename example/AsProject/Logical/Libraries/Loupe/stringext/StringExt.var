@@ -1,0 +1,14 @@
+(********************************************************************
+ * COPYRIGHT -- Automation Resources Group
+ ********************************************************************
+ * Library: StringExt
+ * File: StringExt.var
+ * Author: David Blackburn
+ * Created: January 26, 2012
+ ********************************************************************
+ * Constants of library StringExt
+ ********************************************************************)
+VAR CONSTANT
+	STREXT_INVALID_CHAR : USINT := 221;
+	STREXT_MAX_UDINT : UDINT := 4294967295;
+END_VAR

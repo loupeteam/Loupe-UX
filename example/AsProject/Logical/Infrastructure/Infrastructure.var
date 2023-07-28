@@ -1,0 +1,25 @@
+(*Constants for number of persisters and permanent memory chunks*)
+VAR CONSTANT
+	NUM_PERSISTERS : USINT := 4;
+	MAI_PERSISTERS : USINT := NUM_PERSISTERS-1;
+END_VAR
+(*Persisters to handle memory management*)
+VAR
+	gSimulation: BOOL;
+	gPersister : ARRAY[0..MAI_PERSISTERS] OF Persistence_typ;
+	gPermBackup : ARRAY[0..MAI_PERSISTERS] OF CSVFileMgr_typ;
+END_VAR
+VAR RETAIN
+	gDataValid : ARRAY[0..MAI_PERSISTERS] OF BOOL;
+END_VAR
+(*Permanent memory chunks*)
+VAR RETAIN
+	gPermHomeData : ARRAY[0..999] OF USINT;
+	gPermAxisPars : ARRAY[0..999] OF USINT;
+	gPermAxisCfgs : ARRAY[0..1999] OF USINT;
+	gPermConfiguration : ARRAY[0..99999] OF USINT;
+END_VAR
+(*Error collector*)
+VAR
+	gErrorCollector : ErrorCollector_typ := (0);
+END_VAR

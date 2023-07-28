@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Library xmlns="http://br-automation.co.at/AS/Library" Version="0.23.3" SubType="Binary">
+  <Files>
+    <File>ErrorLib.html</File>
+    <File>ErrorLib.md</File>
+    <File>ErrorLibOverview.graffle</File>
+    <File>ErrorLibOverview.png</File>
+    <File>VersionHistory.txt</File>
+    <File Description="Exported data types">ErrorLib.typ</File>
+    <File Description="Exported constants">ErrorLib.var</File>
+    <File Description="Exported functions and function blocks">ErrorLib.fun</File>
+    <File Description="Exported data types">ErrorLib_enum.typ</File>
+    <File Description="Exported data types">ErrorCollector.typ</File>
+    <File Description="Exported data types">ErrorCollector_HMI.typ</File>
+  </Files>
+  <Dependencies>
+    <Dependency ObjectName="sys_lib" />
+    <Dependency ObjectName="HMITools" FromVersion="0.11.4" ToVersion="0.11.9" />
+    <Dependency ObjectName="astime" />
+    <Dependency ObjectName="StringExt" FromVersion="0.14.1" ToVersion="0.14.9" />
+    <Dependency ObjectName="LogThat" FromVersion="0.05.0" ToVersion="0.05.9" />
+    <Dependency ObjectName="AsBrStr" />
+  </Dependencies>
+</Library>

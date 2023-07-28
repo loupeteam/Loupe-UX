@@ -1,0 +1,30 @@
+(********************************************************************
+ * COPYRIGHT --  
+ ********************************************************************
+ * Library: OMJSON
+ * File: OMJSON.var
+ * Author: davidblackburn
+ * Created: September 22, 2014
+ ********************************************************************
+ * Constants of library OMJSON
+ ********************************************************************)
+VAR CONSTANT
+	JSON_DEFAULT_SERVERPORT : UINT := 8000;
+	JSON_DEFAULT_BUFFERSIZE : UDINT := 100000;
+	JSON_DEFAULT_MAXJSONOBJECTLENGTH : UDINT := 100000;
+	JSON_DEFAULT_MAXITERATIONS : UDINT := 10000;
+	JSON_DEFAULT_TIMEOUT : UDINT := 30000;
+	JSON_MAX_CLIENTS : UINT := 5;
+	JSON_MAI_CLIENTS : UINT := JSON_MAX_CLIENTS-1;
+	JSON_MAI_STRUCTLEVEL : USINT := 19;
+	JSON_MAI_CACHEVAR : UINT := 400;
+	JSON_MAI_CACHEITEM : UINT := 20000;
+	JSON_STRLEN_ERROR : UINT := 320;
+	JSON_STRLEN_PREFIX : UINT := 400;
+	JSON_STRLEN_SUFFIX : UINT := 20;
+	JSON_STRLEN_IP : UINT := 15;
+	JSON_STRLEN_SERVICENAMEPREFIX : UINT := 20;
+	JSON_STRLEN_WSKEYHEADER : UINT := 18;
+	JSON_STRLEN_WSCONNECTMESSAGE : UINT := 129;
+	JSON_WS_MAGICSTRING : STRING[36] := '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
+END_VAR

@@ -1,0 +1,19 @@
+{
+  "name": "@loupeteam/hmitools",
+  "version": "0.11.4",
+  "description": "Loupe's hmitools library for Automation Runtime",
+  "homepage": "https://loupeteam.github.io/Sandbox/libraries/hmitools.html",
+  "scripts": {},
+  "keywords": [],
+  "author": "Loupe",
+  "license": "Loupe Software License Agreement",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loupeteam/hmitools"
+  },
+  "dependencies": {
+    "@loupeteam/ringbuflib": ">=0.2.0",
+    "@loupeteam/logthat": "*",
+    "@loupeteam/stringext": ">=0.4.0"
+  }
+}

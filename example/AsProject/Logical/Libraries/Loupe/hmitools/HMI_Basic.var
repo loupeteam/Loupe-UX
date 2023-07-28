@@ -1,0 +1,65 @@
+(********************************************************************
+ * COPYRIGHT --  
+ ********************************************************************
+ * Library: HMITypLib
+ * File: HMITypLib.var
+ * Author: David
+ * Created: March 10, 2011
+ ********************************************************************
+ * Constants of library HMITypLib
+ ********************************************************************)
+(*Constants*)
+(*Tabs*)
+VAR CONSTANT
+	HMI_MAI_TABS : USINT := 9;
+	HMI_INVALIDTAB : USINT := 255;
+END_VAR
+(*String lengths*)
+VAR CONSTANT
+	HMI_STRLEN_IN : UINT := 260;
+	HMI_STRLEN_TIME : USINT := 9;
+END_VAR
+(*Locked*)
+VAR CONSTANT
+	HMI_UNLOCKED : BOOL := FALSE;
+	HMI_LOCKED : BOOL := TRUE;
+END_VAR
+(*Visible*)
+VAR CONSTANT
+	HMI_VISIBLE : BOOL := FALSE;
+	HMI_INVISIBLE : BOOL := TRUE;
+END_VAR
+(*Colors*)
+VAR CONSTANT
+	HMI_COLOR_FOREGROUND : UINT := 256;
+	HMI_COLOR_BLACK : UINT := 0;
+	HMI_COLOR_WHITE : UINT := 15;
+	HMI_COLOR_GRAY : UINT := 7;
+	HMI_COLOR_GRAY255 : UINT := 255;
+	HMI_COLOR_RED : UINT := 4;
+	HMI_COLOR_YELLOW : UINT := 46;
+	HMI_COLOR_GREEN : UINT := 10;
+END_VAR
+(*Completion*)
+VAR CONSTANT
+	HMI_INCOMPLETE : UINT := 0;
+	HMI_COMPLETE : UINT := 1;
+END_VAR
+(*LED values*)
+VAR CONSTANT
+	HMI_LED_OFF : USINT := 0;
+	HMI_LED_ON : USINT := 1;
+	HMI_LED_BLINKSLOW : USINT := 2;
+	HMI_LED_BLINKFAST : USINT := 3;
+END_VAR
+(*Trend values*)
+VAR CONSTANT
+	HMI_TREND_MAI_CURSOR : USINT := 1;
+	HMI_TREND_MAI_CURVE : USINT := 15;
+	HMI_TREND_MAI_SCALECONTAINER : USINT := 4;
+	HMI_TREND_MAI_VALUESCALE : USINT := 3;
+END_VAR
+(*ASCII values*)
+VAR CONSTANT
+	ASCII_BACKSLASH : USINT := 92;
+END_VAR

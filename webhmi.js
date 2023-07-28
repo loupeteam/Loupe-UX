@@ -510,6 +510,10 @@ WEBHMI.Machine = function (options) {
 					read.retryCount = 0;
 					readVariableList(read.cyclicList[0]);
 				}
+				else{
+					write.consecutiveSingleReads = 0;
+					write.consecutiveWrites = 0;
+				}
 			}
 		}
 		// processQueue()

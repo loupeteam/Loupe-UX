@@ -306,7 +306,7 @@ WEBHMI.updateLEDs = function () {
 
 		const $this = $(element);
 		const varValue = WEBHMI.getValue($this);
-		if (!isEqual($this.attr('data-machine-value-led'), varValue)) {
+		if ( typeof varValue !== "undefined" && !isEqual($this.attr('data-machine-value-led'), varValue)) {
 			$this.attr('data-machine-value-led', varValue)
 			const setValue = WEBHMI.getSetValue($this);
 			const resetValue = WEBHMI.getResetValue($this);
@@ -417,7 +417,7 @@ WEBHMI.updateToggleButtons = function () {
 		var $this = $(element);
 
 		var varValue = WEBHMI.getValue($this);
-		if (!isEqual($this.attr('data-machine-value-toggle'), varValue)) {
+		if ( typeof varValue !== 'undefined' && !isEqual($this.attr('data-machine-value-toggle'), varValue)) {
 			$this.attr('data-machine-value-toggle', varValue)
 			if (isEqual(varValue, WEBHMI.getSetValue($this))) {
 				$this.addClass('toggle-active');
@@ -448,7 +448,7 @@ WEBHMI.updateCheckboxes = function () {
 		var isChecked = $this.prop('checked');
 
 		var varValue = WEBHMI.getValue($this);
-		if (!isEqual($this.attr('data-machine-value-checkbox'), varValue)) {
+		if ( typeof varValue !== 'undefined' && !isEqual($this.attr('data-machine-value-checkbox'), varValue)) {
 			$this.attr('data-machine-value-checkbox', varValue)
 			if (isEqual(varValue, WEBHMI.getSetValue($this)) && !isChecked) {
 				$this.prop('checked', true);
@@ -475,7 +475,7 @@ WEBHMI.updateTabs = function () {
 		var $this = $(element);
 
 		var varValue = WEBHMI.getValue($this);
-		if (!isEqual($this.attr('data-machine-value-tab'), varValue)) {
+		if (typeof varValue !== 'undefined' && !isEqual($this.attr('data-machine-value-tab'), varValue)) {
 			$this.attr('data-machine-value-tab', varValue)
 			if ((varValue == WEBHMI.getSetValue($this))) {
 				var tabs = $('.nav-tabs');
@@ -501,7 +501,7 @@ WEBHMI.updateRange = function () {
 		var $this = $(element);
 
 		var varValue = WEBHMI.getValue($this);
-		if (!isEqual($this.attr('data-machine-value-range'), varValue)) {
+		if (typeof varValue !== 'undefined' &&  !isEqual($this.attr('data-machine-value-range'), varValue)) {
 			$this.attr('data-machine-value-range', varValue)
 			var Range = WEBHMI.getRange($this);
 
@@ -537,7 +537,7 @@ WEBHMI.updateInputs = function () {
 		if (!$this.is(":focus") && !$this.hasClass("editing")) {
 
 			var varValue = WEBHMI.getValue($this);
-			if (!isEqual($this.attr('data-machine-value-num'), varValue)) {
+			if ( typeof varValue !== "undefined" && !isEqual($this.attr('data-machine-value-num'), varValue)) {
 				$this.attr('data-machine-value-num', varValue)
 				if (varValue === false) {
 					$this.html('false');
@@ -641,7 +641,7 @@ WEBHMI.updateInputs = function () {
 			if( typeof varValue === 'object' ){
 				string = JSON.stringify(varValue, null, 4)
 			}
-			if (!isEqual($this.attr('data-machine-value-text'), string )) {
+			if ( typeof varValue !== "undefined" && !isEqual($this.attr('data-machine-value-text'), string )) {
 				$this.attr('data-machine-value-text', varValue)
 				if (varValue === false) {
 					$this.html('false');
@@ -662,7 +662,7 @@ WEBHMI.updateInputs = function () {
 
 			var varValue = WEBHMI.getValue($this);
 
-			if (!isEqual($this.attr('data-machine-value-text-option'), varValue)) {
+			if (typeof varValue !== 'undefined' && !isEqual($this.attr('data-machine-value-text-option'), varValue)) {
 				$this.attr('data-machine-value-text-option', varValue)
 				if (varValue === false) {
 					$this.html('false');
@@ -682,7 +682,7 @@ WEBHMI.updateInputs = function () {
 		if (!$this.is(":focus")) {
 
 			var varValue = WEBHMI.getValue($this);
-			if (!isEqual($this.attr('data-machine-value-dropdown'), varValue)) {
+			if (typeof varValue !== 'undefined' && !isEqual($this.attr('data-machine-value-dropdown'), varValue)) {
 				$this.attr('data-machine-value-dropdown', varValue)
 				element.options.selectedIndex = varValue;
 			}

@@ -4,7 +4,7 @@
 
 // Use uppercase namespace
 var WEBHMI = {
-	version: '1.4.0'
+	version: '1.4.1'
 };
 
 // export default WEBHMI
@@ -269,6 +269,8 @@ WEBHMI.Machine = function (options) {
 		// timer for resending on error
 		write.timeout = 0;
 
+		//Keep track of consecutive writes
+		write.consecutiveWrites = 0;
 
 		// Reading variables
 		//-----------------------------------------
@@ -287,6 +289,7 @@ WEBHMI.Machine = function (options) {
 		// It is discarded after the read is complete.
 		read.singleList = [];
 		read.singleList[0] = {};
+		read.consecutiveSingleReads = 0;
 
 		// read.cyclicList is the list of variables to be read from the PLC cyclically.
 		// It is persistent per page load.
@@ -487,21 +490,33 @@ WEBHMI.Machine = function (options) {
 		// TODO: Add ability to handle multiple read list objects
 		function processQueue() {
 			if (!read.reading && !write.writing && ws.readyState === ws.OPEN) {
-				if (!WEBHMI.isEmptyObject(write.context)) {
+				if (!WEBHMI.isEmptyObject(write.context) && write.consecutiveWrites < 1 ) {					
+					write.consecutiveWrites++;
 					write.writing = true;
 					write.retryCount = 0;
 					writeVariableList(write.context, write.variableList);
 					write.context = {};
 					write.variableList = {};
-				} else if (!WEBHMI.isEmptyObject(read.singleList[0])) {
+				} else if (!WEBHMI.isEmptyObject(read.singleList[0]) && read.consecutiveSingleReads < 1 ) {
+					read.consecutiveSingleReads++;
 					read.reading = true;
 					read.retryCount = 0;
 					readVariableList(read.singleList[0]);
 					read.singleList[0] = {};
 				} else if (!WEBHMI.isEmptyObject(read.cyclicList[0])) {
+					read.consecutiveSingleReads = 0;
+					write.consecutiveWrites = 0;
 					read.reading = true;
 					read.retryCount = 0;
 					readVariableList(read.cyclicList[0]);
+				}
+				else{
+					//If there was a write or single read, then we need to process the queue again
+					if( read.consecutiveSingleReads > 0 || write.consecutiveWrites > 0 ){
+						read.consecutiveSingleReads = 0;
+						write.consecutiveWrites = 0;
+						processQueue();
+					}
 				}
 			}
 		}

@@ -50,7 +50,7 @@ WEBHMI.each = jQueryImport.each;
  * @property {?number} timeout_ms 250 - Connection timeout in ms
  * @property {?number} maxRetryCount 5 - Max retry count before throwing disconnect
  * @property {?number} maxReconnectCount 5 - Max reconnect 
- * @property {?number} messageRateDelay 0 - How long to delay sending new messages in ms
+ * @property {?number} maxMessageFrequency 60 - Max message frequency in hz 
  */
 
 // Machine constructor
@@ -80,7 +80,7 @@ WEBHMI.Machine = function (options) {
 		timeout_ms: 250,
 		maxRetryCount: 5,
 		maxReconnectCount: 5,
-		messageRateDelay: 0
+		maxMessageFrequency: 60
 	};
 	settings = WEBHMI.extend({}, defaults, options);
 
@@ -271,6 +271,8 @@ WEBHMI.Machine = function (options) {
 		// timer for resending on error
 		write.timeout = 0;
 
+		// write.lastRequestTime is the time of the last write request
+		write.lastRequestTime = 0
 
 		// Reading variables
 		//-----------------------------------------
@@ -307,6 +309,8 @@ WEBHMI.Machine = function (options) {
 		read.retryCount = 0;
 		read.timeout = 0;
 
+		// read.lastRequestTime is the time of the last read request
+		read.lastRequestTime = 0;
 
 		// Statistics
 		//--------------------------------------------------
@@ -436,6 +440,10 @@ WEBHMI.Machine = function (options) {
 
 			write.timeout = setTimeout(ws.onerror, settings.timeout_ms);
 
+			//Snapshot the time of the write
+			write.lastRequestTime = Date.now();
+
+
 		}
 		// writeVariableList()
 
@@ -477,6 +485,8 @@ WEBHMI.Machine = function (options) {
 
 			read.timeout = setTimeout(ws.onerror, settings.timeout_ms);
 
+			//Snapshot the time of the read
+			read.lastRequestTime = Date.now();
 		}
 		// readVariableList()
 
@@ -639,18 +649,16 @@ WEBHMI.Machine = function (options) {
 					processWriteResponse(msg.data);
 					break;
 				}
-				// switch(msg.type)
-
-				// TODO: Experiment with timeout here
-				// This can get rid of the missed requests, but it also wrecks the refresh rate
-				// And it doesn't really get rid of missed requests :(
-				//setTimeout(processQueue, 50);
-				
-				// Allow users to slow the message rate 
-				// This is maybe a temporary fix
-				// This also has the effect of adding processQue to the end of the thread instead of running it now
-				setTimeout(processQueue, settings.messageRateDelay)
-				// processQueue();
+								
+				//Calculate the time it took to process the last message,
+				//then use the max frequency to determine how long to wait
+				//before processing the next message
+				if( settings.maxMessageFrequency > 0 ){
+					var timeSinceLastMessage = Date.now() - read.lastRequestTime;
+					var timeToWait = (1/settings.maxMessageFrequency)*1000 - timeSinceLastMessage;
+					if (timeToWait < 0) timeToWait = 0;
+					setTimeout(processQueue, timeToWait);
+				}
 
 			};
 			// ws.onmessage()

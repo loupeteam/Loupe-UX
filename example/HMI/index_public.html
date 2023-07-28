@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+	<link href="./node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+	<title>Test Components</title>
+	<base href="./">
+
+</head>
+
+<body>
+
+	<!-- Begin page content -->
+	<div class="container" id="main">
+
+	</div>
+
+	<footer class="footer">
+		<div class="inline-left">
+			<p class="text-muted">&copy; Loupe</p>
+		</div>
+	</footer>
+
+	<script src="./node_modules/jquery/dist/jquery.min.js" onload="if('undefined' != typeof module) window.$ = window.jQuery = module.exports;"></script>
+	<script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+	<!-- include WebHMI -->
+	<script src="./node_modules/@loupeteam/webhmi/webhmi.js"></script>
+	<script src="./node_modules/@loupeteam/webhmi/webhmi-data-bind.js"></script>
+	<link  href="./node_modules/@loupeteam/webhmi/webhmi.css" rel="stylesheet">
+
+	<!-- handlebars -->
+	<script src="./node_modules/handlebars/dist/handlebars.min.js" ></script>
+
+	<!--Default widget setup-->
+	<script src="./node_modules/@loupeteam/widgets/index.js" type="module"></script>
+
+	<!-- app -->
+	<script src="src/app.js"></script>
+
+</body>
+
+</html>

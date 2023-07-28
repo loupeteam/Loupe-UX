@@ -1,0 +1,3 @@
+VAR
+	test : TestStruct;
+END_VAR

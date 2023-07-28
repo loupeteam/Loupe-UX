@@ -1,0 +1,40 @@
+
+(* error area 37300 - 37349 for AsGuard reserved *)  
+                                                                    
+VAR CONSTANT
+	guardERR_NULLPOINTER				: UINT := 37300;	(*null pointer specified*)
+	guardERR_GENERAL					: UINT := 37301;	(*general license error*)
+	guardERR_BUFFERSIZE					: UINT := 37302;	(*buffer too small*)
+	guardERR_MEMORY						: UINT := 37303;	(*memory error*)
+	guardERR_NOT_STARTED				: UINT := 37304;	(*license manager not started*)
+	guardERR_ACCESS						: UINT := 37305;	(*license access error*)
+	guardERR_VIOLATION					: UINT := 37306;	(*license violation*)
+	guardERR_SERVICE_VIOLATION 			: UINT := 37307;	(*service mode because of license violation*)
+	guardERR_CREATE_UPDATE_CONTEXT		: UINT := 37308;	(*error creating update context*)
+	guardERR_CREATE_CONTEXT_FILE		: UINT := 37309;	(*error creating update context file*)
+	guardERR_EXECUTE_UPDATE				: UINT := 37310;	(*error executing license update*)
+	guardERR_FILE_NOT_FOUND				: UINT := 37311;	(*file not found*)
+	guardERR_LIC_NOT_INITIALIZED		: UINT := 37312;	(*license not initialized*)
+	guardERR_TASK						: UINT := 37313;
+	guardERR_DONGLE_NOT_FOUND			: UINT := 37314;	(*specified dongle not found*)
+	guardERR_CONTEXT_SIZE				: UINT := 37315;	(*wrong context size*)
+	guardERR_INVALID_PARAM				: UINT := 37316;	(*invalid parameter specified*)
+	guardERR_UNAVAILABLE				: UINT := 37317;	(*function unavailable*)
+	guardERR_DATA_SIZE					: UINT := 37321;	(*data size invalid*)
+	guardERR_LICENSE_STATUS_UNKNOWN		: UINT := 37322;	(*license status currently unknown*)
+	guardERR_ALREADY_STARTED			: UINT := 37323;	(*customer operating time counter already started*)
+	
+	guardBR_FIRMCODE                    : UDINT := 101652;	(*B&R firmcode*)
+
+	guardLIC_REACT_NONE					: DWORD := 16#00;	(*no reaction*)
+	guardLIC_REACT_LOGBOOK				: DWORD := 16#01;	(*in case of license violation write a message into logbook*)
+	guardLIC_REACT_BLINK_CPU_LED		: DWORD := 16#02;	(*in case of license violation blink User LED*)
+	guardLIC_REACT_BOOT_SERVICE			: DWORD := 16#04;	(*in case of license violation during bootup start PLC in service mode*)
+	guardLIC_REACT_SERVICE				: DWORD := 16#08;	(*in case of license violation restart PLC in service mode *)
+	
+	guardREGISTER_ALWAYS				: DWORD := 1;		(*register license always*)
+	guardREGISTER_IF_AVAILABLE			: DWORD := 2;		(*register license only if available*)
+	
+	guardGENERAL_OP_TIME_COUNTER 		: UDINT := 1;		(*general operating time counter*)
+	guardCUSTOMER_OP_TIME_COUNTER		: UDINT := 2;		(*customer operating time counter*)
+END_VAR

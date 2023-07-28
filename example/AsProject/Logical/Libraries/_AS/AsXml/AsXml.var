@@ -1,0 +1,29 @@
+                                                                      
+VAR CONSTANT
+	xmlERR_MEMORY		    	: UINT		:= 33810;	(*memory error*)
+	xmlERR_INVALID_PARAMETER	: UINT		:= 33811;	(*wrong parameter or nullpointer given*)
+	xmlERR_GENERAL				: UINT		:= 33812;  	(*general XML error*)
+	xmlERR_NO_FURTHER_XML_NODE	: UINT		:= 33813; 	(*no further XML node available*)
+	xmlERR_NAME_BUFFER_TOO_SMALL: UINT		:= 33814; 	(*buffer for name too small*)
+	xmlERR_VALUE_BUFFER_TOO_SMALL: UINT		:= 33815; 	(*buffer for value too small*)
+	xmlERR_INVALID_ATTRIBUTE_INDEX: UINT	:= 33816; 	(*invalid attribute index*)
+	xmlERR_NO_ATTRIBUTES		: UINT		:= 33817; 	(*no attribute available*)
+	xmlERR_XML_DATA_INVALID		: UINT		:= 33818; 	(*xml data is invalid*)
+	xmlERR_INVALID_IDENT 		: UINT		:= 33819;	(*error identifier invalid*)
+	xmlERR_NO_ELEMENT_OPEN		: UINT		:= 33820; 	(*no open XML element where to put the attribute*)
+	xmlERR_INVALID_POSITION		: UINT		:= 33821;	(*invalid position for this node*)
+	xmlERR_CONVERT				: UINT		:= 33822;	(*error during converting text*)
+	xmlERR_CONVERT_TEXT			: UINT   	:= 33823;	(*error converting text*)
+	xmlERR_UNSUPPORTED_ENCODING : UINT		:= 33824;	(*unsupported encoding*)
+	xmlERR_DOCUMENT_NOT_OPEN    : UINT	    := 33825;   (*XML document not open*)
+	
+	
+	xmlNODE_TYPE_ELEMENT		: UINT		:= 1;		(*XML element node*)
+	xmlNODE_TYPE_TEXT			: UINT		:= 3;		(*XML element text*)
+	xmlNODE_TYPE_CDATA			: UINT		:= 4;		(*XML CDATA section*)
+	xmlNODE_TYPE_PI				: UINT		:= 7;		(*XML process instruction node*)
+	xmlNODE_TYPE_COMMENT		: UINT		:= 8;		(*XML comment*)
+	xmlNODE_TYPE_WHITESPACE		: UINT		:= 13;		(*XML white space*)
+	xmlNODE_TYPE_SIGN_WHITESPACE: UINT		:= 14;		(*XML significant white space*)
+	xmlNODE_TYPE_ENDELEMENT		: UINT		:= 15;		(*XML end element node*)
+END_VAR

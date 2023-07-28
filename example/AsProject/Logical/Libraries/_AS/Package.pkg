@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Package xmlns="http://br-automation.co.at/AS/Package">
+  <Objects>
+    <Object Type="Library" Language="binary" Description="The ArEventLog library can be used to collect additional error information and for further processing.">ArEventLog</Object>
+    <Object Type="Library" Language="binary" Description="The AsARCfg library supports reading and writing Automation Runtime configurations.">AsARCfg</Object>
+    <Object Type="Library" Language="binary" Description="OBSOLETE - The AsArLog library is replaced by ArEventLog and exists only for compatibility reasons.">AsArLog</Object>
+    <Object Type="Library" Language="binary" Description="The AsArProf library is used to operate the AR Profiler from an application.">AsArProf</Object>
+    <Object Type="Library" Language="binary" Description="This library integrates mathematical functions such as angle functions, rounding off, etc. into the program.">AsBrMath</Object>
+    <Object Type="Library" Language="binary" Description="The AsBrStr Library contains FBKs for memory and character string handling.">AsBrStr</Object>
+    <Object Type="Library" Language="binary" Description="The AsDb library supports access to Sybase und MS SQL databases.">AsDb</Object>
+    <Object Type="Library" Language="binary" Description="The AsEPL library is used to access service data objects of Ethernet-Powerlink stations">AsEPL</Object>
+    <Object Type="Library" Language="binary" Description="The AsGuard library supports technology guarding functions.">AsGuard</Object>
+    <Object Type="Library" Language="binary" Description="This library contains FBKs for exchanging and formatting data (message based) via HTTP (TCP).">AsHttp</Object>
+    <Object Type="Library" Language="binary" Description="The AsIO library makes it possible to determine the states and values of a data point and carry out forcing operations.">AsIO</Object>
+    <Object Type="Library" Language="binary" Description="This library provides read and write access to non-cyclic I/O data points.">AsIOAcc</Object>
+    <Object Type="Library" Language="binary" Description="The AsIODiag library provides functions for creating and evaluating I/O module information.">AsIODiag</Object>
+    <Object Type="Library" Language="binary" Description="The AsIOTime library is used to generate time stamps based on system time of the I/O system.">AsIOTime</Object>
+    <Object Type="Library" Language="binary" Description="The AsMem library makes it possible to manage memory blocks located in large memory areas (memory partitions).">AsMem</Object>
+    <Object Type="Library" Language="binary" Description="The AsSafety library provides function blocks for the safety system.">AsSafety</Object>
+    <Object Type="Library" Language="binary" Description="This library contains FBKs to use semaphores.">AsSem</Object>
+    <Object Type="Library" Language="binary" Description="The AsTime Library supports DATE_AND_TIME and TIME data types.">astime</Object>
+    <Object Type="Library" Language="binary" Description="This library contains FBKs for exchanging data (data stream) via stream sockets (TCP).">AsTCP</Object>
+    <Object Type="Library" Language="binary" Description="This library contains FBKs for exchanging data packets via datagram sockets (UDP).">AsUDP</Object>
+    <Object Type="Library" Language="binary" Description="This library contains function blocks to handle USB devices on the target.">AsUSB</Object>
+    <Object Type="Library" Language="binary" Description="The AsXml library supports reading and writing of XML files.">AsXml</Object>
+    <Object Type="Library" Language="binary" Description="The AsZip library offers compressing archive-support">AsZip</Object>
+    <Object Type="Library" Language="binary" Description="The BRSystem library provides the user with a number of system functions for e.g. handling permanent memory, accessing exception information, etc.">brsystem</Object>
+    <Object Type="Library" Language="binary" Description="This library contains function interfaces for IEC 61131-3 conversion functions.">Convert</Object>
+    <Object Type="Library" Language="binary" Description="The DataObj library can be used to dynamically create, dynamically delete and copy data objects, etc. ">DataObj</Object>
+    <Object Type="Library" Language="binary" Description="The DVFrame library and the frame driver can be used to exchange data with external devices.">dvframe</Object>
+    <Object Type="Library" Language="binary" Description="The FileIO library provides function blocks for file handling.">FileIO</Object>
+    <Object Type="Library" Language="Binary" Description="This library contains control algorithms.">LoopConR</Object>
+    <Object Type="Library" Language="binary" Description="This mechatronics library contains basic control function blocks.">MTBasics</Object>
+    <Object Type="Library" Language="binary" Description="This mechatronics library contains lookup table function blocks.">MTLookUp</Object>
+    <Object Type="Library" Language="binary" Description="This mechatronics library contains different system datatypes and general error numbers.">MTTypes</Object>
+    <Object Type="Library" Language="binary" Description="This library contains function interfaces for IEC 61131-3 operator functions. For the most part, these are mathematical and logical functions.">operator</Object>
+    <Object Type="Library" Language="binary" Description="This library contains runtime functions for IEC tasks.">runtime</Object>
+    <Object Type="Library" Language="binary" Description="This library contains standard function blocks and functions for IEC 61131-3.">standard</Object>
+    <Object Type="Library" Language="binary" Description="The SYS_LIB library contains functions for memory management and operating system manipulation as well as hardware-specific functions.">sys_lib</Object>
+    <Object Type="Library" Language="binary" Description="The AsBrWStr library allows 8-bit character strings to be implemented for 16-bit WC (AsBrWStr) strings.">AsBrWStr</Object>
+  </Objects>
+</Package>

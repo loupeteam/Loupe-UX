@@ -1,0 +1,27 @@
+Binaries/
+Diagnosis/
+Temp/
+TempObjects/
+*.isopen
+*.set
+!*/Physical/**/*.set
+*.DS_Store
+/Installer/Output/*.exe
+**/RevInfo/RevInfo.st
+**/RevInfo/RevInfo.var
+**/RevInfo.var
+**/Overload.var
+*.csvlog*
+ignored/
+*artransfer.br
+**/MPLogs/*
+**/DLFiles/*
+**/node_modules/
+!*/Physical/**/*.set
+**/BusNavigator.xostd
+!**/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class

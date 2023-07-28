@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Library Version="5.12.0" SubType="binary" Description="This mechatronics library contains lookup table function blocks." xmlns="http://br-automation.co.at/AS/Library">
+  <Files>
+    <File>MTLookUp.fun</File>
+    <File>MTLookUp.typ</File>
+    <File>MTLookUp.var</File>
+  </Files>
+  <Dependencies>
+    <Dependency ObjectName="Sys_lib" />
+    <Dependency ObjectName="brsystem" />
+  </Dependencies>
+</Library>

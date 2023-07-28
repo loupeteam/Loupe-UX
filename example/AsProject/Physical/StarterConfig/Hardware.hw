@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio Version=4.9.3.144 FileVersion="4.9"?>
+<Hardware xmlns="http://br-automation.co.at/AS/Hardware">
+  <Module Name="5AC901.IPLK-00" Type="5AC901.IPLK-00" Version="1.7.1.0">
+    <Connection Connector="SS" TargetModule="5PC910.SX02-00" TargetConnector="SS2" />
+    <Connector Name="IF1">
+      <Parameter ID="DNAConfiguration" Value="manual" />
+    </Connector>
+  </Module>
+  <Module Name="5PC900_TS17_04" Type="5PC900.TS17-04" Version="2.1.0.0">
+    <Connection Connector="SY" TargetModule="5PC910.SX02-00" TargetConnector="SY1" />
+    <Parameter ID="ConfigurationID" Value="Starter_StarterConfig" />
+    <Parameter ID="UserPartitionSize" Value="300" />
+    <Parameter ID="Simulation" Value="1" />
+    <Parameter ID="UserRamDevice" Value="PCI.2.IPLK.SRAM" />
+    <Parameter ID="UserRamSize" Value="500000" />
+    <Parameter ID="RemMemDevice" Value="PCI.2.IPLK.SRAM" />
+    <Parameter ID="RemMemSize" Value="120000" />
+    <Parameter ID="PermanentPvSize" Value="10000" />
+    <Parameter ID="RemanentGlobalPvSize" Value="105000" />
+    <Parameter ID="VolatileGlobalPvSize" Value="1000000" />
+    <Parameter ID="TimerDeviceType" Value="EPLX2X" />
+    <Parameter ID="TimerDevice" Value="5AC901.IPLK-00.IF1" />
+    <Parameter ID="IdleTaskClass" Value="3" />
+    <Parameter ID="TaskClassIdleTime" Value="8000" />
+    <Parameter ID="Cyclic1Duration" Value="2000" />
+    <Parameter ID="Cyclic1Tolerance" Value="0" />
+    <Parameter ID="Cyclic2Duration" Value="10000" />
+    <Parameter ID="Cyclic3Duration" Value="20000" />
+    <Parameter ID="Cyclic3Tolerance" Value="40000" />
+    <Parameter ID="TimeZone" Value="25" />
+    <Group ID="FtpUser1" />
+    <Parameter ID="FtpUsername1" Value="dev" />
+    <Parameter ID="FtpUserPassword1" Value="NYwXHzz4INzZvtlFBMOTmjZqrH4JRkY3Uye1yrmlNSg=" Description="dev" />
+    <Parameter ID="FtpUserSalt1" Value="s9/ksXy4" />
+    <Parameter ID="FTPAccessRight1" Value="0" />
+    <Parameter ID="FTPdevice1" Value="ALL" />
+    <Parameter ID="SdmColor" Value="colorRGB" />
+  </Module>
+  <Module Name="5PC910.SX02-00" Type="5PC910.SX02-00" Version="2.1.0.0">
+    <Connector Name="IF1">
+      <Parameter ID="AssignedOperatingSystem" Value="ARemb" />
+    </Connector>
+    <Connector Name="IF3">
+      <Parameter ID="AssignedOperatingSystem" Value="ARemb" />
+      <Parameter ID="ActivateDevice" Value="1" />
+    </Connector>
+    <Connector Name="IF4">
+      <Parameter ID="AssignedOperatingSystem" Value="ARemb" />
+      <Parameter ID="ActivateDevice" Value="1" />
+    </Connector>
+    <Connector Name="IF5">
+      <Parameter ID="AssignedOperatingSystem" Value="ARemb" />
+    </Connector>
+    <Connector Name="IF6">
+      <Parameter ID="AssignedOperatingSystem" Value="ARemb" />
+    </Connector>
+    <Connector Name="IF7">
+      <Parameter ID="AssignedOperatingSystem" Value="ARemb" />
+    </Connector>
+    <Connector Name="IF8">
+      <Parameter ID="AssignedOperatingSystem" Value="ARemb" />
+    </Connector>
+    <Connector Name="IF9">
+      <Parameter ID="AssignedOperatingSystem" Value="ARemb" />
+    </Connector>
+  </Module>
+</Hardware>

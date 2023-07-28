@@ -1,0 +1,8 @@
+                                                                      
+VAR CONSTANT
+	semERR_CREATE						: UINT := 33320;	(*create semaphore error*)
+	semERR_DELETE						: UINT := 33321;	(*delete semaphore error*)
+	semERR_NOT_EXIST					: UINT := 33322;	(*invalid semaphore ident, check parameter*)
+	semERR_NOT_FREE						: UINT := 33323;	(*semaphore already acquired*)
+	semERR_ALREADY_FREE					: UINT := 33324;	(*semaphore not acquired*)
+END_VAR

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<BR.AS.HardwareTopology Version="0.0.0.1">
+  <TimeStamps>
+    <TimeStamp LogicalPath="StarterConfig.Hardware.hw" LastWriteTime="03/30/2021 10:12:25" />
+  </TimeStamps>
+  <Modules>
+    <Module Name="5PC910.SX02-00" Type="5PC910.SX02-00" X="41" Y="90" />
+    <Module Name="5AC901.BX02-02" Type="5AC901.BX02-02" X="100" Y="123" />
+    <Module Name="5PC900_TS17_04" Type="5PC900.TS17-04" X="100" Y="100" />
+  </Modules>
+  <Links />
+  <InfoElements />
+</BR.AS.HardwareTopology>

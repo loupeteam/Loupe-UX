@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Library SubType="binary" Description="The AsDb library supports access to Sybase und MS SQL databases." xmlns="http://br-automation.co.at/AS/Library">
+  <Files>
+    <File>AsDb.fun</File>
+    <File>AsDb.typ</File>
+    <File>AsDb.var</File>
+  </Files>
+  <Dependencies>
+    <Dependency ObjectName="runtime" />
+  </Dependencies>
+</Library>

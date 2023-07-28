@@ -1,0 +1,20 @@
+(*Error*)
+VAR CONSTANT
+	mtBCD_ERR_NODES_INVALID : DINT := -1058012184; (*Invalid number of nodes.*)
+	mtBCD_ERR_XVAL_NOT_SORTED : DINT := -1058012183; (*The values of the NodeVectorX are not sorted in ascending or descending order.*)
+	mtBCD_ERR_YVAL_NOT_SORTED : DINT := -1058012182; (*The values of the NodeVectorY are not sorted in ascending or descending order.*)
+	mtBCD_ERR_NODES_X_INVALID : DINT := -1058012181; (*Invalid number of nodes in X-direction.*)
+	mtBCD_ERR_NODES_Y_INVALID : DINT := -1058012180; (*Invalid number of nodes in Y-direction.*)
+	mtBCD_ERR_LOOKUP_MODE_INVALID : DINT := -1058012179; (*Invalid mode.*)
+	mtBCD_ERR_LOOKUP_MEM_ALLOC : DINT := -1058012178; (*An error occurred during memory allocation.*)
+END_VAR
+(*Warning*)
+VAR CONSTANT
+	mtBCD_WRN_NODES_INVALID : DINT := -2131754008; (*Invalid number of nodes.*)
+	mtBCD_WRN_XVAL_NOT_SORTED : DINT := -2131754007; (*The values of the NodeVectorX are not sorted in ascending or descending order.*)
+	mtBCD_WRN_YVAL_NOT_SORTED : DINT := -2131754006; (*The values of the NodeVectorY are not sorted in ascending or descending order.*)
+	mtBCD_WRN_NODES_X_INVALID : DINT := -2131754005; (*Invalid number of nodes in X-direction.*)
+	mtBCD_WRN_NODES_Y_INVALID : DINT := -2131754004; (*Invalid number of nodes in Y-direction.*)
+	mtBCD_WRN_LOOKUP_MODE_INVALID : DINT := -2131754003; (*Invalid mode.*)
+	mtBCD_WRN_LOOKUP_MEM_ALLOC : DINT := -2131754002; (*An error occurred during memory allocation.*)
+END_VAR

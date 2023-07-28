@@ -1,0 +1,10 @@
+                                                                      
+VAR CONSTANT
+	ioacERR_INTERNAL        : UINT := 30190;		(*internal error*)
+	ioacERR_DEVICE          : UINT := 30191;		(*I/O module does not exist*)
+	ioacERR_CHANNEL         : UINT := 30192;		(*incorrect channel name specified*)
+	ioacERR_TIMEOUT         : UINT := 30193;		(*timeout reached*)
+	ioacERR_NOTSUPPORTED    : UINT := 30194;		(*not supported*)
+	ioacERR_PARAMETER		: UINT := 30195;		(*invalid parameter*)
+	ioacERR_ACCESS			: UINT := 30196;		(*access error*)
+END_VAR

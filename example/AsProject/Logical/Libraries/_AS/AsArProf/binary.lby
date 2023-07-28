@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Library SubType="binary" Description="The AsArProf library is used to operate the AR Profiler from an application." xmlns="http://br-automation.co.at/AS/Library">
+  <Files>
+    <File>AsArProf.fun</File>
+    <File>AsArProf.typ</File>
+    <File>AsArProf.var</File>
+  </Files>
+  <Dependencies>
+    <Dependency ObjectName="runtime" />
+  </Dependencies>
+</Library>

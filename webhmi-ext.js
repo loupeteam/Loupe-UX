@@ -53,24 +53,39 @@ $(document).on({
             var menu = new Menu()
             var $this = $(this);
             var datavarname = $this.attr('data-var-name');
-            const element = $('<textarea ></textarea>');
 
             menu.append(new MenuItem({
                 label: 'Paste',
                 click() {
-
-                    document.execCommand('paste');
+                    if (navigator.clipboard) {
+                        navigator.clipboard.readText();
+                    } 
+                    else {
+                        document.execCommand('paste');
+                    }
                 }
             }))
             menu.append(new MenuItem({
                 label: 'Copy PV',
                 click() {
-                    $this.append(element);
-                    element.text(datavarname);
-                    element.focus();
-                    element[0].setSelectionRange(0, datavarname.length);
-                    document.execCommand('copy');
-                    element.remove();
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(datavarname);
+                    }
+                    else{
+                        let pos = $this.offset();
+                        const element = $('<textarea ></textarea>');
+                        $('body').append(element);
+                        element.text(datavarname);
+                        element.css({
+                            position: "absolute",
+                            top: pos.top + "px",
+                            left: pos.left + "px"
+                        })
+                        element.focus();
+                        element[0].setSelectionRange(0, datavarname.length);
+                        document.execCommand('copy');
+                        element.remove();
+                    }
                     console.log(datavarname)
                 }
             }))
@@ -92,8 +107,12 @@ $(document).on({
             menu.append(new MenuItem({
                 label: 'Paste',
                 click() {
-
-                    document.execCommand('paste');
+                    if (navigator.clipboard) {
+                        navigator.clipboard.readText();
+                    } 
+                    else {
+                        document.execCommand('paste');
+                    }
                 }
             }))
             menu.popup(remote.getCurrentWindow())

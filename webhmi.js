@@ -498,21 +498,25 @@ WEBHMI.Machine = function (options) {
 					write.context = {};
 					write.variableList = {};
 				} else if (!WEBHMI.isEmptyObject(read.singleList[0]) && read.consecutiveSingleReads < 1 ) {
-					write.consecutiveSingleReads++;
+					read.consecutiveSingleReads++;
 					read.reading = true;
 					read.retryCount = 0;
 					readVariableList(read.singleList[0]);
 					read.singleList[0] = {};
 				} else if (!WEBHMI.isEmptyObject(read.cyclicList[0])) {
-					write.consecutiveSingleReads = 0;
+					read.consecutiveSingleReads = 0;
 					write.consecutiveWrites = 0;
 					read.reading = true;
 					read.retryCount = 0;
 					readVariableList(read.cyclicList[0]);
 				}
 				else{
-					write.consecutiveSingleReads = 0;
-					write.consecutiveWrites = 0;
+					//If there was a write or single read, then we need to process the queue again
+					if( read.consecutiveSingleReads > 0 || write.consecutiveWrites > 0 ){
+						read.consecutiveSingleReads = 0;
+						write.consecutiveWrites = 0;
+						processQueue();
+					}
 				}
 			}
 		}

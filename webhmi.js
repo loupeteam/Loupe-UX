@@ -50,6 +50,7 @@ WEBHMI.each = jQueryImport.each;
  * @property {?number} timeout_ms 250 - Connection timeout in ms
  * @property {?number} maxRetryCount 5 - Max retry count before throwing disconnect
  * @property {?number} maxReconnectCount 5 - Max reconnect 
+ * @property {?number} maxMessageFrequency 60 - Max message frequency in hz 
  */
 
 // Machine constructor
@@ -78,7 +79,8 @@ WEBHMI.Machine = function (options) {
 		port: 8000,
 		timeout_ms: 250,
 		maxRetryCount: 5,
-		maxReconnectCount: 5
+		maxReconnectCount: 5,
+		maxMessageFrequency: 60
 	};
 	settings = WEBHMI.extend({}, defaults, options);
 
@@ -269,6 +271,9 @@ WEBHMI.Machine = function (options) {
 		// timer for resending on error
 		write.timeout = 0;
 
+		// write.lastRequestTime is the time of the last write request
+		write.lastRequestTime = 0
+		
 		//Keep track of consecutive writes
 		write.consecutiveWrites = 0;
 
@@ -308,6 +313,8 @@ WEBHMI.Machine = function (options) {
 		read.retryCount = 0;
 		read.timeout = 0;
 
+		// read.lastRequestTime is the time of the last read request
+		read.lastRequestTime = 0;
 
 		// Statistics
 		//--------------------------------------------------
@@ -437,6 +444,10 @@ WEBHMI.Machine = function (options) {
 
 			write.timeout = setTimeout(ws.onerror, settings.timeout_ms);
 
+			//Snapshot the time of the write
+			write.lastRequestTime = Date.now();
+
+
 		}
 		// writeVariableList()
 
@@ -478,6 +489,8 @@ WEBHMI.Machine = function (options) {
 
 			read.timeout = setTimeout(ws.onerror, settings.timeout_ms);
 
+			//Snapshot the time of the read
+			read.lastRequestTime = Date.now();
 		}
 		// readVariableList()
 
@@ -652,14 +665,16 @@ WEBHMI.Machine = function (options) {
 					processWriteResponse(msg.data);
 					break;
 				}
-				// switch(msg.type)
-
-				// TODO: Experiment with timeout here
-				// This can get rid of the missed requests, but it also wrecks the refresh rate
-				// And it doesn't really get rid of missed requests :(
-				//setTimeout(processQueue, 50);
-				
-				processQueue();
+								
+				//Calculate the time it took to process the last message,
+				//then use the max frequency to determine how long to wait
+				//before processing the next message
+				if( settings.maxMessageFrequency > 0 ){
+					var timeSinceLastMessage = Date.now() - read.lastRequestTime;
+					var timeToWait = (1/settings.maxMessageFrequency)*1000 - timeSinceLastMessage;
+					if (timeToWait < 0) timeToWait = 0;
+					setTimeout(processQueue, timeToWait);
+				}
 
 			};
 			// ws.onmessage()
@@ -1066,6 +1081,41 @@ WEBHMI.Machine = function (options) {
 		return thisMachine.value(userLevelPV);
 	}
 
+	// User level
+	//---------------------------------------------
+
+	var userLevelPV;
+	var currentUserLevel = 0;
+
+	function setUserLevel(level) {
+		currentUserLevel = level;
+	}
+
+	function setUserLevelPV(levelPV) {
+		if (levelPV !== undefined) { // Don't set PV to something that doesn't exist; that's what clearUserLevelPV is for
+			userLevelPV = levelPV;
+			initCyclicRead(levelPV);
+		}
+	}
+
+	function clearUserLevelPV() {
+		userLevelPV = undefined;
+	}
+
+	function getUserLevel() {
+		if (userLevelPV === undefined) {
+			// Not using PV; use internal value instead
+			return currentUserLevel;
+		}
+		return thisMachine.value(userLevelPV);
+	}
+
+	/**
+	 * @param {Machine_Options} options 
+	 */
+	function updateSettings(options) {
+		WEBHMI.extend(settings, options); // Overwrite current settings but do not create a new object
+	}
 	
 	// Machine API definition
 	//---------------------------------------------
@@ -1074,6 +1124,7 @@ WEBHMI.Machine = function (options) {
 	thisMachine.readVariable = readVariable;
 	thisMachine.initCyclicRead = initCyclicRead;
 	thisMachine.writeVariable = writeVariable;
+	thisMachine.updateSettings = updateSettings
 
 	thisMachine.setUserLevel = setUserLevel;
 	thisMachine.setUserLevelPV = setUserLevelPV;

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Library SubType="binary" Description="This library provides read and write access to non-cyclic I/O data points." xmlns="http://br-automation.co.at/AS/Library">
+  <Files>
+    <File>AsIOAcc.fun</File>
+    <File>AsIOAcc.typ</File>
+    <File>AsIOAcc.var</File>
+  </Files>
+  <Dependencies>
+    <Dependency ObjectName="runtime" />
+  </Dependencies>
+</Library>

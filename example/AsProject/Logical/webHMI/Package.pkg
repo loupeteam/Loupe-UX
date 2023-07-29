@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Package xmlns="http://br-automation.co.at/AS/Package">
+  <Objects>
+    <Object Type="File">webHMI.var</Object>
+    <Object Type="Program" Language="IEC">webHMIProg</Object>
+  </Objects>
+</Package>

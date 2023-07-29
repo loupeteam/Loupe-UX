@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FIOWrap</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<p><img src="http://automationresourcesgroup.com/dist/img/logos/_headerLogo/ARG-Logo-Black-RGB.png" alt="Automation Resources Group" /></p>
+<h1>FIOWrap Library</h1>
+<p>The FIOWrap library provides a simple, intuitive interface for opening and saving files and managing files and directories..</p>
+<p>Files offer power fail safe data storage. They have the advantage over permanent memory that they are also protected against battery failure. The FIOWrap library provides a clean interface for the most common file operations. Any state machines necessary to perform these operations are built into the library and do not need to be implemented by the application developer.</p>
+<h1>Usage</h1>
+<p>The FIOWrap functionality can be integrated into any project using a data structure and a function call. For an example of how to use this in a project, please see the ARG Automation Studio Starter Project at <a href="https://github.com/autresgrp/StarterProject">https://github.com/autresgrp/StarterProject</a>.</p>
+<h2>FIOWrapper</h2>
+<h3>Initialization</h3>
+<p>To access files via Automation Runtime, a file device must be configured in the system configuration. To use the FIOWrap functionality, a variable must be declared of type <strong>FIOWrap_typ</strong>.</p>
+<h3>Cyclic Operation</h3>
+<p>To handle files cyclically, the <strong>FIOWrapFn_Cyclic()</strong> must be called in the CYCLIC routine of your program, once every scan, unconditionally. This function should not be called on the same FIOWrapper variable more than once per scan.</p>
+<pre><code>FIOWrapFn_Cyclic( FIOWrapper );
+</code></pre>
+
+<p>The FIOWrapper can then be used as an interface for higher level programs.</p>
+<pre><code>IF( OpenRecipeFile )THEN
+
+    OpenRecipeFile:=    0;
+
+    FIOWrapper.IN.PAR.FileDevice:=  'CF_User';
+    FIOWrapper.IN.PAR.FileName:=    'rec1.rec';
+    FIOWrapper.IN.PAR.pData:=       ADR(Recipe);
+    FIOWrapper.IN.PAR.len:=         SIZEOF(Recipe);
+
+    FIOWrapper.IN.CMD.Open:=        1;
+
+END_IF
+
+IF( SaveRecipeFile )THEN
+
+    SaveRecipeFile:=    0;
+
+    FIOWrapper.IN.PAR.FileDevice:=  'CF_User';
+    FIOWrapper.IN.PAR.FileName:=    'rec1.rec';
+    FIOWrapper.IN.PAR.pData:=       ADR(Recipe);
+    FIOWrapper.IN.PAR.len:=         SIZEOF(Recipe);
+
+    FIOWrapper.IN.CMD.SaveAs:=      1;
+
+END_IF
+
+IF( FIOWrapper.OUT.STAT.Done )THEN
+    FIOWrapper.IN.CMD.Open:=        0;
+    FIOWrapper.IN.CMD.SaveAs:=  0;
+END_IF
+</code></pre>
+
+<p>No formatting is performed when opening or saving files. That is, data is not converted to or from ASCII text by this library. For opening or saving formatted text files, please check the CSVWrap or CFGFileLib libraries.</p>
+<h2>FIOManage</h2>
+<h3>Initialization</h3>
+<p>To use the FIOManage functionality, a variable must be declared of type <strong>FIOManage</strong>.</p>
+<h3>Cyclic Operation</h3>
+<p>To manage files/directories cyclically, the <strong>FIOManageFn_Cyclic()</strong> must be called in the CYCLIC routine of your program, once every scan, unconditionally. This function should not be called on the same FIOManage variable more than once per scan.</p>
+<pre><code>FIOManageFn_Cyclic( FIOManage );
+</code></pre>
+
+<p>The FIOManage can then be used to manage the number of files/directories.</p>
+<pre><code>    IF( Scan )THEN
+
+        FIOManage.IN.PAR.FileDevice := 'Recipes';
+        FIOManage.IN.PAR.ItemName := 'test';
+        FIOManage.IN.PAR.MaxNumItems := 5;
+        FIOManage.IN.PAR.Mode := MANAGE_FILE_MODE;
+
+        FIOManage.IN.CMD.Scan:= 1;
+
+    ELSIF( FIOManage.OUT.STAT.Done OR FIOManage.OUT.STAT.Error )
+
+        FIOManage.IN.CMD.Scan:= 0;
+
+    END_IF
+</code></pre>
+
+<h2>Reference</h2>
+<h3>FIOWrapper Data Structure</h3>
+<p>The main data structure of the FIOWrap library is the FIOWrapper structure (FIOWrap_typ datatype). This provides the interface to higher level programs and also stores all necessary internal information. It is divided into inputs (FIOWrapper.IN), outputs (FIOWrapper.OUT), and internals (FIOWrapper.Internal).</p>
+<h4>Inputs</h4>
+<p>The FIOWrapper inputs are divided into commands (IN.CMD) and parameters (IN.PAR). Commands are used to initiate operations, and parameters determine how the commands will be processed.</p>
+<h5>Commands</h5>
+<ul>
+<li><strong>Open</strong> - Read data from a file.</li>
+<li><strong>SaveAs</strong> - Save data to a file.</li>
+<li><strong>AppendToFile</strong> - Append data to the end of a file.</li>
+<li><strong>Delete</strong> - Delete a file.</li>
+<li><strong>AcknowledgeError</strong> - Acknowledge any errors that occur.</li>
+</ul>
+<h5>Parameters</h5>
+<ul>
+<li><strong>FileDevice</strong> - The file device where the file is located.</li>
+<li><strong>FileName</strong> - The name of the file, including any file extension.</li>
+<li><strong>Suffix</strong> - An optional string to append to the older file when creating a new file of the same name. If Suffix is not populated, a time stamp will be appended by default.</li>
+<li><strong>pData</strong> - Starting address of the data buffer. For Open operations, data will be copied from the file to pData. For SaveAs and AppendToFile operations, data will be copied from pData to the file.</li>
+<li><strong>len</strong> - Length of the data to be copied, in bytes.</li>
+<li><strong>offset</strong> - Starting offset within the file, in bytes. For Open and SaveAs operations, data will be copied from or to the file starting at <strong>offset</strong>. For AppendToFile operations, the offset to the end of the file is obtained automatically and the <strong>offset</strong> input is ignored.</li>
+<li><strong>MaxFileSize</strong> - The maximum file size allowed during AppendToFile operations. If this file size would be exceeded by appending the data, the data is not written to the file, and an error is issued. This input is ignored during Open and SaveAs operations.</li>
+<li><strong>MultiFile</strong> - When true, allows additional files to be created when append to a file would exceed the MaxFileSize.</li>
+</ul>
+<h4>Outputs</h4>
+<p>The FIOWrapper outputs contain status information (OUT.STAT).</p>
+<ul>
+<li><strong>Busy</strong> - Operation is currently being processed.</li>
+<li><strong>Done</strong> - Operation completed successfully. <strong>Done</strong> is reset when the input command is reset.</li>
+<li><strong>Error</strong> - Error occurred during operation. <strong>Error</strong> is reset with the <strong>AcknowledgeError</strong> command.</li>
+<li><strong>ErrorID</strong> - Current error ID number.</li>
+<li><strong>ErrorString</strong> - Current error text information.</li>
+<li><strong>ErrorLevel</strong> - Current error level.</li>
+<li><strong>ReadyForCMD</strong> - The FIOWrapper is ready to accept a new command. It is equivalent to <code>NOT(Busy OR Done OR Error)</code>.</li>
+<li><strong>NewFile</strong> - A file was created during the last operation</li>
+<li><strong>FileLen</strong> - Length of the file currently being operated on in bytes.</li>
+</ul>
+<h3>FIOManage Data Structure</h3>
+<p>The FIOManage structure provides the interface to for managing both directories and files.</p>
+<h4>Inputs</h4>
+<p>The FIOManage inputs are divided into commands (IN.CMD) and parameters (IN.PAR). Commands are used to initiate operations, and parameters determine how the commands will be processed.</p>
+<h5>Commands</h5>
+<ul>
+<li><strong>Scan</strong> - Look through the working directory for files/directories that match the ItemName and keep only the newest, up to MaxNumItems, of either files or directories. A max of 10 files can be deleted per scan.</li>
+<li><strong>DeleteAll</strong> - Delete all the files in your current Filedevice and Directory.</li>
+<li><strong>AcknowledgeError</strong> - Acknowledge any errors that occur.</li>
+</ul>
+<h5>Parameters</h5>
+<ul>
+<li><strong>FileDevice</strong> - The file device where the file is located.</li>
+<li><strong>Directory</strong> - The subdirectory to manage, can be left blank unless the file device is the root folder.</li>
+<li><strong>ItemName</strong> - The name of the file (optional extension) or directory to be managed. The name acts as a filter, any file/directory that begins with ItemName will be managed. To filter all files/directories set ItemName := '*'. ItemName := '' is not valid.</li>
+<li><strong>MaxNumItems</strong> - The max number of files kept that match the ItemName filter. </li>
+<li><strong>Mode</strong> - Allows choosing whether to manage files, directories, or both. Supported modes are: fiFILE(0), fiDIRECTORY(1), and fiBOTH(2). FIOManage manages files by default.</li>
+</ul>
+<h4>Outputs</h4>
+<p>The FIOWrapper outputs contain status information (OUT.STAT).</p>
+<ul>
+<li><strong>Busy</strong> - Operation is currently being processed.</li>
+<li><strong>Done</strong> - Operation completed successfully. <strong>Done</strong> is reset when the input command is reset.</li>
+<li><strong>Error</strong> - Error occurred during operation. <strong>Error</strong> is reset with the <strong>AcknowledgeError</strong> command.</li>
+<li><strong>ErrorID</strong> - Current error ID number.</li>
+<li><strong>ErrorString</strong> - Current error text information.</li>
+<li><strong>ErrorLevel</strong> - Current error level.</li>
+<li><strong>ReadyForCMD</strong> - The FIOManage is ready to accept a new command. It is equivalent to <code>NOT(Busy OR Done OR Error)</code>.</li>
+</ul>
+<h2>Error ID Numbers</h2>
+<ul>
+<li>20700 - fiERR_INVALID_PATH - Invalid path.</li>
+<li>20701 - fiERR_DATA_SIZE - Data length is too small (DirRead).</li>
+<li>20702 - fiERR_NO_MORE_ENTRIES - No more file handles available.</li>
+<li>20703 - fiERR_NOT_SUPPORTED - System error.</li>
+<li>20704 - fiERR_INVALID_TYP - Invalid type.</li>
+<li>20705 - fiERR_EXIST - File already exists.</li>
+<li>20706 - fiERR_ACCESS - Access not possible with the desired mode.</li>
+<li>20707 - fiERR_MODE - Illegal mode.</li>
+<li>20708 - fiERR_FILE_NOT_FOUND - File not found. Check IN.PAR.FileName.</li>
+<li>20709 - fiERR_FILE_DEVICE - File device not found. Check IN.PAR.FileDevice.</li>
+<li>20710 - fiERR_SPACE - Not enough memory to write file.</li>
+<li>20711 - fiERR_SEEK - Invalid file offset.</li>
+<li>20712 - fiERR_FILE - File not allowed.</li>
+<li>20713 - fiERR_LESS_VIRTUAL_MEMORY - Not enough memory to write file.</li>
+<li>20714 - fiERR_COM_FILE_OPEN - System error.</li>
+<li>20715 - fiERR_COM_FILE_CLOSE - System error.</li>
+<li>20716 - fiERR_COM_FILE_READ - System error.</li>
+<li>20717 - fiERR_COM_FILE_WRITE - System error.</li>
+<li>20718 - fiERR_COM_FILE_IOCTL - System error.</li>
+<li>20719 - fiERR_DATA - Invalid parameter. Check IN.PAR.pData.</li>
+<li>20720 - fiERR_ASYNC_MANAGER - System error.</li>
+<li>20721 - fiERR_FILE_NOT_OPENED - File not opened.</li>
+<li>20722 - fiERR_INVALID_DIRECTORY - Invalid directory. Check IN.PAR.FileDevice and IN.PAR.FileName.</li>
+<li>20723 - fiERR_DIR_NOT_EXIST - Directory does not exist. Check IN.PAR.FileDevice and IN.PAR.FileName.</li>
+<li>20724 - fiERR_DIR_NOT_EMPTY - Directory is not empty.</li>
+<li>20725 - fiERR_DIR_ALREADY_EXIST - Directory already exists.</li>
+<li>20726 - fiERR_DETMEMINFO - System error.</li>
+<li>20727 - fiERR_NOT_ENOUGH_FREEMEM - Not enough memory to write file.</li>
+<li>20728 - fiERR_DIR_INVALID_HANDLE - System error.</li>
+<li>20729 - fiERR_PARAMETER - System error.</li>
+<li>20730 - fiERR_DEVICE_ALREADY_EXIST - Device already exists.</li>
+<li>20731 - fiERR_DEVICE_INVALID_HANDLE - Invalid device handle.</li>
+<li>20732 - fiERR_NETIO_IP_UNEQUAL - IP address error. Check hostname.</li>
+<li>20796 - fiERR_INIT - System error.</li>
+<li>20797 - fiERR_DEVICE_DRIVER - System error.</li>
+<li>20798 - fiERR_DEVICE_MANAGER - File device error. Check IN.PAR.FileDevice.</li>
+<li>
+<p>20799 - fiERR_SYSTEM - System error.</p>
+</li>
+<li>
+<p>50000 - FIOWRAP_ERR_INVALIDOP - Internal error.</p>
+</li>
+<li>50001 - FIOWRAP_ERR_INVALIDFILTER - Input required for IN.PAR.ItemName. Set IN.PAR.ItemName := '*' to mamange all files/directories.</li>
+<li>50002 - FIOWRAP_ERR_INVALIDDIR - Cannot manage in root directory. Check IN.PAR.FileDevice and IN.PAR.FileDirectory.</li>
+<li>50003 - FIOWRAP_ERR_MAXFILESIZE - Error while appending: maximum file size would be exceeded.</li>
+</ul>
+<p>Error ID numbers 20700 - 20799 are passed on directly from the FileIO library. For additional information on these errors, please see the Automation Studio Online Help.</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

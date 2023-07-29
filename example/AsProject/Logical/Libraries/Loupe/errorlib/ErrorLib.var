@@ -1,0 +1,35 @@
+(********************************************************************
+ * COPYRIGHT -- Automation Resources Group
+ ********************************************************************
+ * Library: ErrorLib
+ * File: ErrorLib.var
+ * Author: David Blackburn
+ * Created: November 18, 2011
+ ********************************************************************
+ * Constants of library ErrorLib
+ ********************************************************************)
+(*String Lengths*)
+VAR CONSTANT
+	ERRCOL_STRLEN_SOURCENAME : UINT := 120;
+	ERRCOL_STRLEN_SOURCETASK : UINT := 10;
+	ERRCOL_STRLEN_VARNAME : UINT := 120;
+	ERRCOL_STRLEN_ELEMNAME : UINT := 80;
+	ERRCOL_STRLEN_ERRORSTRING : UINT := 329;
+	ERRCOL_STRLEN_TIMESTAMP : UINT := 19;
+	ERRCOL_STRLEN_DISPLAYSTRING : UINT := ERRCOL_STRLEN_TIMESTAMP+ERRCOL_STRLEN_SOURCENAME+ERRCOL_STRLEN_ERRORSTRING+16;
+END_VAR
+(*Maximum Array Indices and Iterations*)
+VAR CONSTANT
+	ERRCOL_MAI_ERRORINFO : UINT := 99;
+	ERRCOL_MAXITERATIONS : UINT := 10;
+END_VAR
+(*Default CFG Values*)
+VAR CONSTANT
+	ERRCOL_DEFAULT_ERRCOLSOURCENAME : STRING[ERRCOL_STRLEN_SOURCENAME] := 'Error Collector';
+	ERRCOL_DEFAULT_MAXSOURCES : UINT := 100;
+	ERRCOL_DEFAULT_ELEM_ERRORACTIVE : STRING[ERRCOL_STRLEN_ELEMNAME] := 'OUT.STAT.Error';
+	ERRCOL_DEFAULT_ELEM_ERRORSTRING : STRING[ERRCOL_STRLEN_ELEMNAME] := 'OUT.STAT.ErrorString';
+	ERRCOL_DEFAULT_ELEM_ERRORID : STRING[ERRCOL_STRLEN_ELEMNAME] := 'OUT.STAT.ErrorID';
+	ERRCOL_DEFAULT_ELEM_ACKNOWLEDGE : STRING[ERRCOL_STRLEN_ELEMNAME] := 'IN.CMD.AcknowledgeError';
+	ERRCOL_DEFAULT_LOGGERNAME : STRING[LOG_STRLEN_LOGGERNAME] := 'Errors';
+END_VAR

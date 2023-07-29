@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Package xmlns="http://br-automation.co.at/AS/Package">
+  <Objects>
+    <Object Type="Library" Language="Binary">omjson</Object>
+    <Object Type="Library" Language="Binary">databuffer</Object>
+    <Object Type="Library" Language="Binary">tcpcomm</Object>
+    <Object Type="Library" Language="Binary">bodyguard</Object>
+    <Object Type="Library" Language="Binary">persist</Object>
+    <Object Type="Library" Language="Binary">csvfilelib</Object>
+    <Object Type="Library" Language="Binary">fiowrap</Object>
+    <Object Type="Library" Language="Binary">hmitools</Object>
+    <Object Type="Library" Language="Binary">ringbuflib</Object>
+    <Object Type="Library" Language="Binary">logthat</Object>
+    <Object Type="Library" Language="Binary">errorlib</Object>
+    <Object Type="Library" Language="Binary">vartools</Object>
+    <Object Type="Library" Language="Binary">stringext</Object>
+  </Objects>
+</Package>

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Library Version="4.10.2" SubType="Binary" Description="This library contains control algorithms." xmlns="http://br-automation.co.at/AS/Library">
+  <Files>
+    <File>LoopConR.var</File>
+    <File>LoopConR.typ</File>
+    <File>LoopConR.fun</File>
+  </Files>
+  <Dependencies>
+    <Dependency ObjectName="sys_lib" />
+    <Dependency ObjectName="brsystem" />
+  </Dependencies>
+</Library>

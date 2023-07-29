@@ -1,0 +1,24 @@
+(********************************************************************
+ * COPYRIGHT --  
+ ********************************************************************
+ * Program: FirstInitCProg
+ * File: FirstInitCProg.var
+ * Author: ScismD
+ * Created: January 07, 2014
+ ********************************************************************
+ * Local variables of program FirstInitCProg
+ ********************************************************************)
+VAR CONSTANT
+	NUM_FILEDEVICES : USINT := 4;
+	MAI_FILEDEVICES : USINT := NUM_FILEDEVICES-1;
+END_VAR
+VAR
+	simCheckDevLink : DevLink := (0);
+	fileDeviceDevLink : ARRAY[0..MAI_FILEDEVICES] OF DevLink := [4(0)];
+	fileDevice : ARRAY[0..MAI_FILEDEVICES] OF STRING[20] := [4('')];
+	directory : ARRAY[0..MAI_FILEDEVICES] OF STRING[320] := [4('')];
+	parameters : ARRAY[0..MAI_FILEDEVICES] OF STRING[320] := [4('')];
+	i : DINT := 0;
+	indexString : STRING[320] := '';
+	axisString : STRING[320] := '';
+END_VAR

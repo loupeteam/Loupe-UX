@@ -1,0 +1,9 @@
+Copyright 2019 Loupe
+
+This software is licensed under the Loupe Software License Agreement.
+Please contact Loupe for information.
+
+Portions of this software stringlcat is licensed under BSD-3-Clause.
+See https://spdx.org/licenses/BSD-3-Clause.html
+
+stringlcat : Copyright (c) 1998 Todd C. Miller <Todd.Miller@courtesan.com>

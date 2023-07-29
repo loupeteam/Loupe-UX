@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+	<!-- Make the entire app run from within the node modules folder -->
+	<base href="../node_modules/">
+
+	<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+	<title>Test Components</title>
+</head>
+
+<body>
+
+	<!-- Begin page content - This is a placeholder that widgets will load the page into after loading-->
+	<div class="container" id="main">
+
+	</div>
+
+	<footer class="footer">
+		<div class="inline-left">
+			<p class="text-muted">&copy; Loupe</p>
+		</div>
+	</footer>
+
+	<script src="jquery/dist/jquery.min.js" onload="if('undefined' != typeof module) window.$ = window.jQuery = module.exports;"></script> -->
+	<script src="bootstrap/dist/js/bootstrap.min.js"></script>
+
+	<!-- include WebHMI -->
+	<script src="@loupeteam/webhmi/webhmi.js"></script>
+	<script src="@loupeteam/webhmi/webhmi-data-bind.js"></script>
+	<link  href="@loupeteam/webhmi/webhmi.css" rel="stylesheet">
+
+	<!-- we require manually loading  before the widget system handlebars -->
+	<script src="handlebars/dist/handlebars.min.js" ></script>
+
+	<!--Default widget setup, you may need to copy this file 
+		into your app and modify it if you have a special case-->
+	<script src="@loupeteam/widgets/index.js" type="module"></script>
+
+	<!-- app -->
+	<script src="app/src/testAlwaysWrite.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Library SubType="binary" Description="The AsIOTime library is used to generate time stamps based on system time of the I/O system." xmlns="http://br-automation.co.at/AS/Library">
+  <Files>
+    <File>AsIOTime.fun</File>
+    <File>AsIOTime.typ</File>
+    <File>AsIOTime.var</File>
+  </Files>
+</Library>

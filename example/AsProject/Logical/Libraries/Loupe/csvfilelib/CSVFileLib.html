@@ -1,0 +1,555 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<style>
+body {
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  padding: 30px; }
+
+body > *:first-child {
+  margin-top: 0 !important; }
+body > *:last-child {
+  margin-bottom: 0 !important; }
+
+a {
+  color: #4183C4; }
+a.absent {
+  color: #cc0000; }
+a.anchor {
+  display: block;
+  padding-left: 30px;
+  margin-left: -30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative; }
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center;
+  text-decoration: none; }
+
+h1 tt, h1 code {
+  font-size: inherit; }
+
+h2 tt, h2 code {
+  font-size: inherit; }
+
+h3 tt, h3 code {
+  font-size: inherit; }
+
+h4 tt, h4 code {
+  font-size: inherit; }
+
+h5 tt, h5 code {
+  font-size: inherit; }
+
+h6 tt, h6 code {
+  font-size: inherit; }
+
+h1 {
+  font-size: 28px;
+  color: black; }
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #cccccc;
+  color: black; }
+
+h3 {
+  font-size: 18px; }
+
+h4 {
+  font-size: 16px; }
+
+h5 {
+  font-size: 14px; }
+
+h6 {
+  color: #777777;
+  font-size: 14px; }
+
+p, blockquote, ul, ol, dl, li, table, pre {
+  margin: 15px 0; }
+
+hr {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;
+  border: 0 none;
+  color: #cccccc;
+  height: 4px;
+  padding: 0;
+}
+
+body > h2:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+  body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0; }
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+  margin-top: 0; }
+
+li p.first {
+  display: inline-block; }
+li {
+  margin: 0; }
+ul, ol {
+  padding-left: 30px; }
+
+ul :first-child, ol :first-child {
+  margin-top: 0; }
+
+dl {
+  padding: 0; }
+  dl dt {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0;
+    margin: 15px 0 5px; }
+    dl dt:first-child {
+      padding: 0; }
+    dl dt > :first-child {
+      margin-top: 0; }
+    dl dt > :last-child {
+      margin-bottom: 0; }
+  dl dd {
+    margin: 0 0 15px;
+    padding: 0 15px; }
+    dl dd > :first-child {
+      margin-top: 0; }
+    dl dd > :last-child {
+      margin-bottom: 0; }
+
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777; }
+  blockquote > :first-child {
+    margin-top: 0; }
+  blockquote > :last-child {
+    margin-bottom: 0; }
+
+table {
+  padding: 0;border-collapse: collapse; }
+  table tr {
+    border-top: 1px solid #cccccc;
+    background-color: white;
+    margin: 0;
+    padding: 0; }
+    table tr:nth-child(2n) {
+      background-color: #f8f8f8; }
+    table tr th {
+      font-weight: bold;
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr td {
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr th :first-child, table tr td :first-child {
+      margin-top: 0; }
+    table tr th :last-child, table tr td :last-child {
+      margin-bottom: 0; }
+
+img {
+  max-width: 100%; }
+
+span.frame {
+  display: block;
+  overflow: hidden; }
+  span.frame > span {
+    border: 1px solid #dddddd;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin: 13px 0 0;
+    padding: 7px;
+    width: auto; }
+  span.frame span img {
+    display: block;
+    float: left; }
+  span.frame span span {
+    clear: both;
+    color: #333333;
+    display: block;
+    padding: 5px 0 0; }
+span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-center > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: center; }
+  span.align-center span img {
+    margin: 0 auto;
+    text-align: center; }
+span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px 0 0;
+    text-align: right; }
+  span.align-right span img {
+    margin: 0;
+    text-align: right; }
+span.float-left {
+  display: block;
+  margin-right: 13px;
+  overflow: hidden;
+  float: left; }
+  span.float-left span {
+    margin: 13px 0 0; }
+span.float-right {
+  display: block;
+  margin-left: 13px;
+  overflow: hidden;
+  float: right; }
+  span.float-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: right; }
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px; }
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent; }
+
+.highlight pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+  pre code, pre tt {
+    background-color: transparent;
+    border: none; }
+
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+<title>CSVFileLib Library</title>
+
+</head>
+<body>
+<p><img src="http://automationresourcesgroup.com/images/arglogo254x54.png" alt="Automation Resources Group" /></p>
+
+<h1>CSVFileLib Library</h1>
+
+<p>The CSVFileLib library provides a simple, intuitive interface for writing and reading variable values to and from comma separated value (CSV) files.</p>
+
+<p>Files offer power fail safe data storage. They have the advantage over permanent memory that they are also protected against battery failure. Formatting files into a plain text CSV format allows them to be easily edited externally and then imported to the machine. The ability to open and save CSV files can be very useful for machine configuration and recipe storage, in particular.</p>
+
+<p>Issues often arise during machine commissioning that are not apparent during development. Also, customer specific requirements can surface at any time during a machine’s lifecycle. Flexible machine configuration can provide solutions to these kinds of problems without requiring a machine software update or an engineer site visit.</p>
+
+<p>The CSVFileLib library allows you to store machine configuration information in a plain text file that can be used to set the values of variables on the machine. And, since the file contains the names of the variables to be written, adding a new configuration item is as simple as adding a line of text to the file; nothing else needs to be modified, and no software updates are required.</p>
+
+<p>The library is also robust to errors that might occur while handling  CSV files. If a line in the file cannot be processed for any reason (for example, a mistyped variable name), that error is logged, and the next line is processed. The log information is available in a text file that can be useful in correcting the error.</p>
+
+<p>It is also possible to save current variable values back to a CSV file, allowing you to implement machine configuration or recipe editing interfaces on the machine itself.</p>
+
+<p>The library interface and file format were carefully designed to be as straight-forward and powerful as possible, allowing this functionality to be easily integrated into any project.</p>
+
+<h1>Usage</h1>
+
+<p>The CSVFileLib functionality can be integrated into any project using a data structure and two function calls. HMI functionality requires another data structure and function call, as well as corresponding Visual Components elements. For an example of how to use this in a project, please see the ARG Automation Studio Starter Project at <a href="https://github.com/autresgrp/StarterProject">https://github.com/autresgrp/StarterProject</a>.</p>
+
+<h2>Initialization</h2>
+
+<p>To access files via Automation Runtime, a file device must be configured in the system configuration. To use the CSVFileLib functionality, a variable must be declared of type <strong>CSVFileMgr_typ</strong>. This variable must then be initialized in the INIT routine of your program. Initialization consists of optionally setting configuration settings and calling the <strong>CSVFn_Init()</strong> function.</p>
+
+<pre><code>CSVFn_Init( CSVFileMgr );
+</code></pre>
+
+<h2>Cyclic Operation</h2>
+
+<p>The <strong>CSVFn_Cyclic()</strong> function must be called in the CYCLIC routine of your program once every scan, unconditionally. This function should not be called on the same CSVFileMgr variable more than once per scan.</p>
+
+<pre><code>CSVFn_Cyclic( CSVFileMgr );
+</code></pre>
+
+<p>The CSVFileMgr structure can then be used as an interface for higher level programs.</p>
+
+<pre><code>IF( LoadConfiguration )THEN
+    LoadConfiguration:=             0;
+    CSVFileMgr.IN.PAR.FileDevice:=  'CF_User';
+    CSVFileMgr.IN.PAR.FileName:=    'config.csv';
+    CSVFileMgr.IN.CMD.OpenFile:=    1;
+END_IF
+
+IF( UpdateConfiguration )THEN
+    UpdateConfiguration:=           0;
+    CSVFileMgr.IN.PAR.FileDevice:=  'CF_User';
+    CSVFileMgr.IN.PAR.FileName:=    'config.csv';
+    CSVFileMgr.IN.CMD.UpdateFile:=  1;
+END_IF
+
+IF( OpenRecipe )THEN
+    OpenRecipe:=                    0;
+    CSVFileMgr.IN.PAR.FileDevice:=  'CF_User';
+    CSVFileMgr.IN.PAR.FileName:=    'Recipe.csv';
+    CSVFileMgr.IN.CMD.OpenFile:=    1;
+END_IF
+
+IF( SaveRecipe )THEN
+    SaveRecipe:=                        0;
+    CSVFileMgr.IN.PAR.FileDevice:=      'CF_User';
+    CSVFileMgr.IN.PAR.FileName:=        'NewRecipe.csv';
+    CSVFileMgr.IN.PAR.VariableList[0]:= 'myGlobalRecipe';
+    CSVFileMgr.IN.CMD.SaveVariableListToFile:=  1;
+END_IF
+
+IF( DeleteRecipe )THEN
+    DeleteRecipe:=                  0;
+    CSVFileMgr.IN.PAR.FileDevice:=  'CF_User';
+    CSVFileMgr.IN.PAR.FileName:=    'OldRecipe.csv';
+    CSVFileMgr.IN.CMD.DeleteFile:=  1;
+END_IF
+
+IF( CSVFileMgr.OUT.STAT.Done )THEN
+    CSVFileMgr.IN.CMD.OpenFile:=    0;
+    CSVFileMgr.IN.CMD.UpdateFile:=  0;
+    CSVFileMgr.IN.CMD.SaveVariableListToFile:=  0;
+    CSVFileMgr.IN.CMD.DeleteFile:=  0;
+END_IF
+</code></pre>
+
+<h2>File Format</h2>
+
+<p>The file format used by the CSVFileLib library is</p>
+
+<pre><code>//Variable Name, Value, Optional Description
+myGlobalVar, 1.0, This is a global variable
+myTask:myLocalVar, 2.0, This is a local variable
+myGlobalString, "", This is how to store an empty string value
+</code></pre>
+
+<p>Commas are not allowed in the variable name or value fields, as they will be misinterpreted as separators. Commas are allowed in the optional item description field, however. Any line beginning with '//' will be considered a comment, and the library is flexible with respect to white space padding in the fields (meaning tabs and spaces can be used to align columns if desired). Leading and trailing quotation marks will be ignored, with the exception that they are necessary if you wish to store an empty string value. The file can be generated and modified using any plain text editor or spreadsheet program which supports CSV files.</p>
+
+<h2>HMI Integration</h2>
+
+<p>If file handling must be done by a machine operator, the HMI interface can be used. The <strong>CSVFileMgr_HMI</strong> structure is designed to make HMI development as simple as possible. The structure elements are organized by HMI object (button, dialog box, etc.), and the basic element names are consistent with Visual Components property names. The <strong>CSVFn_HMI_Cyclic()</strong> function handles setting and resetting the CSVFileMgr inputs appropriately. It also takes care of locking the HMI buttons if the CSVFileMgr is busy. This architecture makes it very easy to access files both from programs (on machine startup, for example) and from the HMI.</p>
+
+<p>For an example of a fully implemented HMI interface, please see the ARG Automation Studio Starter Project at <a href="https://github.com/autresgrp/StarterProject">https://github.com/autresgrp/StarterProject</a>.</p>
+
+<h1>Reference</h1>
+
+<h2>Log File</h2>
+
+<p>Certain log information is recorded during every file operation and stored in a plain text file with the name specified in <strong>IN.CFG.LogFileName</strong>. If no name is given, then the default file name is <strong>.csvlog</strong>. This log information can be very useful for locating any errors with the CSV file. If multiple <strong>CSVFileMgr</strong> variables access the same file device, then different log file names should be specified for each. This ensures that different <strong>CSVFileMgr</strong> variables do not try to access the same file at the same time.</p>
+
+<h2>CSVFileMgr Data Structure</h2>
+
+<p>The main data structure of the CSVFileLib library is the CSVFileMgr structure (CSVFileMgr_typ data type). This provides the interface to higher level programs and also stores all necessary internal information. It is divided into inputs (CSVFileMgr.IN), outputs (CSVFileMgr.OUT), and internals (CSVFileMgr.Internal).</p>
+
+<h3>Inputs</h3>
+
+<p>The CSVFileMgr inputs are divided into commands (IN.CMD), parameters (IN.PAR), and configuration settings (IN.CFG). Commands are used to initiate operations, and parameters and configuration settings determine how the commands will be processed. The difference between parameters and configuration settings is that configuration settings are generally set only once, while parameters might be set any time a command is issued.</p>
+
+<h4>Commands</h4>
+
+<ul>
+<li><strong>OpenFile</strong> - Read variable values from a file.</li>
+<li><strong>UpdateFile</strong> - Update an existing file with current variable values. The variables to be written to the file are taken from the file itself.</li>
+<li><strong>SaveVariableListToFile</strong> - Write variable values to a file. The variables to be written to the file are taken from <strong>IN.PAR.VariableList</strong>.</li>
+<li><strong>DeleteFile</strong> - Delete a file.</li>
+<li><strong>AcknowledgeError</strong> - Acknowledge any errors that occur during file operations.</li>
+</ul>
+
+
+<h4>Parameters</h4>
+
+<ul>
+<li><strong>FileDevice</strong> - The file device where the file is located.</li>
+<li><strong>FileName</strong> - The name of the file, including any file extension.</li>
+<li><strong>VariableList</strong> - The list of variable names to write to the file for <strong>SaveVariableListToFile</strong> operations. It is possible to write basic variables, arrays, and structures to the file. The list will only be processed until the first empty variable name is found, so the <strong>VariableList</strong> must not be sparse.</li>
+<li><strong>Prefix</strong> - This will be added to the beginning of any variable names read from a file, and removed from the beginning of any variable names saved to a file. This makes it possible to save the contents of one variable to a file and load them to a different variable later. <strong>Prefix</strong> should always be the name of a structure. When using a <strong>Prefix</strong> for <strong>SaveVariableListToFile</strong> operations, all of the items in <strong>VariableList</strong> should begin with <strong>Prefix</strong>.</li>
+</ul>
+
+
+<h4>Configuration Settings</h4>
+
+<ul>
+<li><strong>MaxFileSize</strong> - The maximum file size that can be handled, in bytes. The default value is 100000 bytes.</li>
+<li><strong>MaxLineLength</strong> - The maximum length of one line in the file, including newline characters. The default value is 500 characters.</li>
+<li><strong>MaxLinesPerScan</strong> - The maximum number of lines that will be processed in one scan. The default value is 500 lines.</li>
+<li><strong>VerboseLog</strong> - If <strong>VerboseLog</strong> is set to 0, then only errors and final status information will be written to the log file. If <strong>VerboseLog</strong> is set to 1, then additional status information will be written to the log file, including what is parsed from the file and additional variable information. The default value is 0.</li>
+<li><strong>LogFileName</strong> - The file name to use for the log file. If no name is given, then the default log file name is <strong>.csvlog</strong>.</li>
+<li><strong>DisableLogging</strong> - Disable logging of file actions in the AR logging system when set to 1. The default value is 0.</li>
+<li><strong>LoggerName</strong> - Name of the logger to use. For details, see the help for the LogThat, BRSE_ARL, and AsArLog libraries. The default value is 'Files.'</li>
+</ul>
+
+
+<h3>Outputs</h3>
+
+<p>The CSVFileMgr outputs contain status information (OUT.STAT).</p>
+
+<ul>
+<li><strong>Busy</strong> - Operation is currently being processed.</li>
+<li><strong>Done</strong> - Operation completed successfully. <strong>Done</strong> is reset when the input command is reset.</li>
+<li><strong>Error</strong> - Error occurred during operation. <strong>Error</strong> is reset with the <strong>AcknowledgeError</strong> command.</li>
+<li><strong>ErrorID</strong> - Current error ID number.</li>
+<li><strong>ErrorString</strong> - Current error text information.</li>
+<li><strong>ErrorLevel</strong> - Current error level.</li>
+<li><strong>ErrorState</strong> - State in which the error occurred.</li>
+<li><strong>State</strong> - Current state of the operation.</li>
+</ul>
+
+
+<h2>CSVFileMgr_HMI Data Structure</h2>
+
+<p>The CSVFileMgr_HMI data structure is organized based on HMI objects. It is divided into main page elements (CSVFileMgr_HMI.Main), file dialog box elements (CSVFileMgr_HMI.DialogBox), delete confirmation, progress, and error status elements (CSVFileMgr_HMI.DeleteConfirm, CSVFileMgr_HMI.Progress, CSVFileMgr_HMI.ErrorStatus), text snippets (CSVFileMgr_HMI.TextSnippets), and internals (CSVFileMgr_HMI.Internal).</p>
+
+<p>This data structure relies on basic data types defined in the <strong>HMI_Basic</strong> library. Please see the <strong>HMI_Basic</strong> documentation for a description of these fundamental types.</p>
+
+<h3>Main Page Elements</h3>
+
+<p>These elements are mapped to items on the main file handling page of the HMI.</p>
+
+<ul>
+<li><strong>OpenFile</strong> - Data points for the Open button.</li>
+<li><strong>UpdateFile</strong> - Data points for the Update button.</li>
+<li><strong>SaveVariableListToFile</strong> - Data points for the Save button.</li>
+<li><strong>DeleteFile</strong> - Data points for the Delete button.</li>
+</ul>
+
+
+<h3>Dialog Box Layer Elements</h3>
+
+<p>These elements are mapped to items on a layer containing the file action (Open, Update, Save, Delete) dialog box.</p>
+
+<ul>
+<li><strong>StatusDP</strong> - Status data point used for controlling layer visibility.</li>
+<li><strong>FileNameList</strong> - List of files on the file device to connect to the file name listbox.</li>
+<li><strong>FileNameListbox</strong> - Data points for the file name listbox.</li>
+<li><strong>FileNameTextInput</strong> - Data points for the file name input box.</li>
+<li><strong>Action</strong> - Data points for the Action button used to confirm Open, Update, Save, and Delete operations.</li>
+<li><strong>Cancel</strong> - Data points for the Cancel button.</li>
+<li><strong>Refresh</strong> - Data points for the Refresh button used to refresh the file list.</li>
+<li><strong>PageUp</strong> - Data points for the Page Up button.</li>
+<li><strong>PageDown</strong> - Data points for the Page Down button.</li>
+</ul>
+
+
+<h3>Delete Confirmation Layer Elements</h3>
+
+<p>These elements are mapped to a layer confirming file deletion.</p>
+
+<ul>
+<li><strong>StatusDP</strong> - Status data point used for controlling layer visibility.</li>
+<li><strong>Yes</strong> - Data points for the Yes button (confirming file deletion).</li>
+<li><strong>No</strong> - Data points for the No button (cancelling file deletion).</li>
+</ul>
+
+
+<h3>Progress Layer Elements</h3>
+
+<p>These elements are mapped to a layer showing progress while opening, saving, or deleting a file.</p>
+
+<ul>
+<li><strong>StatusDP</strong> - Status data point used for controlling layer visibility.</li>
+<li><strong>Progress</strong> - Counter showing progress. Counts up indefinitely until the operation is done.</li>
+</ul>
+
+
+<h3>Error Status Layer Elements</h3>
+
+<p>These elements are mapped to a layer showing error status.</p>
+
+<ul>
+<li><strong>StatusDP</strong> - Status data point used for controlling layer visibility.</li>
+<li><strong>AcknowledgeError</strong> - Data points for Acknowledge Error button.</li>
+</ul>
+
+
+<h3>Text Snippets</h3>
+
+<p>These elements are mapped to text snippets used by some of the objects above.</p>
+
+<ul>
+<li><strong>FileName</strong> - File name used for delete confirmation layer.</li>
+<li><strong>Action</strong> - Name of action to be used on dialog box layer (Open, Save, Delete).</li>
+<li><strong>ProgressLabel</strong> - Label for progress layer (Opening…, Saving…, Deleting…)</li>
+<li><strong>ErrorID</strong> - Error ID number for error status layer.</li>
+<li><strong>ErrorString</strong> - Error text for error status layer.</li>
+</ul>
+
+
+<h2>Error ID Numbers</h2>
+
+<ul>
+<li>50000 - CSV_ERR_INVALIDINPUT - Invalid function input.</li>
+<li>50002 - CSV_ERR_MEMALLOC - Error allocating memory. Check IN.CFG.MaxFileSize and MaxLineLength.</li>
+<li>50003 - CSV_ERR_NOTINITIALIZED - CSVFileMgr is not initialized. Call CSVFn_Init() in the initialization routine of your task.</li>
+<li>50004 - CSV_ERR_LINEFAILURE - Error occurred while parsing file. Check log for details.</li>
+<li>50005 - CSV_ERR_BUFFERFULL - Maximum file size reached. Check IN.CFG.MaxFileSize.</li>
+</ul>
+
+</body>
+</html>

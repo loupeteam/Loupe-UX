@@ -1,0 +1,15 @@
+{
+  "name": "@loupeteam/databuffer",
+  "version": "0.1.1",
+  "description": "Loupe's databuffer library for Automation Runtime",
+  "homepage": "https://loupeteam.github.io/Sandbox/libraries/databuffer.html",
+  "scripts": {},
+  "keywords": [],
+  "author": "Loupe",
+  "license": "Loupe Software License Agreement",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loupeteam/databuffer"
+  },
+  "dependencies": {}
+}

@@ -1,0 +1,18 @@
+(********************************************************************
+ * COPYRIGHT --  Automation Resources Group
+ ********************************************************************
+ * Library: FIOWrap
+ * File: FIOWrap.var
+ * Author: blackburnd
+ * Created: June 18, 2009
+ ********************************************************************
+ * Constants of library FIOWrap
+ ********************************************************************)
+VAR CONSTANT
+	FIOWRAP_STRLEN_ERROR : USINT := 120;
+	FIOWRAP_NUM_DELETE : USINT := 10;
+	FIOWRAP_MAI_DELETE : USINT := FIOWRAP_NUM_DELETE-1;
+	FIOWRAP_STRLEN_NAME : UINT := 260;
+	FIOWRAP_STAT_OK : UINT := 0;
+	FIOWRAP_STAT_DISABLED : UINT := 65534;
+END_VAR

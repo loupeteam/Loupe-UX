@@ -1,0 +1,33 @@
+(********************************************************************
+ * COPYRIGHT --  
+ ********************************************************************
+ * Library: VarInfo
+ * File: VarInfo.var
+ * Author: davidblackburn
+ * Created: June 02, 2014
+ ********************************************************************
+ * Constants of library VarInfo
+ ********************************************************************)
+VAR CONSTANT
+	VAR_STRLEN_NAME : USINT := 120;
+	VAR_STRLEN_VALUE : USINT := 120;
+	VAR_MAI_MEMBERS : UINT := 49;
+	VAR_MAI_VARLIST : USINT := 99;
+END_VAR
+(*Data type limits*)
+VAR CONSTANT
+	VAR_MIN_SINT : DINT := -128;
+	VAR_MAX_SINT : DINT := 127;
+	VAR_MIN_INT : DINT := -32768;
+	VAR_MAX_INT : DINT := 32767;
+	VAR_MIN_DINT : DINT := -2147483647;
+	VAR_MAX_DINT : DINT := 2147483647;
+	VAR_MIN_USINT : DINT := 0;
+	VAR_MAX_USINT : DINT := 255;
+	VAR_MIN_UINT : DINT := 0;
+	VAR_MAX_UINT : DINT := 65535;
+	VAR_MIN_UDINT : UDINT := 0;
+	VAR_MAX_UDINT : UDINT := 4294967295;
+	VAR_MIN_REAL : REAL := -3.4E038;
+	VAR_MAX_REAL : REAL := 3.4E038;
+END_VAR

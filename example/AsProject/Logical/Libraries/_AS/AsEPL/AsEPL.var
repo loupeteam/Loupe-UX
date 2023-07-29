@@ -1,0 +1,15 @@
+                                                                      
+VAR CONSTANT
+	ERR_ASEPL_BASE	: UINT	:= 31340;				(*base error number*)
+	ERR_ASEPL_WRONG_DEVICE	: UINT	:= 31341;		(*specified device not a POWERLINK interface*)
+	ERR_ASEPL_MN_ONLY	: UINT	:= 31342;			(*function can only be executed on an MN (managing node)*)
+	ERR_ASEPL_CN_ONLY	: UINT	:= 31343;			(*function can only be executed on a CN (controlled node)*)
+	ERR_ASEPL_ACCESS_FAILED	: UINT	:= 31344;		(*read or write access failed*)
+	ERR_ASEPL_PARAM_OUTOFRANGE : UINT := 31345;		(*one or more parameters out of range*)
+	ERR_ASEPL_INDEX_EXISTS : UINT := 31346;			(*index already exists*)
+	ERR_ASEPL_SUBINDEX_EXISTS : UINT := 31347;		(*subindex already exists*)
+	ERR_ASEPL_INDEX_DOESNOTEXIST : UINT := 31348;	(*index does not exist*)
+	ERR_ASEPL_SUBINDEX_DOESNOTEXIST : UINT := 31349; (*subindex does not exists*)
+	ERR_ASEPL_NILPOINTER : UINT := 31392;  (*nil pointer supplied*)
+	ERR_ASEPL_NOT_IMPLEMENTED	: UINT	:= 31399; (*error code for non-implemented functionality*)
+END_VAR

@@ -1,0 +1,15 @@
+(********************************************************************
+ * COPYRIGHT --  
+ ********************************************************************
+ * Library: Persist
+ * File: Persist.var
+ * Author: davidblackburn
+ * Created: October 04, 2013
+ ********************************************************************
+ * Constants of library Persist
+ ********************************************************************)
+VAR CONSTANT
+	PERSIST_MAI_VARLIST : USINT := 99;
+	PERSIST_STRLEN_VARNAME : USINT := 120;
+	PERSIST_STRLEN_ERRORSTRING : UINT := 320;
+END_VAR

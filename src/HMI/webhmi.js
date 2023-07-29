@@ -70,12 +70,12 @@ WEBHMI.Machine = function (options) {
 
 	/** @type {Machine_Options} */
 	var settings;
-
+	let hostname = typeof location !== "undefined" ? location.hostname : "localhost";
 	// Set defaults and extend with options, without modifying defaults
 	/** @type {Machine_Options} */
 	var defaults = {
 		protocol: 'ws',
-		ipAddress: location.hostname,
+		ipAddress: hostname,
 		port: 8000,
 		timeout_ms: 250,
 		maxRetryCount: 5,

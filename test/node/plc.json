@@ -1,0 +1,20 @@
+{
+  "MyTast:PV": {
+    "test": "test"
+  },
+  "demo:test": {
+    "command": "true",
+    "slider": 9.775533108866442,
+    "random": 38.032
+  },
+  "gMotorBasic": [
+    {
+      "OUT": {
+        "State": {
+          "PowerOn": 0
+        }
+      }
+    }
+  ],
+  "undefined": 0
+}

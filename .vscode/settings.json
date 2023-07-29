@@ -2,4 +2,11 @@
     "cSpell.words": [
         "WEBHMI"
     ]
+    "liveServer.settings.ignoreFiles": [
+        ".vscode/**",
+        "**/*.scss",
+        "**/*.sass",
+        "**/*.ts",
+        "./test/**",
+    ],
 }

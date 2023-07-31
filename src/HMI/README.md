@@ -3,6 +3,10 @@
 Documentation can be found at https://loupeteam.github.io/Sandbox/libraries/webhmi.html.
 
 ## Revision
+- 1.5.0 - Add a max frequency to cyclic reads
+	  	- Force cyclic reads between writes
+	  	- Fix copy/paste pv
+	  	- Remove processing of elements without valid plc variables
 - 1.4.0 - Add unit conversion feature for webhmi-num-value using
 		https://convert.js.org/ library
 		Add support for databinding to hmi-side data

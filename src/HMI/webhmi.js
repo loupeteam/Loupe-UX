@@ -4,7 +4,7 @@
 
 // Use uppercase namespace
 var WEBHMI = {
-	version: '1.4.1'
+	version: '1.5.1'
 };
 
 // export default WEBHMI
@@ -312,7 +312,7 @@ WEBHMI.Machine = function (options) {
 		read.reading = false;
 		read.retryCount = 0;
 		read.timeout = 0;
-
+		read.waiting = false
 		// read.lastRequestTime is the time of the last read request
 		read.lastRequestTime = 0;
 
@@ -510,13 +510,13 @@ WEBHMI.Machine = function (options) {
 					writeVariableList(write.context, write.variableList);
 					write.context = {};
 					write.variableList = {};
-				} else if (!WEBHMI.isEmptyObject(read.singleList[0]) && read.consecutiveSingleReads < 1 ) {
+				} else if (!read.waiting && !WEBHMI.isEmptyObject(read.singleList[0]) && read.consecutiveSingleReads < 1 ) {
 					read.consecutiveSingleReads++;
 					read.reading = true;
 					read.retryCount = 0;
 					readVariableList(read.singleList[0]);
 					read.singleList[0] = {};
-				} else if (!WEBHMI.isEmptyObject(read.cyclicList[0])) {
+				} else if (!read.waiting && !WEBHMI.isEmptyObject(read.cyclicList[0])) {
 					read.consecutiveSingleReads = 0;
 					write.consecutiveWrites = 0;
 					read.reading = true;
@@ -673,7 +673,11 @@ WEBHMI.Machine = function (options) {
 					var timeSinceLastMessage = Date.now() - read.lastRequestTime;
 					var timeToWait = (1/settings.maxMessageFrequency)*1000 - timeSinceLastMessage;
 					if (timeToWait < 0) timeToWait = 0;
-					setTimeout(processQueue, timeToWait);
+					read.waiting = true
+					setTimeout(()=>{
+						read.waiting =false;
+						processQueue()
+					}, timeToWait);
 				}
 
 			};

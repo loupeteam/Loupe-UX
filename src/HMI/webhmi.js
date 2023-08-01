@@ -525,9 +525,12 @@ WEBHMI.Machine = function (options) {
 				}
 				else{
 					//If there was a write or single read, then we need to process the queue again
-					if( read.consecutiveSingleReads > 0 || write.consecutiveWrites > 0 ){
-						read.consecutiveSingleReads = 0;
+					if( write.consecutiveWrites > 0 ){
 						write.consecutiveWrites = 0;
+						processQueue();
+					}
+					else if( read.consecutiveSingleReads > 0 && !read.waiting ){
+						read.consecutiveSingleReads = 0;
 						processQueue();
 					}
 				}

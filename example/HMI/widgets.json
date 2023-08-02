@@ -11,6 +11,10 @@
         {
             "name": "components",
             "file": "../views/components.handlebars"
+        },
+        {
+            "name": "pageData",
+            "file": "../views/pageDataTest.handlebars"
         }
     ],
     "libraries":[

@@ -1,0 +1,25 @@
+<script id="testData" type="text/x-handlebars-template">
+    <div data-page="test1">
+        <h1>Comms inactive</h1>
+        {{W "NumericInput" data-var-name="test.myvalue.x"}}
+        {{> components}}
+    </div>
+</script>
+
+<script id="testNoData" type="text/x-handlebars-template">
+    <div data-page="test3">
+        {{W "NumericInput" data-var-name="test.myvalue.x"}}
+        <div data-page="test2">
+            <h1>Comms inactive</h1>
+            {{> components}}
+        </div>
+    </div>
+</script>
+
+{{W "PageSelect" "Test Data" dom="testDataDom" template="testData"}}
+{{W "PageSelect" "Test No Data" dom="testDataDom" template="testNoData"}}
+<div id="testDataDom">
+{{> testData}}
+{{> testNoData}}
+
+</div>

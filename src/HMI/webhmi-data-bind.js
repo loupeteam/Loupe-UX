@@ -228,11 +228,12 @@ WEBHMI.getValue = function ($element) {
 	if (varName === undefined) {
 		return "No variable";
 	}
+	if( $element.attr( 'data-var-name-added' ) != varName){
+		$element.attr( 'data-var-name-added', varName)
+		localMachine.initCyclicPageRead( WEBHMI.getDataPage($element) ,varName); // this might cause bad behavior if the variable does not exist on the PLC.
+	}
 	
 	var varValue = localMachine.value(varName);
-	if (varValue === undefined) {
-		localMachine.initCyclicRead(varName); // this might cause bad behavior if the variable does not exist on the PLC.
-	}
 
 	return varValue;
 
@@ -247,12 +248,13 @@ WEBHMI.getHideValue = function ($element) {
 	if (varName === undefined) {
 		return "No variable";
 	}
+
+	if( $element.attr( 'data-var-name-added-hide' ) != varName){
+		$element.attr( 'data-var-name-added-hide', varName)
+		localMachine.initCyclicPageRead( WEBHMI.getDataPage($element) ,varName); // this might cause bad behavior if the variable does not exist on the PLC.
+	}
 	
 	var varValue = localMachine.value(varName);
-	if (varValue === undefined) {
-		localMachine.initCyclicRead(varName); // this might cause bad behavior if the variable does not exist on the PLC.
-	}
-
 	return varValue;
 
 }
@@ -266,14 +268,25 @@ WEBHMI.getLockValue = function ($element) {
 	if (varName === undefined) {
 		return "No variable";
 	}
+	if( $element.attr( 'data-var-name-lock-added' ) != varName){
+		$element.attr( 'data-var-name-lock-added', varName)
+		localMachine.initCyclicPageRead( WEBHMI.getDataPage($element) ,varName); // this might cause bad behavior if the variable does not exist on the PLC.
+	}
 	
 	var varValue = localMachine.value(varName);
-	if (varValue === undefined) {
-		localMachine.initCyclicRead(varName); // this might cause bad behavior if the variable does not exist on the PLC.
-	}
 
 	return varValue;
 
+}
+
+WEBHMI.getDataPage = function($element){
+	var page = $element[0].closest('[data-page]');
+	if ( page != null ) {
+		return page.getAttribute('data-page');
+	}
+	else{
+		return 'global'
+	}
 }
 
 WEBHMI.getUserLevel = function ($element) {
@@ -1004,6 +1017,15 @@ WEBHMI.addVarWriteEvents = function () {
 	// dropdown
 
 };
+WEBHMI.updatePageComms = function(){
+	WEBHMI.machines.forEach(machine => {
+		machine.getPageList().forEach(page=>{
+			if( page != 'global'){
+				machine.setPageEnable(page, document.querySelector( `[data-page=${page}]`) != null );
+			}
+		})
+	});
+}
 
 WEBHMI.observers = [];
 
@@ -1089,6 +1111,7 @@ WEBHMI.updateHMI = function () {
 	WEBHMI.updateTabs();
 	WEBHMI.updateHide();
 	WEBHMI.updateLock();
+	WEBHMI.updatePageComms();
 }
 
 WEBHMI.updateBindings = function () {

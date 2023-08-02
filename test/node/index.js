@@ -17,14 +17,18 @@ let plc = JSON.parse(rawdata);
 
 WEBHMI.extend(true, dataManager, plc);
 
+let newData = false
 //Intermittently write to the PLC to the file
 setInterval(() => {
-    fs.writeFile("./plc.json", JSON.stringify(dataManager, null, 2), function (err) {
-        if (err) {
-            return console.log(err);
-        }
-        console.log("The file was saved!");
-    });
+    if(newData){
+        newData = false;        
+        fs.writeFile("./plc.json", JSON.stringify(dataManager, null, 2), function (err) {
+            if (err) {
+                return console.log(err);
+            }
+            console.log("The file was saved!");
+        });    
+    }
 }, 1000);
 
 
@@ -37,15 +41,18 @@ wss.on('connection', function (ws) {
         console.log('received: %s', message);
         let msg = JSON.parse(message);
         if (msg.type == "write") {
-            console.log("Write request: " + msg.data);
             msg.type = "writeresponse";
             msg.data = setProcessVariable(msg.data);       
+            let resp = JSON.stringify(msg)     
+            // console.log('responding: ' + resp )
             ws.send(JSON.stringify(msg));
+            newData = true;
         }
         if (msg.type == "read") {
             msg.type = "readresponse";
             msg.data = getProcessVariable(msg.data);       
             let resp = JSON.stringify(msg)     
+            // console.log('responding: ' + resp )
             ws.send(resp);
         }
     });

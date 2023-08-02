@@ -40,7 +40,7 @@ if (typeof jQuery === 'undefined') {
 WEBHMI.extend = jQueryImport.extend;
 WEBHMI.isEmptyObject = jQueryImport.isEmptyObject;
 WEBHMI.each = jQueryImport.each;
-
+WEBHMI.machines = [];
 /**
  * The complete machine-options.
  * @typedef {Object} Machine_Options
@@ -64,6 +64,9 @@ WEBHMI.Machine = function (options) {
 	'use strict';
 
 	var thisMachine;
+
+	//Add this machine to the global list of machines
+	WEBHMI.machines.push(this) 
 
 	// Grab machine scope for lower functions
 	thisMachine = this;
@@ -296,10 +299,14 @@ WEBHMI.Machine = function (options) {
 		read.singleList[0] = {};
 		read.consecutiveSingleReads = 0;
 
+
+		//Active read list
+		read.activeCyclicList = {};
+
 		// read.cyclicList is the list of variables to be read from the PLC cyclically.
 		// It is persistent per page load.
 		read.cyclicList = [];
-		read.cyclicList[0] = {};
+		read.cyclicListPage = {};
 
 		// read.completeList is a list of all of the variables that have ever been read
 		// from the PLC.
@@ -450,11 +457,18 @@ WEBHMI.Machine = function (options) {
 
 		}
 		// writeVariableList()
-
-		function readVariableList(variableListObject) {
+		function getVariableListArray(variableList){
+			if( Array.isArray( variableList) ){
+				return variableList;
+			}
+			else{
+				return Object.getOwnPropertyNames(variableList);
+			}
+		}
+		function readVariableList(variableList) {
 
 			// Get the list of variables as a string array
-			var variableListArray = Object.getOwnPropertyNames(variableListObject);
+			var variableListArray = getVariableListArray(variableList);
 
 			ws.onerror = function (event) {
 
@@ -503,6 +517,7 @@ WEBHMI.Machine = function (options) {
 		// TODO: Add ability to handle multiple read list objects
 		function processQueue() {
 			if (!read.reading && !write.writing && ws.readyState === ws.OPEN) {
+				let list;
 				if (!WEBHMI.isEmptyObject(write.context) && write.consecutiveWrites < 1 ) {					
 					write.consecutiveWrites++;
 					write.writing = true;
@@ -516,12 +531,12 @@ WEBHMI.Machine = function (options) {
 					read.retryCount = 0;
 					readVariableList(read.singleList[0]);
 					read.singleList[0] = {};
-				} else if (!read.waiting && !WEBHMI.isEmptyObject(read.cyclicList[0])) {
+				} else if ( !read.waiting && (list = getNextReadList() ) ){
 					read.consecutiveSingleReads = 0;
 					write.consecutiveWrites = 0;
 					read.reading = true;
 					read.retryCount = 0;
-					readVariableList(read.cyclicList[0]);
+					readVariableList(list);
 				}
 				else{
 					//If there was a write or single read, then we need to process the queue again
@@ -537,6 +552,24 @@ WEBHMI.Machine = function (options) {
 			}
 		}
 		// processQueue()
+
+		function getNextReadList(){
+			let list = {}
+			let now = Date.now()
+			//Add the global list
+			for (const key in read.cyclicListPage) {
+				if (Object.hasOwnProperty.call(read.cyclicListPage, key)) {
+					const element = read.cyclicListPage[key];
+					if( element.enable ){
+						if( now - element.lastReadTime > element.minReadTime ){
+							element.lastReadTime = now
+							WEBHMI.extend( list, element.data ) 
+						}
+					}			
+				}
+			}
+			return getVariableListArray(list)
+		}
 
 		function processReadResponse(responseData) {
 
@@ -802,7 +835,7 @@ WEBHMI.Machine = function (options) {
 		function addToList(variableName, list) {
 
 			// Trivial implementation works just fine for now
-			list[0][variableName] = {};
+			list[variableName] = {};
 			return;
 
 			// TODO: Keep this around for later?
@@ -854,6 +887,18 @@ WEBHMI.Machine = function (options) {
 					}
 				}
 			}
+		}
+		thisConnection.getPage = function(pageSelector){
+			let cyclicListPage = read.cyclicListPage[pageSelector]
+			if( typeof cyclicListPage == 'undefined'){
+				read.cyclicListPage[pageSelector] = {enable:true, lastReadTime:0, minReadTime:0,  data: {}}
+				cyclicListPage = read.cyclicListPage[pageSelector]
+			}
+			return cyclicListPage
+		}
+
+		thisConnection.getPageList = function(){
+			return Object.getOwnPropertyNames(read.cyclicListPage);
 		}
 
 		// Public functions
@@ -963,6 +1008,9 @@ WEBHMI.Machine = function (options) {
 			if (typeof variableName === 'undefined' || variableName === '') {
 				return;
 			}
+			let cyclicListPage = thisConnection.getPage('global')
+			let cyclicList = cyclicListPage.data;
+
 
 			// If the variable name is an array, add all variables
 			if (Array.isArray(variableName)) {
@@ -979,15 +1027,15 @@ WEBHMI.Machine = function (options) {
 				//variableName = cleanVariableName(variableName);
 
 				// If the variable's parent is in the list, don't do anything
-				if (!parentIsInList(variableName, read.cyclicList)) {
+				if (!parentIsInList(variableName, cyclicList)) {
 					
 					// Add variable to cyclic and complete lists
-					addToList(variableName, read.cyclicList);
+					addToList(variableName, cyclicList);
 					read.completeList[0][variableName] = {};
 
 					// Delete any children already contained in the list
 					// TODO: This might break cyclic call backs?
-					deleteChildrenFromList(variableName, read.cyclicList);
+					deleteChildrenFromList(variableName, cyclicList);
 					
 					// Add the callback
 					// TODO: Callback is not added if the parent is in the list
@@ -1009,6 +1057,72 @@ WEBHMI.Machine = function (options) {
 		};
 		// addVariableReadCyclic()
 
+		//Set the page enabled/disabled
+		thisConnection.setPageEnable = function( pageSelector, enable ){
+			let cyclicListPage = thisConnection.getPage(pageSelector)
+			cyclicListPage.enable = enable
+		}
+		thisConnection.setPageMaxFrequency = function(  page, hz  ){
+			if( hz > 0){ 
+				thisConnection.getPage(page).minReadTime = (1/hz)*1000;
+			}			
+		}
+		//Add a cyclic read for variables on a specific page.
+		//This is used to prevent cyclic reads from being sent to the PLC
+		//when the page is not active.
+		thisConnection.addPageVariableReadCyclic = function ( pageSelector, variableName, callback) {
+
+			let cyclicListPage = thisConnection.getPage(pageSelector)
+			let cyclicList = cyclicListPage.data;
+			// Check for empty or undefined variableName
+			if (typeof variableName === 'undefined' || variableName === '') {
+				return;
+			}
+
+			// If the variable name is an array, add all variables
+			if (Array.isArray(variableName)) {
+				variableName.forEach(function (e) {
+					// Recurse
+					thisConnection.addVariableReadCyclic(e, callback);
+				});
+			}
+			else {
+
+				// Clean variable name
+				// TODO: This can cause bad behavior if a variable with a long
+				// task name is bound via data binding
+				//variableName = cleanVariableName(variableName);
+
+				// If the variable's parent is in the list, don't do anything
+				if (!parentIsInList(variableName, cyclicList)) {
+					
+					// Add variable to cyclic and complete lists
+					addToList(variableName, cyclicList);
+					read.completeList[0][variableName] = {};
+
+					// Delete any children already contained in the list
+					// TODO: This might break cyclic call backs?
+					deleteChildrenFromList(variableName, cyclicList);
+					
+					// Add the callback
+					// TODO: Callback is not added if the parent is in the list
+					if (callback) {
+						$(document).on(variableName + '-readcomplete', callback);
+					}
+				}
+			}
+
+			// TODO: This gets called a lot if you add an array of variables
+			// It does sometimes lead to an initial read of the first array element,
+			// followed by reads of the entire array.
+			// I doubt it will cause problems
+			processQueue();
+
+			// TODO: Would be nice to combine a lot of this functionality with addVariableRead.
+			// something like addVariableToList(listToAddTo, varName, callback)
+
+		}
+		
 		thisConnection.reconnect = openWebSocket;
 
 		thisConnection.onDisconnect = function () {
@@ -1054,9 +1168,25 @@ WEBHMI.Machine = function (options) {
 		thisMachine.connection.addVariableReadCyclic(varName, successCallback);
 	}
 
+	// Add a variable to be read cyclically
+	function initCyclicPageRead( page, varName, successCallback) {
+		thisMachine.connection.addPageVariableReadCyclic(page, varName, successCallback);
+	}
+
 	// Write a variable to the PLC once
 	function writeVariable(varName, value, successCallback) {
 		thisMachine.connection.addVariableWrite(varName, value, successCallback);
+	}
+
+	//Set the page enabled/disabled
+	function setPageEnable( page, enable ){
+		thisMachine.connection.setPageEnable( page, enable)
+	}
+	function getPageList(){
+		return thisMachine.connection.getPageList()
+	}
+	function setPageMaxFrequency( page, hz ){
+		thisMachine.connection.setPageMaxFrequency(page, hz)
 	}
 
 	// User level
@@ -1130,6 +1260,10 @@ WEBHMI.Machine = function (options) {
 	thisMachine.value = value;
 	thisMachine.readVariable = readVariable;
 	thisMachine.initCyclicRead = initCyclicRead;
+	thisMachine.initCyclicPageRead = initCyclicPageRead;
+	thisMachine.setPageEnable = setPageEnable;
+	thisMachine.getPageList = getPageList;
+	thisMachine.setPageMaxFrequency = setPageMaxFrequency;
 	thisMachine.writeVariable = writeVariable;
 	thisMachine.updateSettings = updateSettings
 

@@ -1,20 +1,13 @@
 {
-  "MyTast:PV": {
-    "test": "test"
-  },
-  "demo:test": {
-    "command": "true",
-    "slider": 9.775533108866442,
-    "random": 38.032
-  },
-  "gMotorBasic": [
-    {
-      "OUT": {
-        "State": {
-          "PowerOn": 0
-        }
-      }
+  "Main": {
+    "car": {
+      "year": 10,
+      "seat": 100,
+      "count": 0,
+      "Make": "Mazda",
+      "go": "true",
+      "Year": 100,
+      "seats": 100
     }
-  ],
-  "undefined": 0
+  }
 }

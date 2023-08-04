@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="MAIN" Id="{33004fde-0bc4-4105-96d8-1db4cd8dc6dd}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	Car : Car_typ;
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Car.count := Car.count + 1;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

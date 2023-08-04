@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ads-client": "^1.14.2",
     "jquery": "^3.7.0",
     "jsdom": "^22.1.0",
     "ws": "^8.13.0"

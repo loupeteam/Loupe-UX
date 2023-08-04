@@ -11,7 +11,12 @@
         {
             "name": "components",
             "file": "../views/components.handlebars"
+        },
+        {
+            "name": "basic",
+            "file": "../views/basic.handlebars"
         }
+
     ],
     "libraries":[
     ]

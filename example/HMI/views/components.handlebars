@@ -1,51 +1,51 @@
 
 {{#W 'Page'}}
 <h2>Demo Components</h2>
-    {{#widget 'LabeledColumns' 'Inputs' }}
-        {{widget 'LabeledLed' "Led"}}
-        {{widget 'LabeledTextInput' "TextInput"}}
-        {{widget 'LabeledNumericInput' "NumericInput"}}
-        {{widget 'Button' 'Set Button' 'set' }}
+    {{#widget 'Columns' 'Inputs' }}
+        {{widget 'Led' "Led"}}
+        {{widget 'Text' "TextInput"}}
+        {{widget 'Numeric' "NumericInput"}}
+        {{widget 'Button' 'Set Button' buttonType='set' }}
         {{widget 'Button' 'Toggle Button' 'toggle'  }}
         {{widget 'Button' 'Momentary Button' 'momentary' }}
-        {{widget 'LabeledLed' "side=right" side="right" }}
-        {{widget 'LabeledLed' "side=middle" side="middle" }}
-        {{widget 'LabeledLed' "side=left" side="left" }}    
+        {{widget 'Led' "side=right" side="right" }}
+        {{widget 'Led' "side=middle" side="middle" }}
+        {{widget 'Led' "side=left" side="left" }}    
         <div>mydiv</div>
-        {{#widget 'LabeledColumns' 'Test Elements' style="grid-column: span 3;" }}
+        {{#widget 'Columns' 'Test Elements' style="grid-column: span 3;" }}
             {{widget 'Button' 'Set Power' 'set' class='btn-primary' style="color:red" data-var-name="demo:test.command"}}
             {{widget 'Button' 'Toggle Power' 'toggle'  class='btn-danger' data-var-name="demo:test.command"}}
             {{widget 'Button' 'Momentary Power' 'momentary' class='btn-warning' data-var-name="demo:test.command"}}
-            {{#widget 'LabeledLed' data-var-name="demo:test.command" }}
+            {{#widget 'Led' data-var-name="demo:test.command" }}
                 <h3>
                     Home
                 </h3>
             {{/widget}}
-            {{#widget 'LabeledLed' data-var-name="demo:test.command" buttonType='toggle' buttonVarName='demo:test.command' }}
+            {{#widget 'Led' data-var-name="demo:test.command" buttonType='toggle' buttonVarName='demo:test.command' }}
             (Led Pv!=Button Pv)
             {{/widget}}
-            {{#widget 'LabeledLed' buttonType='toggle' data-var-name='demo:test.command' }}
+            {{#widget 'Led' buttonType='toggle' data-var-name='demo:test.command' }}
             (Led Pv==Button Pv)
             {{/widget}}
-            {{widget 'LabeledNumericInput' 'Numeric Input' data-var-name="demo:test.command"}}
-            {{widget 'LabeledNumericInput' 'Numeric Input' data-var-name="demo:test.slider"}}
-            {{widget 'LabeledTextInput' 'Text Input' data-var-name="gMotorBasic[0].OUT.State.PowerOn"}}
+            {{widget 'Numeric' 'Numeric Input' data-var-name="demo:test.command"}}
+            {{widget 'Numeric' 'Numeric Input' data-var-name="demo:test.slider"}}
+            {{widget 'Text' 'Text Input' data-var-name="gMotorBasic[0].OUT.State.PowerOn"}}
         {{/widget}}
     {{/widget}}                
-    {{#widget 'LabeledColumns' 'Sliders in a centered grid' centerItems=1}}
+    {{#widget 'Columns' 'Sliders in a centered grid' centerItems=1}}
         {{#widget 'Slider' '0' data-var-name="demo:test.slider" min=-10 max= 10}}
-            {{widget 'NumericInput' data-var-name="demo:test.slider" style="width:100px; margin-left:-30px;bottom:-150px;"}}
+            {{widget 'Numeric' data-var-name="demo:test.slider" style="width:100px; margin-left:-30px;bottom:-150px;"}}
         {{/widget}}
         {{widget 'Slider' style='height:200px;' data-var-name="demo:test.slider"}}
         {{widget 'Slider' style='height:100px;width:50px;' data-var-name="demo:test.slider"}}
         {{widget 'Slider' direction=1 data-var-name="demo:test.slider"}}
         {{#widget 'Slider' style='height:100px;width:300px;grid-column:span 2' direction=1 data-var-name="demo:test.slider"}}
-        {{widget 'NumericInput' data-var-name="demo:test.slider" style="width:100px;left:100px;top:30px; "}}
+        {{widget 'Numeric' data-var-name="demo:test.slider" style="width:100px;left:100px;top:30px; "}}
         {{/widget}}
         {{#widget 'Slider' style='height:30px;width:100%;grid-column:span 3' direction=1 data-var-name="demo:test.slider"}}
         {{/widget}}
     {{/widget}}
-    {{#widget 'LabeledColumns' 'ValueUpDown' }}
+    {{#widget 'Columns' 'ValueUpDown' }}
 
     {{W 'ValueUpDown' 1 data-var-name="demo:test.slider" buttonStyle='padding:10px' inputStyle="width:50px" }}
     {{W 'ValueUpDown'  data-var-name="demo:test.slider" buttonStyle='padding:20px' inputStyle="width:50px"}}
@@ -57,9 +57,9 @@
         <h3>Dropdowns</h3>
     {{#widget 'Columns' maxColumns=4}}
     <h3>Empty Dropdown</h3>
-    {{widget 'Dropdown'}}
+    {{widget 'DropdownTable'}}
     <h3>Non Selectable Options</h3>
-    {{#widget 'Dropdown'}}
+    {{#widget 'DropdownTable'}}
     <dropdown>
         <div>Not Option</div>
         <div class="option">Option 1</div>
@@ -141,7 +141,7 @@
     </options>
     {{/widget}}
 
-    {{#widget 'LabeledColumns' 'ValueUpDown in a centered grid' centerItems=1}}
+    {{#widget 'Columns' 'ValueUpDown in a centered grid' centerItems=1}}
         {{W 'ValueUpDown' 1 data-var-name="demo:test.slider" buttonStyle='padding:10px' }}
         {{W 'ValueUpDown'  data-var-name="demo:test.slider" buttonStyle='padding:20px' }}
         {{W 'ValueUpDown'  data-var-name="demo:test.slider" buttonStyle='padding:30px' }}
@@ -153,95 +153,95 @@
     <h3>Columns</h3>
     <h4>Std</h4>
     {{#widget 'Columns'}}
-        {{widget 'LabeledLed' "Input1"}}
-        {{widget 'LabeledLed' "Input2"}}
-        {{widget 'LabeledLed' "Input3"}}
-        {{widget 'LabeledLed' "Input4"}}
-        {{widget 'LabeledLed' "Input5"}}
-        {{widget 'LabeledLed' "Input6"}}
+        {{widget 'Led' "Input1"}}
+        {{widget 'Led' "Input2"}}
+        {{widget 'Led' "Input3"}}
+        {{widget 'Led' "Input4"}}
+        {{widget 'Led' "Input5"}}
+        {{widget 'Led' "Input6"}}
     {{/widget}}
 
     {{#widget 'Columns' maxColumns=2}}
-        {{#widget 'LabeledColumns' 'Box Title 1' maxColumns=2}}
-            {{widget 'LabeledLed' "Input1"}}
-            {{widget 'LabeledLed' "Input2"}}
-            {{widget 'LabeledLed' "Input3"}}
-            {{widget 'LabeledLed' "Input4"}}
+        {{#widget 'Columns' 'Box Title 1' maxColumns=2}}
+            {{widget 'Led' "Input1"}}
+            {{widget 'Led' "Input2"}}
+            {{widget 'Led' "Input3"}}
+            {{widget 'Led' "Input4"}}
         {{/widget}}
-        {{#widget 'LabeledColumns' 'Box Title 2' maxColumns=2 style='background-color:gray' }}
-            {{widget 'LabeledLed' "Input1" style='background-color:darkgray'}}
-            {{widget 'LabeledLed' "Input2" style='background-color:lightgray'}}
+        {{#widget 'Columns' 'Box Title 2' maxColumns=2 style='background-color:gray' }}
+            {{widget 'Led' "Input1" style='background-color:darkgray'}}
+            {{widget 'Led' "Input2" style='background-color:lightgray'}}
         {{/widget}}
-        {{#widget 'LabeledColumns' 'Box Title 3' maxColumns=2 side="left" style='background-color:gray' }}
-            {{widget 'LabeledLed' "Input1" style='background-color:darkgray'}}
-            {{widget 'LabeledLed' "Input2" style='background-color:lightgray'}}
+        {{#widget 'Columns' 'Box Title 3' maxColumns=2 side="left" style='background-color:gray' }}
+            {{widget 'Led' "Input1" style='background-color:darkgray'}}
+            {{widget 'Led' "Input2" style='background-color:lightgray'}}
         {{/widget}}
         {{#widget 'Columns' maxColumns=2}}
-            {{widget 'LabeledLed' "Input1"}}
-            {{widget 'LabeledLed' "Input2"}}
-            {{widget 'LabeledLed' "Input3"}}
-            {{widget 'LabeledLed' "Input4"}}
+            {{widget 'Led' "Input1"}}
+            {{widget 'Led' "Input2"}}
+            {{widget 'Led' "Input3"}}
+            {{widget 'Led' "Input4"}}
         {{/widget}}
-        {{widget 'LabeledLed' "Input1"}}
-        {{widget 'LabeledLed' "Input2"}}
-        {{widget 'LabeledLed' "Input3"}}
-        {{widget 'LabeledLed' "Input4"}}
+        {{widget 'Led' "Input1"}}
+        {{widget 'Led' "Input2"}}
+        {{widget 'Led' "Input3"}}
+        {{widget 'Led' "Input4"}}
     {{/widget}}
 
     {{#widget 'Columns' columnFlow=1 maxColumns=2}}
-        {{#widget 'LabeledColumns' 'Box Title 1' maxColumns=2}}
-            {{widget 'LabeledLed' "Input1"}}
-            {{widget 'LabeledLed' "Input2"}}
-            {{widget 'LabeledLed' "Input3"}}
-            {{widget 'LabeledLed' "Input4"}}
+        {{#widget 'Columns' 'Box Title 1' maxColumns=2}}
+            {{widget 'Led' "Input1"}}
+            {{widget 'Led' "Input2"}}
+            {{widget 'Led' "Input3"}}
+            {{widget 'Led' "Input4"}}
         {{/widget}}
-        {{#widget 'LabeledColumns' 'Box Title 2' maxColumns=2}}
-            {{widget 'LabeledLed' "Input1"}}
-            {{widget 'LabeledLed' "Input2"}}
-        {{/widget}}
-        {{#widget 'Columns' maxColumns=2}}
-            {{widget 'LabeledLed' "Input1"}}
-            {{widget 'LabeledLed' "Input2"}}
-            {{widget 'LabeledLed' "Input3"}}
-            {{widget 'LabeledLed' "Input4"}}
+        {{#widget 'Columns' 'Box Title 2' maxColumns=2}}
+            {{widget 'Led' "Input1"}}
+            {{widget 'Led' "Input2"}}
         {{/widget}}
         {{#widget 'Columns' maxColumns=2}}
-            {{widget 'LabeledLed' "Input1"}}
-            {{widget 'LabeledLed' "Input2"}}
-            {{widget 'LabeledLed' "Input3"}}
-            {{widget 'LabeledLed' "Input4"}}
+            {{widget 'Led' "Input1"}}
+            {{widget 'Led' "Input2"}}
+            {{widget 'Led' "Input3"}}
+            {{widget 'Led' "Input4"}}
+        {{/widget}}
+        {{#widget 'Columns' maxColumns=2}}
+            {{widget 'Led' "Input1"}}
+            {{widget 'Led' "Input2"}}
+            {{widget 'Led' "Input3"}}
+            {{widget 'Led' "Input4"}}
         {{/widget}}
 
 {{/widget}}
 
     <h4>columnFlow=1</h4>
     {{#widget 'Columns' columnFlow=1}}
-    {{widget 'LabeledLed' "Input1"}}
-    {{widget 'LabeledLed' "Input2"}}
-    {{widget 'LabeledLed' "Input3"}}
-    {{widget 'LabeledLed' "Input4"}}
-    {{widget 'LabeledLed' "Input5"}}
-    {{widget 'LabeledLed' "Input6"}}
+    {{widget 'Led' "Input1"}}
+    {{widget 'Led' "Input2"}}
+    {{widget 'Led' "Input3"}}
+    {{widget 'Led' "Input4"}}
+    {{widget 'Led' "Input5"}}
+    {{widget 'Led' "Input6"}}
     {{/widget}}
 
     <h4>maxColumns=2</h4>
     {{#widget 'Columns' maxColumns=2}}
-    {{widget 'LabeledLed' "Input1"}}
-    {{widget 'LabeledLed' "Input2"}}
-    {{widget 'LabeledLed' "Input3"}}
-    {{widget 'LabeledLed' "Input4"}}
-    {{widget 'LabeledLed' "Input5"}}
-    {{widget 'LabeledLed' "Input6"}}
+    {{widget 'Led' "Input1"}}
+    {{widget 'Led' "Input2"}}
+    {{widget 'Led' "Input3"}}
+    {{widget 'Led' "Input4"}}
+    {{widget 'Led' "Input5"}}
+    {{widget 'Led' "Input6"}}
     {{/widget}}
 
     <h4>Column BS</h4>
     {{#widget 'ColumnsBs' }}
-    {{widget 'LabeledLed' "Input1"}}
-    {{widget 'LabeledLed' "Input2"}}
-    {{widget 'LabeledLed' "Input3"}}
-    {{widget 'LabeledLed' "Input4"}}
-    {{widget 'LabeledLed' "Input5"}}
-    {{widget 'LabeledLed' "Input6"}}
+    {{widget 'Led' "Input1"}}
+    {{widget 'Led' "Input2"}}
+    {{widget 'Led' "Input3"}}
+    {{widget 'Led' "Input4"}}
+    {{widget 'Led' "Input5"}}
+    {{widget 'Led' "Input6"}}
     {{/widget}}
     
     <h3>Create object helper</h3>

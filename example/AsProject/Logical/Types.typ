@@ -7,6 +7,7 @@ TYPE
 		struct2 : TestStruct1;
 		struct3 : TestStruct1;
 		struct1 : TestStruct1;
+		myvalue : TestStruct3;
 	END_STRUCT;
 	TestStruct1 : 	STRUCT 
 		struct1 : TestStruct2;
@@ -17,5 +18,8 @@ TYPE
 		member1 : INT;
 		member2 : DINT;
 		member3 : STRING[80];
+	END_STRUCT;
+	TestStruct3 : 	STRUCT 
+		x : REAL;
 	END_STRUCT;
 END_TYPE

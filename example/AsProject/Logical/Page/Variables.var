@@ -1,0 +1,3 @@
+VAR
+	MyVar : myVar_typ;
+END_VAR

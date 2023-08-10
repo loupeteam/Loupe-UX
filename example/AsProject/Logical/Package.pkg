@@ -10,5 +10,6 @@
     <Object Type="Package">Infrastructure</Object>
     <Object Type="Program" Language="IEC">demo</Object>
     <Object Type="Program" Language="IEC">demoGlobal</Object>
+    <Object Type="Program" Language="IEC">Page</Object>
   </Objects>
 </Package>

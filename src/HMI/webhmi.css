@@ -60,3 +60,11 @@ input.data-var-name{
 	background-color: #06F;
 	box-shadow: #000 0 -1px 6px 1px, inset #006 0 -1px 8px, #06F 0 3px 11px;
 }
+
+.disabled{
+	pointer-events:none;
+}
+
+input.disabled, .disabled input{
+	pointer-events:all;
+}

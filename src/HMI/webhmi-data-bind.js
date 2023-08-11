@@ -394,9 +394,23 @@ WEBHMI.updateLock = function () {
 			if ((hasLock && isEqual(varValue, setValue)) || (hasUnlock && !isEqual(varValue, setValue)) || (hasLockUserLevel && (userLevel < userLevelUnlock))) {
 				$this.addClass(WEBHMI.getLockTrue($this));
 				$this.prop('disabled', true);
+				let nodes = $this[0].querySelectorAll('input');
+				if (nodes.length > 0){
+					for( let i in nodes){
+						let el = nodes[i]
+						el.setAttribute('disabled','true');
+					}
+				}
 			} else {
 				$this.removeClass(WEBHMI.getLockTrue($this));
 				$this.prop('disabled', false);
+				let nodes = $this[0].querySelectorAll('input');
+				if (nodes.length > 0){
+					for( let i in nodes){
+						let el = nodes[i]
+						el.setAttribute('disabled','false');
+					}
+				}
 			}
 
 		}

@@ -10,8 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@loupeteam/widget-template": "*",
+    "@loupeteam/tmplit-basic": "*",
     "@loupeteam/webhmi" : "file:../../src/HMI",
+    "@loupeteam/tmplits-page" : "*",
+    "@loupeteam/tmplits-dropdown" : "*",
+    "@loupeteam/tmplits-columnsbs" : "*",
+    "bootstrap" : "3.3.4",
     "app" : "file:./"
   }
 }

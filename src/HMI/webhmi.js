@@ -477,7 +477,7 @@ WEBHMI.Machine = function (options) {
 
 				if (read.retryCount < settings.maxRetryCount) {
 					read.retryCount += 1;
-					readVariableList(variableListObject);
+					readVariableList(variableList);
 				} else {
 					$(document).trigger('readerror', [variableListArray]);
 					$(document).trigger('readcomplete', [variableListArray]);

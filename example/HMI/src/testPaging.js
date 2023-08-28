@@ -8,11 +8,11 @@ machine = new WEBHMI.Machine({
 
 setInterval(WEBHMI.updateHMI, 30)
 
-machine.initCyclicPageRead( 'test', "Page:MyVar.in.command" )
-machine.initCyclicPageRead( 'test', "Page:MyVar.in" )
-machine.initCyclicPageRead( 'test', "Page:MyVar" )
+machine.initCyclicReadGroup( 'test', "Page:MyVar.in.command" )
+machine.initCyclicReadGroup( 'test', "Page:MyVar.in" )
+machine.initCyclicReadGroup( 'test', "Page:MyVar" )
 
-machine.setPageEnable( 'test', false)
+machine.setReadGroupEnable( 'test', false)
 
 machine.setPageMaxFrequency('test1', 2)
 machine.setPageMaxFrequency('test3', 1)

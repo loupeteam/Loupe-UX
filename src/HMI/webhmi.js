@@ -306,7 +306,7 @@ WEBHMI.Machine = function (options) {
 		// read.cyclicList is the list of variables to be read from the PLC cyclically.
 		// It is persistent per page load.
 		read.cyclicList = [];
-		read.cyclicListPage = {};
+		read.cyclicListReadGroup = {};
 
 		// read.completeList is a list of all of the variables that have ever been read
 		// from the PLC.
@@ -557,9 +557,9 @@ WEBHMI.Machine = function (options) {
 			let list = {}
 			let now = Date.now()
 			//Add the global list
-			for (const key in read.cyclicListPage) {
-				if (Object.hasOwnProperty.call(read.cyclicListPage, key)) {
-					const element = read.cyclicListPage[key];
+			for (const key in read.cyclicListReadGroup) {
+				if (Object.hasOwnProperty.call(read.cyclicListReadGroup, key)) {
+					const element = read.cyclicListReadGroup[key];
 					if( element.enable ){
 						if( now - element.lastReadTime > element.minReadTime ){
 							element.lastReadTime = now
@@ -888,17 +888,17 @@ WEBHMI.Machine = function (options) {
 				}
 			}
 		}
-		thisConnection.getPage = function(pageSelector){
-			let cyclicListPage = read.cyclicListPage[pageSelector]
-			if( typeof cyclicListPage == 'undefined'){
-				read.cyclicListPage[pageSelector] = {enable:true, lastReadTime:0, minReadTime:0,  data: {}}
-				cyclicListPage = read.cyclicListPage[pageSelector]
+		thisConnection.getReadGroup = function(ReadGroupName){
+			let cyclicListReadGroup = read.cyclicListReadGroup[ReadGroupName]
+			if( typeof cyclicListReadGroup == 'undefined'){
+				read.cyclicListReadGroup[ReadGroupName] = {enable:true, lastReadTime:0, minReadTime:0,  data: {}}
+				cyclicListReadGroup = read.cyclicListReadGroup[ReadGroupName]
 			}
-			return cyclicListPage
+			return cyclicListReadGroup
 		}
 
-		thisConnection.getPageList = function(){
-			return Object.getOwnPropertyNames(read.cyclicListPage);
+		thisConnection.getReadGroupList = function(){
+			return Object.getOwnPropertyNames(read.cyclicListReadGroup);
 		}
 
 		// Public functions
@@ -1008,8 +1008,8 @@ WEBHMI.Machine = function (options) {
 			if (typeof variableName === 'undefined' || variableName === '') {
 				return;
 			}
-			let cyclicListPage = thisConnection.getPage('global')
-			let cyclicList = cyclicListPage.data;
+			let cyclicListReadGroup = thisConnection.getReadGroup('global')
+			let cyclicList = cyclicListReadGroup.data;
 
 
 			// If the variable name is an array, add all variables
@@ -1057,23 +1057,23 @@ WEBHMI.Machine = function (options) {
 		};
 		// addVariableReadCyclic()
 
-		//Set the page enabled/disabled
-		thisConnection.setPageEnable = function( pageSelector, enable ){
-			let cyclicListPage = thisConnection.getPage(pageSelector)
-			cyclicListPage.enable = enable
+		//Set the ReadGroup enabled/disabled
+		thisConnection.setReadGroupEnable = function( ReadGroupName, enable ){
+			let cyclicListReadGroup = thisConnection.getReadGroup(ReadGroupName)
+			cyclicListReadGroup.enable = enable
 		}
-		thisConnection.setPageMaxFrequency = function(  page, hz  ){
+		thisConnection.setReadGroupMaxFrequency = function(  ReadGroupName, hz  ){
 			if( hz > 0){ 
-				thisConnection.getPage(page).minReadTime = (1/hz)*1000;
+				thisConnection.getReadGroup(ReadGroupName).minReadTime = (1/hz)*1000;
 			}			
 		}
-		//Add a cyclic read for variables on a specific page.
+		//Add a cyclic read for variables on a specific ReadGroupName.
 		//This is used to prevent cyclic reads from being sent to the PLC
-		//when the page is not active.
-		thisConnection.addPageVariableReadCyclic = function ( pageSelector, variableName, callback) {
+		//when the ReadGroupName is not active.
+		thisConnection.addReadGroupVariableReadCyclic = function ( ReadGroupName, variableName, callback) {
 
-			let cyclicListPage = thisConnection.getPage(pageSelector)
-			let cyclicList = cyclicListPage.data;
+			let cyclicListReadGroup = thisConnection.getReadGroup(ReadGroupName)
+			let cyclicList = cyclicListReadGroup.data;
 			// Check for empty or undefined variableName
 			if (typeof variableName === 'undefined' || variableName === '') {
 				return;
@@ -1169,8 +1169,8 @@ WEBHMI.Machine = function (options) {
 	}
 
 	// Add a variable to be read cyclically
-	function initCyclicPageRead( page, varName, successCallback) {
-		thisMachine.connection.addPageVariableReadCyclic(page, varName, successCallback);
+	function initCyclicReadGroup( ReadGroupName, varName, successCallback) {
+		thisMachine.connection.addReadGroupVariableReadCyclic(ReadGroupName, varName, successCallback);
 	}
 
 	// Write a variable to the PLC once
@@ -1178,15 +1178,15 @@ WEBHMI.Machine = function (options) {
 		thisMachine.connection.addVariableWrite(varName, value, successCallback);
 	}
 
-	//Set the page enabled/disabled
-	function setPageEnable( page, enable ){
-		thisMachine.connection.setPageEnable( page, enable)
+	//Set the ReadGroupName enabled/disabled
+	function setReadGroupEnable( ReadGroupName, enable ){
+		thisMachine.connection.setReadGroupEnable( ReadGroupName, enable)
 	}
-	function getPageList(){
-		return thisMachine.connection.getPageList()
+	function getReadGroupList(){
+		return thisMachine.connection.getReadGroupList()
 	}
-	function setPageMaxFrequency( page, hz ){
-		thisMachine.connection.setPageMaxFrequency(page, hz)
+	function setReadGroupMaxFrequency( ReadGroupName, hz ){
+		thisMachine.connection.setReadGroupMaxFrequency(ReadGroupName, hz)
 	}
 
 	// User level
@@ -1260,10 +1260,10 @@ WEBHMI.Machine = function (options) {
 	thisMachine.value = value;
 	thisMachine.readVariable = readVariable;
 	thisMachine.initCyclicRead = initCyclicRead;
-	thisMachine.initCyclicPageRead = initCyclicPageRead;
-	thisMachine.setPageEnable = setPageEnable;
-	thisMachine.getPageList = getPageList;
-	thisMachine.setPageMaxFrequency = setPageMaxFrequency;
+	thisMachine.initCyclicReadGroup = initCyclicReadGroup;
+	thisMachine.setReadGroupEnable = setReadGroupEnable;
+	thisMachine.getReadGroupList = getReadGroupList;
+	thisMachine.setReadGroupMaxFrequency = setReadGroupMaxFrequency;
 	thisMachine.writeVariable = writeVariable;
 	thisMachine.updateSettings = updateSettings
 

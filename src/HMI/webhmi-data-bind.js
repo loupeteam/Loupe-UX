@@ -230,7 +230,7 @@ WEBHMI.getValue = function ($element) {
 	}
 	if( $element.attr( 'data-var-name-added' ) != varName){
 		$element.attr( 'data-var-name-added', varName)
-		localMachine.initCyclicPageRead( WEBHMI.getDataPage($element) ,varName); // this might cause bad behavior if the variable does not exist on the PLC.
+		localMachine.initCyclicReadGroup( WEBHMI.getDataReadGroup($element) ,varName); // this might cause bad behavior if the variable does not exist on the PLC.
 	}
 	
 	var varValue = localMachine.value(varName);
@@ -251,7 +251,7 @@ WEBHMI.getHideValue = function ($element) {
 
 	if( $element.attr( 'data-var-name-added-hide' ) != varName){
 		$element.attr( 'data-var-name-added-hide', varName)
-		localMachine.initCyclicPageRead( WEBHMI.getDataPage($element) ,varName); // this might cause bad behavior if the variable does not exist on the PLC.
+		localMachine.initCyclicReadGroup( WEBHMI.getDataReadGroup($element) ,varName); // this might cause bad behavior if the variable does not exist on the PLC.
 	}
 	
 	var varValue = localMachine.value(varName);
@@ -270,7 +270,7 @@ WEBHMI.getLockValue = function ($element) {
 	}
 	if( $element.attr( 'data-var-name-lock-added' ) != varName){
 		$element.attr( 'data-var-name-lock-added', varName)
-		localMachine.initCyclicPageRead( WEBHMI.getDataPage($element) ,varName); // this might cause bad behavior if the variable does not exist on the PLC.
+		localMachine.initCyclicReadGroup( WEBHMI.getDataReadGroup($element) ,varName); // this might cause bad behavior if the variable does not exist on the PLC.
 	}
 	
 	var varValue = localMachine.value(varName);
@@ -279,10 +279,10 @@ WEBHMI.getLockValue = function ($element) {
 
 }
 
-WEBHMI.getDataPage = function($element){
-	var page = $element[0].closest('[data-read-group]');
-	if ( page != null ) {
-		return page.getAttribute('data-read-group');
+WEBHMI.getDataReadGroup = function($element){
+	var ReadGroupName = $element[0].closest('[data-read-group]');
+	if ( ReadGroupName != null ) {
+		return ReadGroupName.getAttribute('data-read-group');
 	}
 	else{
 		return 'global'
@@ -304,7 +304,7 @@ WEBHMI.getCyclicReads = function () {
 	});
 }
 
-// Update page elements
+// Update ReadGroup elements
 //----------------------
 
 // find all LED elems
@@ -1017,11 +1017,11 @@ WEBHMI.addVarWriteEvents = function () {
 	// dropdown
 
 };
-WEBHMI.updatePageComms = function(){
+WEBHMI.updateReadGroupComms = function(){
 	WEBHMI.machines.forEach(machine => {
-		machine.getPageList().forEach(page=>{
-			if( page != 'global'){
-				machine.setPageEnable(page, document.querySelector( `[data-read-group=${page}]`) != null );
+		machine.getReadGroupList().forEach(ReadGroupName=>{
+			if( ReadGroupName != 'global'){
+				machine.setReadGroupEnable(ReadGroupName, document.querySelector( `[data-read-group=${ReadGroupName}]`) != null );
 			}
 		})
 	});
@@ -1111,7 +1111,7 @@ WEBHMI.updateHMI = function () {
 	WEBHMI.updateTabs();
 	WEBHMI.updateHide();
 	WEBHMI.updateLock();
-	WEBHMI.updatePageComms();
+	WEBHMI.updateReadGroupComms();
 }
 
 WEBHMI.updateBindings = function () {

@@ -1,7 +1,6 @@
 //------------------------------------------------------------------------------
 // Copyright 2020 Loupe
 //------------------------------------------------------------------------------
-
 // Use uppercase namespace
 var WEBHMI = {
 	version: '1.5.1'
@@ -891,7 +890,7 @@ WEBHMI.Machine = function (options) {
 		thisConnection.getReadGroup = function(ReadGroupName){
 			let cyclicListReadGroup = read.cyclicListReadGroup[ReadGroupName]
 			if( typeof cyclicListReadGroup == 'undefined'){
-				read.cyclicListReadGroup[ReadGroupName] = {enable:true, lastReadTime:0, minReadTime:0,  data: {}}
+				read.cyclicListReadGroup[ReadGroupName] = {name: ReadGroupName, enable:true, lastReadTime:0, minReadTime:0, enableCallback: ()=>{return true} , data: {}}
 				cyclicListReadGroup = read.cyclicListReadGroup[ReadGroupName]
 			}
 			return cyclicListReadGroup
@@ -1067,6 +1066,12 @@ WEBHMI.Machine = function (options) {
 				thisConnection.getReadGroup(ReadGroupName).minReadTime = (1/hz)*1000;
 			}			
 		}
+
+		thisConnection.setReadGroupEnableCallback = function( ReadGroupName, callback ){
+			let cyclicListReadGroup = thisConnection.getReadGroup(ReadGroupName)
+			cyclicListReadGroup.enableCallback = callback;
+		}		
+
 		//Add a cyclic read for variables on a specific ReadGroupName.
 		//This is used to prevent cyclic reads from being sent to the PLC
 		//when the ReadGroupName is not active.
@@ -1185,8 +1190,22 @@ WEBHMI.Machine = function (options) {
 	function getReadGroupList(){
 		return thisMachine.connection.getReadGroupList()
 	}
+	function getReadGroup( ReadGroupName ){
+		return thisMachine.connection.getReadGroup( ReadGroupName )
+	}	
 	function setReadGroupMaxFrequency( ReadGroupName, hz ){
 		thisMachine.connection.setReadGroupMaxFrequency(ReadGroupName, hz)
+	}
+	function setReadGroupEnableCallback( ReadGroupName, callback ){
+		thisMachine.connection.setReadGroupEnableCallback(ReadGroupName, callback)
+	}
+	function printReadGroups(){
+		let readGroupsPrinter = []
+		thisMachine.connection.getReadGroupList().forEach( (ReadGroupName)=>{
+			readGroupsPrinter.push( thisMachine.connection.getReadGroup(ReadGroupName) )
+		})
+		console.log(readGroupsPrinter)
+		return readGroupsPrinter;
 	}
 
 	// User level
@@ -1260,10 +1279,14 @@ WEBHMI.Machine = function (options) {
 	thisMachine.value = value;
 	thisMachine.readVariable = readVariable;
 	thisMachine.initCyclicRead = initCyclicRead;
+
 	thisMachine.initCyclicReadGroup = initCyclicReadGroup;
 	thisMachine.setReadGroupEnable = setReadGroupEnable;
+	thisMachine.getReadGroup = getReadGroup;
 	thisMachine.getReadGroupList = getReadGroupList;
+	thisMachine.setReadGroupEnableCallback = setReadGroupEnableCallback;
 	thisMachine.setReadGroupMaxFrequency = setReadGroupMaxFrequency;
+	thisMachine.printReadGroups = printReadGroups;
 	thisMachine.writeVariable = writeVariable;
 	thisMachine.updateSettings = updateSettings
 

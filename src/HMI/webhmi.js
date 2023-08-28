@@ -1209,7 +1209,7 @@ WEBHMI.Machine = function (options) {
 	}
 	function readGroupShouldManage( ReadGroupName, wouldShow ){
 		let readGroup = thisMachine.connection.getReadGroup( ReadGroupName )
-		//Start by assuming we should manage the readGroup
+		 // Start by assuming the library will auto-manage the ReadGroup callback
 		let shouldManage = true;
 		try{
 			//Check to see if there is a callback to enable/disable the readGroup

@@ -1223,7 +1223,7 @@ WEBHMI.Machine = function (options) {
 			}
 			readGroup.error	= null		
 		}
-		//If there is an error in the  callback, post it and assume we should manage
+		//If there is an error in the callback, post it and assume the library should manage
 		catch(error){
 			if( typeof readGroup.error == 'undefined' ){
 				console.warn('Error in readGroup enable/disable callback:\n', error)

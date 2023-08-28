@@ -280,9 +280,9 @@ WEBHMI.getLockValue = function ($element) {
 }
 
 WEBHMI.getDataPage = function($element){
-	var page = $element[0].closest('[data-page]');
+	var page = $element[0].closest('[data-read-group]');
 	if ( page != null ) {
-		return page.getAttribute('data-page');
+		return page.getAttribute('data-read-group');
 	}
 	else{
 		return 'global'
@@ -1021,7 +1021,7 @@ WEBHMI.updatePageComms = function(){
 	WEBHMI.machines.forEach(machine => {
 		machine.getPageList().forEach(page=>{
 			if( page != 'global'){
-				machine.setPageEnable(page, document.querySelector( `[data-page=${page}]`) != null );
+				machine.setPageEnable(page, document.querySelector( `[data-read-group=${page}]`) != null );
 			}
 		})
 	});

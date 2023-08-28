@@ -1,5 +1,5 @@
 <script id="testData" type="text/x-handlebars-template">
-    <div data-page="test">
+    <div data-read-group="test">
         <h1>Comms active</h1>
         {{W "Numeric" data-var-name="test.myvalue.x"}}
         {{W "Numeric" data-var-name="Page:MyVar.in.command"}}
@@ -8,11 +8,11 @@
 </script>
 
 <script id="testNoData" type="text/x-handlebars-template">
-    <div data-page="test3">
+    <div data-read-group="test3">
         <h1>Comms inactive</h1>
         {{W "Numeric" data-var-name="test.myvalue.x"}}
         {{W "Numeric" data-var-name="Page:MyVar.in.command"}}
-        <div data-page="test2">
+        <div data-read-group="test2">
             {{> components}}
         </div>
     </div>

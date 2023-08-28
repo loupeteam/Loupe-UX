@@ -890,7 +890,7 @@ WEBHMI.Machine = function (options) {
 		thisConnection.getReadGroup = function(ReadGroupName){
 			let cyclicListReadGroup = read.cyclicListReadGroup[ReadGroupName]
 			if( typeof cyclicListReadGroup == 'undefined'){
-				read.cyclicListReadGroup[ReadGroupName] = {name: ReadGroupName, enable:true, lastReadTime:0, minReadTime:0, enableCallback: ()=>{return true} , data: {}}
+				read.cyclicListReadGroup[ReadGroupName] = {name: ReadGroupName, enable:true, lastReadTime:0, minReadTime:0, enableCallback: null , data: {}}
 				cyclicListReadGroup = read.cyclicListReadGroup[ReadGroupName]
 			}
 			return cyclicListReadGroup
@@ -1205,9 +1205,45 @@ WEBHMI.Machine = function (options) {
 			readGroupsPrinter.push( thisMachine.connection.getReadGroup(ReadGroupName) )
 		})
 		console.log(readGroupsPrinter)
-		return readGroupsPrinter;
+//		return readGroupsPrinter;
 	}
-
+	function readGroupShouldManage( ReadGroupName, wouldShow ){
+		let readGroup = thisMachine.connection.getReadGroup( ReadGroupName )
+		//Start by assuming we should manage the readGroup
+		let shouldManage = true;
+		try{
+			//Check to see if there is a callback to enable/disable the readGroup
+			// If this callback return should manage, check the global callback
+			if(readGroup.enableCallback !== null ){
+				shouldManage = readGroup.enableCallback( readGroup, wouldShow)
+			}
+			//If the global callback returns should manage, we should manage it
+			if( enableReadGroupsCallback !== null && shouldManage ){
+				shouldManage = enableReadGroupsCallback( readGroup, wouldShow)
+			}
+			readGroup.error	= null		
+		}
+		//If there is an error in the  callback, post it and assume we should manage
+		catch(error){
+			if( typeof readGroup.error == 'undefined' ){
+				console.warn('Error in readGroup enable/disable callback:\n', error)
+			}
+			readGroup.error = error;
+			shouldManage = true;
+		}
+		if( shouldManage ){
+			readGroup.enable = wouldShow;
+			readGroup.autoManage = true;	
+		}
+		else{
+			readGroup.autoManage = false;	
+		}
+		return true
+	}
+	let enableReadGroupsCallback = null;
+	function setReadEnableCallback(callBack){
+		enableReadGroupsCallback = callBack;
+	}
 	// User level
 	//---------------------------------------------
 
@@ -1286,7 +1322,10 @@ WEBHMI.Machine = function (options) {
 	thisMachine.getReadGroupList = getReadGroupList;
 	thisMachine.setReadGroupEnableCallback = setReadGroupEnableCallback;
 	thisMachine.setReadGroupMaxFrequency = setReadGroupMaxFrequency;
+	thisMachine.readGroupShouldManage = readGroupShouldManage;
 	thisMachine.printReadGroups = printReadGroups;
+	thisMachine.setReadEnableCallback = setReadEnableCallback;
+
 	thisMachine.writeVariable = writeVariable;
 	thisMachine.updateSettings = updateSettings
 

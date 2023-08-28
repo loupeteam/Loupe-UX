@@ -19,13 +19,23 @@ machine.setReadGroupMaxFrequency('test1', 2)
 machine.setReadGroupMaxFrequency('test3', 1)
 
 
-function mycb(group){
- return shouldManage
+function mycb(group, wouldShow){
+  group.enable = wouldShow
+ return false
 }
-machine.setReadGroupEnableCallback( 'test', mycb)
 machine.setReadGroupEnableCallback( 'test1',mycb)
-machine.setReadGroupEnableCallback( 'test', ( group )=>{
-  return shouldManage
+machine.setReadGroupEnableCallback( 'test', ( group, wouldShow )=>{
+  group.enable = wouldShow
+  return false
+})
+
+machine.setReadEnableCallback( ( group, wouldShow )=>{
+  if(wouldShow){
+    return true
+  }
+  else{
+    return false
+  }
 })
 
 machine.setReadGroupMaxFrequency('test1', 2)

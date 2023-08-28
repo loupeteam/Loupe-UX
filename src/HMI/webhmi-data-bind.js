@@ -1021,7 +1021,7 @@ WEBHMI.updateReadGroupComms = function(){
 	WEBHMI.machines.forEach(machine => {
 		machine.getReadGroupList().forEach(ReadGroupName=>{
 			if( ReadGroupName != 'global'){
-				machine.setReadGroupEnable(ReadGroupName, document.querySelector( `[data-read-group=${ReadGroupName}]`) != null );
+				machine.readGroupShouldManage(ReadGroupName, document.querySelector( `[data-read-group=${ReadGroupName}]`) != null)
 			}
 		})
 	});

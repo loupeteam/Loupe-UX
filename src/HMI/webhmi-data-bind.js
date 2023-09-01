@@ -7,7 +7,7 @@ if (typeof WEBHMI === 'undefined') {
 	throw new Error('WEBHMI data binding requires WEBHMI core');
 }
 
-WEBHMI.dataBindVersion = '1.4.0';
+WEBHMI.dataBindVersion = '1.6.0';
 
 // Check for being a 'number'
 function isNumeric (obj) {
@@ -228,11 +228,12 @@ WEBHMI.getValue = function ($element) {
 	if (varName === undefined) {
 		return "No variable";
 	}
+	if( $element.attr( 'data-var-name-added' ) != varName){
+		$element.attr( 'data-var-name-added', varName)
+		localMachine.initCyclicReadGroup( WEBHMI.getDataReadGroup($element) ,varName);
+	}
 	
 	var varValue = localMachine.value(varName);
-	if (varValue === undefined) {
-		localMachine.initCyclicRead(varName); // this might cause bad behavior if the variable does not exist on the PLC.
-	}
 
 	return varValue;
 
@@ -247,12 +248,13 @@ WEBHMI.getHideValue = function ($element) {
 	if (varName === undefined) {
 		return "No variable";
 	}
+
+	if( $element.attr( 'data-var-name-added-hide' ) != varName){
+		$element.attr( 'data-var-name-added-hide', varName)
+		localMachine.initCyclicReadGroup( WEBHMI.getDataReadGroup($element) ,varName);
+	}
 	
 	var varValue = localMachine.value(varName);
-	if (varValue === undefined) {
-		localMachine.initCyclicRead(varName); // this might cause bad behavior if the variable does not exist on the PLC.
-	}
-
 	return varValue;
 
 }
@@ -266,14 +268,25 @@ WEBHMI.getLockValue = function ($element) {
 	if (varName === undefined) {
 		return "No variable";
 	}
+	if( $element.attr( 'data-var-name-lock-added' ) != varName){
+		$element.attr( 'data-var-name-lock-added', varName)
+		localMachine.initCyclicReadGroup( WEBHMI.getDataReadGroup($element) ,varName);
+	}
 	
 	var varValue = localMachine.value(varName);
-	if (varValue === undefined) {
-		localMachine.initCyclicRead(varName); // this might cause bad behavior if the variable does not exist on the PLC.
-	}
 
 	return varValue;
 
+}
+
+WEBHMI.getDataReadGroup = function($element){
+	var ReadGroupName = $element[0].closest('[data-read-group]');
+	if ( ReadGroupName != null ) {
+		return ReadGroupName.getAttribute('data-read-group');
+	}
+	else{
+		return 'global'
+	}
 }
 
 WEBHMI.getUserLevel = function ($element) {
@@ -291,7 +304,7 @@ WEBHMI.getCyclicReads = function () {
 	});
 }
 
-// Update page elements
+// Update ReadGroup elements
 //----------------------
 
 // find all LED elems
@@ -1004,6 +1017,15 @@ WEBHMI.addVarWriteEvents = function () {
 	// dropdown
 
 };
+WEBHMI.updateReadGroupComms = function(){
+	WEBHMI.machines.forEach(machine => {
+		machine.getReadGroupList().forEach(ReadGroupName=>{
+			if( ReadGroupName != 'global'){
+				machine.readGroupShouldManage(ReadGroupName, document.querySelector( `[data-read-group=${ReadGroupName}]`) != null)
+			}
+		})
+	});
+}
 
 WEBHMI.observers = [];
 
@@ -1089,6 +1111,7 @@ WEBHMI.updateHMI = function () {
 	WEBHMI.updateTabs();
 	WEBHMI.updateHide();
 	WEBHMI.updateLock();
+	WEBHMI.updateReadGroupComms();
 }
 
 WEBHMI.updateBindings = function () {

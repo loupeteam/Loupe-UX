@@ -3,6 +3,7 @@
 Documentation can be found at https://loupeteam.github.io/Sandbox/libraries/webhmi.html.
 
 ## Revision
+- 1.6.0 - Add read groups
 - 1.5.1 - Add waiting to avoid pileup
 - 1.5.0 - Add a max frequency to cyclic reads
 	  	- Force cyclic reads between writes

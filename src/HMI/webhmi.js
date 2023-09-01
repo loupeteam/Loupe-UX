@@ -1,10 +1,9 @@
 //------------------------------------------------------------------------------
 // Copyright 2020 Loupe
 //------------------------------------------------------------------------------
-
 // Use uppercase namespace
 var WEBHMI = {
-	version: '1.5.1'
+	version: '1.6.0'
 };
 
 // export default WEBHMI
@@ -40,7 +39,7 @@ if (typeof jQuery === 'undefined') {
 WEBHMI.extend = jQueryImport.extend;
 WEBHMI.isEmptyObject = jQueryImport.isEmptyObject;
 WEBHMI.each = jQueryImport.each;
-
+WEBHMI.machines = [];
 /**
  * The complete machine-options.
  * @typedef {Object} Machine_Options
@@ -64,6 +63,9 @@ WEBHMI.Machine = function (options) {
 	'use strict';
 
 	var thisMachine;
+
+	//Add this machine to the global list of machines
+	WEBHMI.machines.push(this) 
 
 	// Grab machine scope for lower functions
 	thisMachine = this;
@@ -296,10 +298,14 @@ WEBHMI.Machine = function (options) {
 		read.singleList[0] = {};
 		read.consecutiveSingleReads = 0;
 
+
+		//Active read list
+		read.activeCyclicList = {};
+
 		// read.cyclicList is the list of variables to be read from the PLC cyclically.
 		// It is persistent per page load.
 		read.cyclicList = [];
-		read.cyclicList[0] = {};
+		read.cyclicListReadGroup = {};
 
 		// read.completeList is a list of all of the variables that have ever been read
 		// from the PLC.
@@ -450,11 +456,18 @@ WEBHMI.Machine = function (options) {
 
 		}
 		// writeVariableList()
-
-		function readVariableList(variableListObject) {
+		function getVariableListArray(variableList){
+			if( Array.isArray( variableList) ){
+				return variableList;
+			}
+			else{
+				return Object.getOwnPropertyNames(variableList);
+			}
+		}
+		function readVariableList(variableList) {
 
 			// Get the list of variables as a string array
-			var variableListArray = Object.getOwnPropertyNames(variableListObject);
+			var variableListArray = getVariableListArray(variableList);
 
 			ws.onerror = function (event) {
 
@@ -463,7 +476,7 @@ WEBHMI.Machine = function (options) {
 
 				if (read.retryCount < settings.maxRetryCount) {
 					read.retryCount += 1;
-					readVariableList(variableListObject);
+					readVariableList(variableList);
 				} else {
 					$(document).trigger('readerror', [variableListArray]);
 					$(document).trigger('readcomplete', [variableListArray]);
@@ -503,6 +516,7 @@ WEBHMI.Machine = function (options) {
 		// TODO: Add ability to handle multiple read list objects
 		function processQueue() {
 			if (!read.reading && !write.writing && ws.readyState === ws.OPEN) {
+				let list;
 				if (!WEBHMI.isEmptyObject(write.context) && write.consecutiveWrites < 1 ) {					
 					write.consecutiveWrites++;
 					write.writing = true;
@@ -516,27 +530,66 @@ WEBHMI.Machine = function (options) {
 					read.retryCount = 0;
 					readVariableList(read.singleList[0]);
 					read.singleList[0] = {};
-				} else if (!read.waiting && !WEBHMI.isEmptyObject(read.cyclicList[0])) {
+				} else if ( !read.waiting && (list = getNextReadList() ) ){
 					read.consecutiveSingleReads = 0;
 					write.consecutiveWrites = 0;
 					read.reading = true;
 					read.retryCount = 0;
-					readVariableList(read.cyclicList[0]);
+					readVariableList(list);
+				}
+				//If there was a write or single read, then we need to process the queue again
+				else if( !WEBHMI.isEmptyObject(write.context) && write.consecutiveWrites > 0 ){
+					write.consecutiveWrites = 0;
+					processQueue();
+				}
+				else if( !WEBHMI.isEmptyObject(read.singleList[0]) && read.consecutiveSingleReads > 0 && !read.waiting ){
+					read.consecutiveSingleReads = 0;
+					processQueue();
 				}
 				else{
-					//If there was a write or single read, then we need to process the queue again
-					if( write.consecutiveWrites > 0 ){
-						write.consecutiveWrites = 0;
-						processQueue();
-					}
-					else if( read.consecutiveSingleReads > 0 && !read.waiting ){
-						read.consecutiveSingleReads = 0;
-						processQueue();
-					}
+					var timeSinceLastMessage = Date.now() - read.lastRequestTime;
+					var timeToWait = (1/settings.maxMessageFrequency)*1000 - timeSinceLastMessage;
+					if (timeToWait < 0) timeToWait = 0;
+					read.waiting = true
+					setTimeout(()=>{
+						read.waiting =false;
+						processQueue()
+					}, timeToWait);
 				}
 			}
 		}
 		// processQueue()
+
+		function getNextReadList(){
+			let list = {}
+			let now = Date.now()
+			//Add the global list
+			for (const key in read.cyclicListReadGroup) {
+				if (Object.hasOwnProperty.call(read.cyclicListReadGroup, key)) {
+					const element = read.cyclicListReadGroup[key];
+					if( element.enable ){
+						if( now - element.lastReadTime > element.minReadTime ){
+							element.lastReadTime = now
+							WEBHMI.extend( list, element.data ) 
+						}
+					}			
+				}
+			}
+			//If the list has no members, then return undefined
+			if( Object.getOwnPropertyNames(list).length === 0 ){
+				return undefined
+			}
+			else{
+				//Look through the list and see if there are items who's parents are alread here
+				//If so, then remove them from the list
+				for (const key in list) {
+					if(parentIsInList(key, list)){
+						delete list[key]
+					}
+				}
+				return getVariableListArray(list)
+			}
+		}
 
 		function processReadResponse(responseData) {
 
@@ -802,7 +855,7 @@ WEBHMI.Machine = function (options) {
 		function addToList(variableName, list) {
 
 			// Trivial implementation works just fine for now
-			list[0][variableName] = {};
+			list[variableName] = {};
 			return;
 
 			// TODO: Keep this around for later?
@@ -854,6 +907,20 @@ WEBHMI.Machine = function (options) {
 					}
 				}
 			}
+		}
+		//Get the read group object for a given name
+		thisConnection.getReadGroup = function(ReadGroupName){
+			let cyclicListReadGroup = read.cyclicListReadGroup[ReadGroupName]
+			if( typeof cyclicListReadGroup == 'undefined'){
+				read.cyclicListReadGroup[ReadGroupName] = {name: ReadGroupName, enable:true, lastReadTime:0, minReadTime:0, enableCallback: null , data: {}}
+				cyclicListReadGroup = read.cyclicListReadGroup[ReadGroupName]
+			}
+			return cyclicListReadGroup
+		}
+
+		//Get the names of all the read groups
+		thisConnection.getReadGroupList = function(){
+			return Object.getOwnPropertyNames(read.cyclicListReadGroup);
 		}
 
 		// Public functions
@@ -963,6 +1030,9 @@ WEBHMI.Machine = function (options) {
 			if (typeof variableName === 'undefined' || variableName === '') {
 				return;
 			}
+			let cyclicListReadGroup = thisConnection.getReadGroup('global')
+			let cyclicList = cyclicListReadGroup.data;
+
 
 			// If the variable name is an array, add all variables
 			if (Array.isArray(variableName)) {
@@ -979,15 +1049,15 @@ WEBHMI.Machine = function (options) {
 				//variableName = cleanVariableName(variableName);
 
 				// If the variable's parent is in the list, don't do anything
-				if (!parentIsInList(variableName, read.cyclicList)) {
+				if (!parentIsInList(variableName, cyclicList)) {
 					
 					// Add variable to cyclic and complete lists
-					addToList(variableName, read.cyclicList);
+					addToList(variableName, cyclicList);
 					read.completeList[0][variableName] = {};
 
 					// Delete any children already contained in the list
 					// TODO: This might break cyclic call backs?
-					deleteChildrenFromList(variableName, read.cyclicList);
+					deleteChildrenFromList(variableName, cyclicList);
 					
 					// Add the callback
 					// TODO: Callback is not added if the parent is in the list
@@ -1009,6 +1079,81 @@ WEBHMI.Machine = function (options) {
 		};
 		// addVariableReadCyclic()
 
+		//Set the ReadGroup enabled/disabled
+		thisConnection.setReadGroupEnable = function( ReadGroupName, enable ){
+			let cyclicListReadGroup = thisConnection.getReadGroup(ReadGroupName)
+			cyclicListReadGroup.enable = enable
+		}
+
+		//Set the ReadGroup max frequency in Hz
+		thisConnection.setReadGroupMaxFrequency = function(  ReadGroupName, hz  ){
+			if( hz > 0){ 
+				thisConnection.getReadGroup(ReadGroupName).minReadTime = (1/hz)*1000;
+			}			
+		}
+
+		//Set the ReadGroup enable callback that allows the user to enable/disable the read group manually
+		thisConnection.setReadGroupEnableCallback = function( ReadGroupName, callback ){
+			let cyclicListReadGroup = thisConnection.getReadGroup(ReadGroupName)
+			cyclicListReadGroup.enableCallback = callback;
+		}		
+
+		//Add a cyclic read for variables on a specific ReadGroupName.
+		//This is used to prevent cyclic reads from being sent to the PLC
+		//when the ReadGroupName is not active.
+		thisConnection.addReadGroupVariableReadCyclic = function ( ReadGroupName, variableName, callback) {
+
+			let cyclicListReadGroup = thisConnection.getReadGroup(ReadGroupName)
+			let cyclicList = cyclicListReadGroup.data;
+			// Check for empty or undefined variableName
+			if (typeof variableName === 'undefined' || variableName === '') {
+				return;
+			}
+
+			// If the variable name is an array, add all variables
+			if (Array.isArray(variableName)) {
+				variableName.forEach(function (e) {
+					// Recurse
+					thisConnection.addVariableReadCyclic(e, callback);
+				});
+			}
+			else {
+
+				// Clean variable name
+				// TODO: This can cause bad behavior if a variable with a long
+				// task name is bound via data binding
+				//variableName = cleanVariableName(variableName);
+
+				// If the variable's parent is in the list, don't do anything
+				if (!parentIsInList(variableName, cyclicList)) {
+					
+					// Add variable to cyclic and complete lists
+					addToList(variableName, cyclicList);
+					read.completeList[0][variableName] = {};
+
+					// Delete any children already contained in the list
+					// TODO: This might break cyclic call backs?
+					deleteChildrenFromList(variableName, cyclicList);
+					
+					// Add the callback
+					// TODO: Callback is not added if the parent is in the list
+					if (callback) {
+						$(document).on(variableName + '-readcomplete', callback);
+					}
+				}
+			}
+
+			// TODO: This gets called a lot if you add an array of variables
+			// It does sometimes lead to an initial read of the first array element,
+			// followed by reads of the entire array.
+			// I doubt it will cause problems
+			processQueue();
+
+			// TODO: Would be nice to combine a lot of this functionality with addVariableRead.
+			// something like addVariableToList(listToAddTo, varName, callback)
+
+		}
+		
 		thisConnection.reconnect = openWebSocket;
 
 		thisConnection.onDisconnect = function () {
@@ -1054,9 +1199,95 @@ WEBHMI.Machine = function (options) {
 		thisMachine.connection.addVariableReadCyclic(varName, successCallback);
 	}
 
+	// Add a variable to be read cyclically
+	function initCyclicReadGroup( ReadGroupName, varName, successCallback) {
+		thisMachine.connection.addReadGroupVariableReadCyclic(ReadGroupName, varName, successCallback);
+	}
+
 	// Write a variable to the PLC once
 	function writeVariable(varName, value, successCallback) {
 		thisMachine.connection.addVariableWrite(varName, value, successCallback);
+	}
+
+	//Set the ReadGroupName enabled/disabled
+	function setReadGroupEnable( ReadGroupName, enable ){
+		thisMachine.connection.setReadGroupEnable( ReadGroupName, enable)
+	}
+
+	//Get the list of read group names
+	function getReadGroupList(){
+		return thisMachine.connection.getReadGroupList()
+	}
+
+	//Get the read group object for a given name
+	function getReadGroup( ReadGroupName ){
+		return thisMachine.connection.getReadGroup( ReadGroupName )
+	}	
+
+	//Set the ReadGroup max frequency in Hz
+	function setReadGroupMaxFrequency( ReadGroupName, hz ){
+		thisMachine.connection.setReadGroupMaxFrequency(ReadGroupName, hz)
+	}
+
+	//Set the ReadGroup enable callback that allows the user to enable/disable the read group manually
+	function setReadGroupEnableCallback( ReadGroupName, callback ){
+		thisMachine.connection.setReadGroupEnableCallback(ReadGroupName, callback)
+	}
+
+	//Print the data for the read groups in the console
+	function printReadGroups(){
+		let readGroupsPrinter = []
+		thisMachine.connection.getReadGroupList().forEach( (ReadGroupName)=>{
+			readGroupsPrinter.push( thisMachine.connection.getReadGroup(ReadGroupName) )
+		})
+		console.log(readGroupsPrinter)
+	}
+
+	//This call will manage all the read groups
+	//	- If the read group is not managed by the user, it will be enabled/disabled based on the would show flag
+	//	- If the read group is managed by the user, it will be not be enabled/disabled here
+	//  - If the read group is managed by the user, but there is an error in the callback, it will be enabled/disabled here
+	function readGroupShouldManage( ReadGroupName, wouldShow ){
+		let readGroup = thisMachine.connection.getReadGroup( ReadGroupName )
+		 // Start by assuming the library will auto-manage the ReadGroup callback
+		let shouldManage = true;
+		try{
+			//Check to see if there is a callback to enable/disable the readGroup
+			// If this callback return should manage, check the global callback
+			if(readGroup.enableCallback !== null ){
+				shouldManage = readGroup.enableCallback( readGroup, wouldShow)
+			}
+			//If the global callback returns should manage, we should manage it
+			if( enableReadGroupsCallback !== null && shouldManage ){
+				shouldManage = enableReadGroupsCallback( readGroup, wouldShow)
+			}
+			readGroup.error	= null		
+		}
+		//If there is an error in the callback, post it and assume the library should manage
+		catch(error){
+			if( typeof readGroup.error == 'undefined' ){
+				console.warn('Error in readGroup enable/disable callback:\n', error)
+			}
+			readGroup.error = error;
+			shouldManage = true;
+		}
+		if( shouldManage ){
+			readGroup.enable = wouldShow;
+			readGroup.autoManage = true;	
+		}
+		else{
+			readGroup.autoManage = false;	
+		}
+		return true
+	}
+
+	let enableReadGroupsCallback = null;
+	//Set the callback that allows the user to enable/disable ALL read groups.
+	//	- First priority is the callback in the read group
+	//  - Second priority is the global callback
+	//  - Third priority is the wouldShow flag
+	function setReadEnableCallback(callBack){
+		enableReadGroupsCallback = callBack;
 	}
 
 	// User level
@@ -1130,6 +1361,17 @@ WEBHMI.Machine = function (options) {
 	thisMachine.value = value;
 	thisMachine.readVariable = readVariable;
 	thisMachine.initCyclicRead = initCyclicRead;
+
+	thisMachine.initCyclicReadGroup = initCyclicReadGroup;
+	thisMachine.setReadGroupEnable = setReadGroupEnable;
+	thisMachine.getReadGroup = getReadGroup;
+	thisMachine.getReadGroupList = getReadGroupList;
+	thisMachine.setReadGroupEnableCallback = setReadGroupEnableCallback;
+	thisMachine.setReadGroupMaxFrequency = setReadGroupMaxFrequency;
+	thisMachine.readGroupShouldManage = readGroupShouldManage;
+	thisMachine.printReadGroups = printReadGroups;
+	thisMachine.setReadEnableCallback = setReadEnableCallback;
+
 	thisMachine.writeVariable = writeVariable;
 	thisMachine.updateSettings = updateSettings
 

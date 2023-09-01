@@ -4,6 +4,8 @@
   <TaskClass Name="Cyclic#1">
     <Task Name="FirstInitP" Source="Infrastructure.FirstInitProg.prg" Memory="UserROM" Language="ANSIC" Debugging="true" />
     <Task Name="demo" Source="demo.prg" Memory="UserROM" Language="IEC" Debugging="true" />
+    <Task Name="demoGlobal" Source="demoGlobal.prg" Memory="UserROM" Language="IEC" Debugging="true" />
+    <Task Name="Page" Source="Page.prg" Memory="UserROM" Language="IEC" Debugging="true" />
   </TaskClass>
   <TaskClass Name="Cyclic#2" />
   <TaskClass Name="Cyclic#3" />

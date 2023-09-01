@@ -1,45 +1,56 @@
 machine = new WEBHMI.Machine({
   port: 8000,
   ipAddress: '127.0.0.1',
-  maxReconnectCount: 5000,
-  // maxMessageFrequency: 120
+  maxReconnectCount: 5000,  
+  maxMessageFrequency: 120
 });
 
 
 setInterval(WEBHMI.updateHMI, 30)
 
-machine.initCyclicRead("Page:MyVar.in.command" )
-machine.initCyclicReadGroup( 'test', "Page:MyVar.in.command" )
-machine.initCyclicReadGroup( 'test', "Page:MyVar.in" )
-machine.initCyclicReadGroup( 'test', "Page:MyVar" )
+//Test OLD API
+machine.initCyclicRead("OldReadStyle" )
+machine.setReadGroupMaxFrequency("global", 1)
 
-machine.setReadGroupEnable( 'test', false)
+//Test NEW API with parenting
+machine.initCyclicReadGroup( 'CommsParent', "Page:MyVar.in.command" )
+machine.initCyclicReadGroup( 'CommsParent', "Page:MyVar.in" )
+machine.initCyclicReadGroup( 'CommsParent', "Page:MyVar" )
+machine.initCyclicReadGroup( 'CommsParent', "test" )
 
-machine.setReadGroupMaxFrequency('test1', 2)
-machine.setReadGroupMaxFrequency('test3', 1)
+//Disable a read group
+machine.setReadGroupEnable( 'CommsParent', false)
 
+//Set the max frequency of a read groups
+// machine.setReadGroupMaxFrequency('CommsActive', 1)//uses default
+machine.setReadGroupMaxFrequency('CommsParent', 2)
+machine.setReadGroupMaxFrequency('CommsChild', 1)
 
-function mycb(group, wouldShow){
+//Test passing in a callback function
+function myTestReadGroupCallback(group, wouldShow){
   group.enable = wouldShow
  return false
 }
-machine.setReadGroupEnableCallback( 'test1',mycb)
-machine.setReadGroupEnableCallback( 'test', ( group, wouldShow )=>{
+machine.setReadGroupEnableCallback( 'CommsLow',myTestReadGroupCallback)
+
+//Test passing in a callback anonymous function
+machine.setReadGroupEnableCallback( 'CommsChild', ( group, wouldShow )=>{
   group.enable = wouldShow
   return false
 })
 
-machine.setReadEnableCallback( ( group, wouldShow )=>{
-  if(wouldShow){
-    return true
-  }
-  else{
-    return false
-  }
+//Test passing in a callback anonymous function that always returns true
+machine.setReadGroupEnableCallback( 'CommsParent', ( group, wouldShow )=>{
+  return true
 })
 
-machine.setReadGroupMaxFrequency('test1', 2)
 
-machine.getReadGroup('test1')
-machine.getReadGroupList()
+//Test the global callback function
+machine.setReadEnableCallback( ( group, wouldShow )=>{
+    return true
+})
+
+//Test the rest of the API
+console.log(machine.getReadGroup('CommsLow'))
+console.log(machine.getReadGroupList())
 machine.printReadGroups()

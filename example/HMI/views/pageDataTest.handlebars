@@ -1,20 +1,21 @@
 <script id="testData" type="text/x-handlebars-template">
-    <div data-read-group="test">
-        <h1>Comms active</h1>
+    <div data-read-group="CommsParent">
+        <h1>components Read, variables optimized</h1>
         {{W "Numeric" data-var-name="test.myvalue.x"}}
         {{W "Numeric" data-var-name="Page:MyVar.in.command"}}
-        {{!-- {{> components}} --}}
+        {{W "Numeric" data-var-name="Page:MyVar.out.status"}}
+        <div data-read-group="CommsChild">
+            {{> components}}
+        </div>
     </div>
 </script>
 
 <script id="testNoData" type="text/x-handlebars-template">
-    <div data-read-group="test3">
-        <h1>Comms inactive</h1>
+    <div data-read-group="CommsLow">
+        <h1>components not read, variables not optimized</h1>
         {{W "Numeric" data-var-name="test.myvalue.x"}}
         {{W "Numeric" data-var-name="Page:MyVar.in.command"}}
-        <div data-read-group="test2">
-            {{> components}}
-        </div>
+        {{W "Numeric" data-var-name="Page:MyVar.out.status"}}
     </div>
 </script>
 

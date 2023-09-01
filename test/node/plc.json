@@ -4,7 +4,7 @@
   },
   "demo:test": {
     "command": "true",
-    "slider": 1,
+    "slider": 0.746360909955381,
     "random": 38.032
   },
   "gMotorBasic": [
@@ -20,11 +20,15 @@
   "Page:MyVar": {
     "in": {
       "command": 0
+    },
+    "out": {
+      "status": 0
     }
   },
   "test": {
     "myvalue": {
       "x": 0
     }
-  }
+  },
+  "OldReadStyle": 0
 }

@@ -887,6 +887,7 @@ WEBHMI.Machine = function (options) {
 				}
 			}
 		}
+		//Get the read group object for a given name
 		thisConnection.getReadGroup = function(ReadGroupName){
 			let cyclicListReadGroup = read.cyclicListReadGroup[ReadGroupName]
 			if( typeof cyclicListReadGroup == 'undefined'){
@@ -896,6 +897,7 @@ WEBHMI.Machine = function (options) {
 			return cyclicListReadGroup
 		}
 
+		//Get the names of all the read groups
 		thisConnection.getReadGroupList = function(){
 			return Object.getOwnPropertyNames(read.cyclicListReadGroup);
 		}
@@ -1061,12 +1063,15 @@ WEBHMI.Machine = function (options) {
 			let cyclicListReadGroup = thisConnection.getReadGroup(ReadGroupName)
 			cyclicListReadGroup.enable = enable
 		}
+
+		//Set the ReadGroup max frequency in Hz
 		thisConnection.setReadGroupMaxFrequency = function(  ReadGroupName, hz  ){
 			if( hz > 0){ 
 				thisConnection.getReadGroup(ReadGroupName).minReadTime = (1/hz)*1000;
 			}			
 		}
 
+		//Set the ReadGroup enable callback that allows the user to enable/disable the read group manually
 		thisConnection.setReadGroupEnableCallback = function( ReadGroupName, callback ){
 			let cyclicListReadGroup = thisConnection.getReadGroup(ReadGroupName)
 			cyclicListReadGroup.enableCallback = callback;
@@ -1187,26 +1192,40 @@ WEBHMI.Machine = function (options) {
 	function setReadGroupEnable( ReadGroupName, enable ){
 		thisMachine.connection.setReadGroupEnable( ReadGroupName, enable)
 	}
+
+	//Get the list of read group names
 	function getReadGroupList(){
 		return thisMachine.connection.getReadGroupList()
 	}
+
+	//Get the read group object for a given name
 	function getReadGroup( ReadGroupName ){
 		return thisMachine.connection.getReadGroup( ReadGroupName )
 	}	
+
+	//Set the ReadGroup max frequency in Hz
 	function setReadGroupMaxFrequency( ReadGroupName, hz ){
 		thisMachine.connection.setReadGroupMaxFrequency(ReadGroupName, hz)
 	}
+
+	//Set the ReadGroup enable callback that allows the user to enable/disable the read group manually
 	function setReadGroupEnableCallback( ReadGroupName, callback ){
 		thisMachine.connection.setReadGroupEnableCallback(ReadGroupName, callback)
 	}
+
+	//Print the data for the read groups in the console
 	function printReadGroups(){
 		let readGroupsPrinter = []
 		thisMachine.connection.getReadGroupList().forEach( (ReadGroupName)=>{
 			readGroupsPrinter.push( thisMachine.connection.getReadGroup(ReadGroupName) )
 		})
 		console.log(readGroupsPrinter)
-//		return readGroupsPrinter;
 	}
+
+	//This call will manage all the read groups
+	//	- If the read group is not managed by the user, it will be enabled/disabled based on the would show flag
+	//	- If the read group is managed by the user, it will be not be enabled/disabled here
+	//  - If the read group is managed by the user, but there is an error in the callback, it will be enabled/disabled here
 	function readGroupShouldManage( ReadGroupName, wouldShow ){
 		let readGroup = thisMachine.connection.getReadGroup( ReadGroupName )
 		 // Start by assuming the library will auto-manage the ReadGroup callback
@@ -1240,10 +1259,16 @@ WEBHMI.Machine = function (options) {
 		}
 		return true
 	}
+
 	let enableReadGroupsCallback = null;
+	//Set the callback that allows the user to enable/disable ALL read groups.
+	//	- First priority is the callback in the read group
+	//  - Second priority is the global callback
+	//  - Third priority is the wouldShow flag
 	function setReadEnableCallback(callBack){
 		enableReadGroupsCallback = callBack;
 	}
+
 	// User level
 	//---------------------------------------------
 

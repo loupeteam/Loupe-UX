@@ -230,7 +230,7 @@ WEBHMI.getValue = function ($element) {
 	}
 	if( $element.attr( 'data-var-name-added' ) != varName){
 		$element.attr( 'data-var-name-added', varName)
-		localMachine.initCyclicReadGroup( WEBHMI.getDataReadGroup($element) ,varName); // this might cause bad behavior if the variable does not exist on the PLC.
+		localMachine.initCyclicReadGroup( WEBHMI.getDataReadGroup($element) ,varName);
 	}
 	
 	var varValue = localMachine.value(varName);
@@ -251,7 +251,7 @@ WEBHMI.getHideValue = function ($element) {
 
 	if( $element.attr( 'data-var-name-added-hide' ) != varName){
 		$element.attr( 'data-var-name-added-hide', varName)
-		localMachine.initCyclicReadGroup( WEBHMI.getDataReadGroup($element) ,varName); // this might cause bad behavior if the variable does not exist on the PLC.
+		localMachine.initCyclicReadGroup( WEBHMI.getDataReadGroup($element) ,varName);
 	}
 	
 	var varValue = localMachine.value(varName);

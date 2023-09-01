@@ -580,6 +580,13 @@ WEBHMI.Machine = function (options) {
 				return undefined
 			}
 			else{
+				//Look through the list and see if there are items who's parents are alread here
+				//If so, then remove them from the list
+				for (const key in list) {
+					if(parentIsInList(key, list)){
+						delete list[key]
+					}
+				}
 				return getVariableListArray(list)
 			}
 		}

@@ -13,9 +13,26 @@
 <script id="testNoData" type="text/x-handlebars-template">
     <div data-read-group="CommsLow">
         <h1>components not read, variables not optimized</h1>
+        {{W "PageSelect" "Test No Data" dom="testParent" template="testAddParent"}}
         {{W "Numeric" data-var-name="test.myvalue.x"}}
+        {{W "Numeric" data-var-name="test.myvalue.y"}}
+        {{W "Numeric" data-var-name="test.myvalue.z[0].e"}}
         {{W "Numeric" data-var-name="Page:MyVar.in.command"}}
         {{W "Numeric" data-var-name="Page:MyVar.out.status"}}
+        {{W "Numeric" data-var-name="Page:MyVar.out.a"}}
+        <!--Add 100 random variables-->
+        {{#repeat 1000}}
+            {{W "Numeric" data-var-name= (concat "largeData.out.a" @index) }}
+        {{/repeat}}
+        <div id="testParent">
+
+        </div>
+    </div>
+</script>
+<script id="testAddParent" type="text/x-handlebars-template">
+    <span>Only test should be shown while this div is active</span>
+    <div data-read-group="tempParent">
+        {{W "Text" data-var-name="largeData"}}
     </div>
 </script>
 

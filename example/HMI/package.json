@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bootstrap": "3.3.4",
+    "bootstrap": "3.4.1",
     "@loupeteam/tmplits": "*",
     "@loupeteam/tmplit-basic": "*",
     "@loupeteam/webhmi" : "file:../../src/HMI",

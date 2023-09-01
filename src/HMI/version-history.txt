@@ -1,3 +1,5 @@
+1.6.0 - Add read groups
+
 1.5.0 - Add a max frequency to cyclic reads
 	  - Force cyclic reads between writes
 	  - Fix copy/paste pv

@@ -537,16 +537,24 @@ WEBHMI.Machine = function (options) {
 					read.retryCount = 0;
 					readVariableList(list);
 				}
+				//If there was a write or single read, then we need to process the queue again
+				else if( !WEBHMI.isEmptyObject(write.context) && write.consecutiveWrites > 0 ){
+					write.consecutiveWrites = 0;
+					processQueue();
+				}
+				else if( !WEBHMI.isEmptyObject(read.singleList[0]) && read.consecutiveSingleReads > 0 && !read.waiting ){
+					read.consecutiveSingleReads = 0;
+					processQueue();
+				}
 				else{
-					//If there was a write or single read, then we need to process the queue again
-					if( write.consecutiveWrites > 0 ){
-						write.consecutiveWrites = 0;
-						processQueue();
-					}
-					else if( read.consecutiveSingleReads > 0 && !read.waiting ){
-						read.consecutiveSingleReads = 0;
-						processQueue();
-					}
+					var timeSinceLastMessage = Date.now() - read.lastRequestTime;
+					var timeToWait = (1/settings.maxMessageFrequency)*1000 - timeSinceLastMessage;
+					if (timeToWait < 0) timeToWait = 0;
+					read.waiting = true
+					setTimeout(()=>{
+						read.waiting =false;
+						processQueue()
+					}, timeToWait);
 				}
 			}
 		}
@@ -567,7 +575,13 @@ WEBHMI.Machine = function (options) {
 					}			
 				}
 			}
-			return getVariableListArray(list)
+			//If the list has no members, then return undefined
+			if( Object.getOwnPropertyNames(list).length === 0 ){
+				return undefined
+			}
+			else{
+				return getVariableListArray(list)
+			}
 		}
 
 		function processReadResponse(responseData) {

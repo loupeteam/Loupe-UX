@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------
 // Use uppercase namespace
 var WEBHMI = {
-	version: '1.6.0'
+	version: '1.6.1'
 };
 
 // export default WEBHMI
@@ -1470,6 +1470,14 @@ WEBHMI.HMI = function (...dataCallbacks) {
 
 	}
 
+	this.initCyclicReadGroup = function ( ReadGroupName, variableName, successCallback) {
+		this.initCyclicRead(variableName, successCallback);
+	}
+
+	this.getReadGroupList = function(){
+		return [];
+	}
+	
  };
 // HMI()
 

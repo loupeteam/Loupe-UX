@@ -3,6 +3,7 @@
 Documentation can be found at https://loupeteam.github.io/Sandbox/libraries/webhmi.html.
 
 ## Revision
+- 1.6.1 - Add read group functions to local HMI machine
 - 1.6.0 - Add read groups
 - 1.5.1 - Add waiting to avoid pileup
 - 1.5.0 - Add a max frequency to cyclic reads

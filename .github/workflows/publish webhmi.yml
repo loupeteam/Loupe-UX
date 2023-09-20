@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        packages: [src/HMI]
+        packages: [src/HMI, test/node]
     permissions:
       contents: read
       packages: write

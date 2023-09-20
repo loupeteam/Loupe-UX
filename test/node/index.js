@@ -3,7 +3,7 @@
 const { JSDOM } = require( "jsdom" );
 const { window } = new JSDOM( "" );
 global.$ = global.jQuery = require("jquery")( window );
-const WEBHMI = require("../../src/HMI/webhmi");
+const WEBHMI = require("@loupeteam/webhmi");
 
 let dataManager = new WEBHMI.HMI(()=>{
 
@@ -12,7 +12,12 @@ let dataManager = new WEBHMI.HMI(()=>{
 
 //Import PLC structure from JSON file
 const fs = require('fs');
-let rawdata = fs.readFileSync('./plc.json');
+let rawdata = "{}";
+try {
+    rawdata = fs.readFileSync('./plc-sim.json');
+} catch (error) {
+    console.log("Error reading plc.json")
+}
 let plc = JSON.parse(rawdata);
 
 WEBHMI.extend(true, dataManager, plc);
@@ -22,7 +27,7 @@ let newData = false
 setInterval(() => {
     if(newData){
         newData = false;        
-        fs.writeFile("./plc.json", JSON.stringify(dataManager, null, 2), function (err) {
+        fs.writeFile("./plc-sim.json", JSON.stringify(dataManager, null, 2), function (err) {
             if (err) {
                 return console.log(err);
             }
@@ -34,7 +39,8 @@ setInterval(() => {
 
 //Implement a websocket server
 var WebSocketServer = require('ws').Server;
-var wss = new WebSocketServer({ port: 8000 });
+var wss = new WebSocketServer({ port: 8080 });
+console.log("\nStarting PLC simulator on port 8080\n")
 let data
 wss.on('connection', function (ws) {
     ws.on('message', function (message) {

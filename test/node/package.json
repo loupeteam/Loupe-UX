@@ -1,6 +1,6 @@
 {
   "name": "@loupeteam/plc-sim",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -15,6 +15,7 @@
   "dependencies": {
     "jquery": "^3.7.0",
     "jsdom": "^22.1.0",
-    "ws": "^8.13.0"
+    "ws": "^8.13.0",
+    "@loupeteam/webHMI": "*"
   }
 }

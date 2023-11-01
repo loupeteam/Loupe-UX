@@ -1,6 +1,11 @@
-//------------------------------------------------------------------------------
-// Copyright 2019 Automation Resources Group
-//------------------------------------------------------------------------------
+/*
+ * File: webhmi-ext.js
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of WebHMI, licensed under the MIT License.
+ * 
+ */
 
 function HandlebarsExt() {
 

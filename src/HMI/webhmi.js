@@ -1,6 +1,11 @@
-//------------------------------------------------------------------------------
-// Copyright 2020 Loupe
-//------------------------------------------------------------------------------
+/*
+ * File: webhmi.js
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of WebHMI, licensed under the MIT License.
+ * 
+ */
 // Use uppercase namespace
 var WEBHMI = {
 	version: '1.6.1'

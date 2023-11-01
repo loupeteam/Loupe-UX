@@ -1,6 +1,11 @@
-//------------------------------------------------------------------------------
-// Copyright 2020 Loupe
-//------------------------------------------------------------------------------
+/*
+ * File: webhmi-data-bind.js
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of WebHMI, licensed under the MIT License.
+ * 
+ */
 
 // Check for webHMI global object
 if (typeof WEBHMI === 'undefined') {

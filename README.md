@@ -10,7 +10,8 @@ The Loupe webHMI javascript library provides functionality for implementing a we
 For more documentation and examples, see https://loupeteam.github.io/LoupeDocs/libraries/webhmi.html
 
 # Installation
-To install using the Loupe Package Manager (LPM), in an initialized Automation Studio project directory run `lpm install webhmi`, and `lpm install plc-sim` . For more information about LPM, see https://loupeteam.github.io/LoupeDocs/tools/lpm.html
+To install using the Loupe Package Manager (LPM), in an initialized Automation Studio project directory run `lpm install webhmi`.
+If you want to install the simulated PLC backend, in an initialized Automation Studio project directory run `lpm install plc-sim` . For more information about LPM, see https://loupeteam.github.io/LoupeDocs/tools/lpm.html
 
 ## Licensing
 

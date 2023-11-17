@@ -1,0 +1,12 @@
+(*
+ * File: StringExt.var
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of StringExt, licensed under the MIT License.
+ *
+ *)
+VAR CONSTANT
+	STREXT_INVALID_CHAR : USINT := 221;
+	STREXT_MAX_UDINT : UDINT := 4294967295;
+END_VAR

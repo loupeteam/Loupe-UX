@@ -1,0 +1,16 @@
+(*
+ * File: Persist.var
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of Persist, licensed under the MIT License.
+ *
+ *********************************************************************
+ * Constants of library Persist
+ ********************************************************************)
+
+VAR CONSTANT
+	PERSIST_MAI_VARLIST : USINT := 99;
+	PERSIST_STRLEN_VARNAME : USINT := 120;
+	PERSIST_STRLEN_ERRORSTRING : UINT := 320;
+END_VAR

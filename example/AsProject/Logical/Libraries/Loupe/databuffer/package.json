@@ -1,0 +1,18 @@
+{
+  "name": "@loupeteam/databuffer",
+  "version": "0.1.1",
+  "description": "Loupe's databuffer library for Automation Runtime",
+  "homepage": "https://loupeteam.github.io/LoupeDocs/libraries/databuffer.html",
+  "scripts": {},
+  "keywords": [],
+  "author": "Loupe",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loupeteam/databuffer"
+  },
+  "lpm": {
+    "type": "library"
+  },
+  "dependencies": {}
+}

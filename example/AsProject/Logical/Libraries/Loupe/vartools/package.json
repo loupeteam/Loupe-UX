@@ -1,0 +1,20 @@
+{
+  "name": "@loupeteam/vartools",
+  "version": "0.11.3",
+  "description": "Loupe's vartools library for Automation Runtime",
+  "homepage": "https://loupeteam.github.io/LoupeDocs/libraries/vartools.html",
+  "scripts": {},
+  "keywords": [],
+  "author": "Loupe",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loupeteam/vartools"
+  },
+  "lpm": {
+    "type": "library"
+  },
+  "dependencies": {
+    "@loupeteam/stringext": ">=0.14.0 <=0.14.9"
+  }
+}

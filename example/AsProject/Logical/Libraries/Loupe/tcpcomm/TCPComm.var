@@ -1,0 +1,13 @@
+(*
+ * File: TCPComm.var
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of TCPComm, licensed under the MIT License.
+ *
+ *)
+
+VAR CONSTANT
+	TCPCOMM_STRLEN_IPADDRESS : USINT := 255;
+	TCPCOMM_STRLEN_ERRORSTRING : UINT := 320;
+END_VAR

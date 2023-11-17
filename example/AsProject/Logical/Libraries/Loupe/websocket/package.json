@@ -1,0 +1,21 @@
+{
+  "name": "@loupeteam/websocket",
+  "version": "0.2.0",
+  "description": "Loupe's websocket library for Automation Runtime",
+  "homepage": "https://loupeteam.github.io/LoupeDocs/libraries/websocket.html",
+  "scripts": {},
+  "keywords": [],
+  "author": "Loupe",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loupeteam/websocket"
+  },
+  "lpm": {
+    "type": "library"
+  },
+  "dependencies": {
+    "@loupeteam/tcpcomm": ">=0.10.0 <=0.10.9",
+    "@loupeteam/stringext": ">=0.14.0 <=0.14.9"
+  }
+}

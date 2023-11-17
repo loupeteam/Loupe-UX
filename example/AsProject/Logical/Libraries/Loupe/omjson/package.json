@@ -1,0 +1,24 @@
+{
+  "name": "@loupeteam/omjson",
+  "version": "1.4.0",
+  "description": "Loupe's omjson library for Automation Runtime",
+  "homepage": "https://loupeteam.github.io/LoupeDocs/libraries/omjson.html",
+  "scripts": {},
+  "keywords": [],
+  "author": "Loupe",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loupeteam/OMJSON"
+  },
+  "lpm": {
+    "type": "library"
+  },
+  "dependencies": {
+    "@loupeteam/vartools": ">=0.9.1 <=0.11.9",
+    "@loupeteam/databuffer": ">=0.1.0 <=0.1.9",
+    "@loupeteam/tcpcomm": ">=0.10.0 <=0.10.9",
+    "@loupeteam/stringext": ">=0.14.0 <=0.14.9",
+    "@loupeteam/websocket": "*"
+  }
+}

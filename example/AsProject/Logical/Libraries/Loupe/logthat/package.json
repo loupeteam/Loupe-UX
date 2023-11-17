@@ -1,0 +1,20 @@
+{
+  "name": "@loupeteam/logthat",
+  "version": "0.5.1",
+  "description": "Loupe's logthat library for Automation Runtime",
+  "homepage": "https://loupeteam.github.io/LoupeDocs/libraries/logthat.html",
+  "scripts": {},
+  "keywords": [],
+  "author": "Loupe",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loupeteam/logthat"
+  },
+  "lpm": {
+    "type": "library"
+  },
+  "dependencies": {
+    "@loupeteam/stringext": ">=0.14.1"
+  }
+}

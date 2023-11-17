@@ -1,7 +1,7 @@
 {
   "name": "asproject",
   "version": "1.0.0",
-  "description": "",
+  "description": "StarterAsProject is a minimal Automation studio project used by the LPM framework to automatically create starter projects.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,13 +9,14 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@loupeteam/starterasproject49": "^0.1.0",
-    "@loupeteam/vartools": "^0.11.3",
-    "@loupeteam/webhmiserverpkg": "^0.1.0"
-  },
   "lpmConfig": {
     "deploymentConfigs": [],
     "gitClient": "GitExtensions"
+  },
+  "dependencies": {
+    "@loupeteam/csvfilelib": "^1.2.2",
+    "@loupeteam/errorlib": "^0.23.3",
+    "@loupeteam/omjson": "^1.4.0",
+    "@loupeteam/persist": "^0.0.7"
   }
 }

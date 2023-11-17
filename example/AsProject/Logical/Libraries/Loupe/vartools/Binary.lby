@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Library xmlns="http://br-automation.co.at/AS/Library" Version="0.11.3" SubType="Binary">
+  <Files>
+    <File Description="Exported data types">VarTools.typ</File>
+    <File Description="Exported constants">VarTools.var</File>
+    <File Description="Exported functions and function blocks">VarTools.fun</File>
+    <File Description="">varToolsInternal.h</File>
+    <File Type="File">CHANGELOG.md</File>
+  </Files>
+  <Dependencies>
+    <Dependency ObjectName="sys_lib" />
+    <Dependency ObjectName="StringExt" FromVersion="0.14.0" ToVersion="0.14.9" />
+    <Dependency ObjectName="AsBrStr" />
+    <Dependency ObjectName="AsBrWStr" />
+  </Dependencies>
+</Library>

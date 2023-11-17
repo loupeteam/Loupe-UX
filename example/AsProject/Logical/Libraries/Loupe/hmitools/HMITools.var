@@ -1,0 +1,12 @@
+(*
+* File: HMITools.var
+* Copyright (c) 2023 Loupe
+* https://loupe.team
+* 
+* This file is part of HMITools, licensed under the MIT License.
+* 
+*)
+VAR CONSTANT
+	LIST_BOX_STRING_SIZE : UINT := 260;
+	fiEXTENSION : USINT := 3;
+END_VAR

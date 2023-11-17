@@ -16,6 +16,7 @@
   "dependencies": {
     "@loupeteam/csvfilelib": "^1.2.2",
     "@loupeteam/errorlib": "^0.23.3",
+    "@loupeteam/firstinitprog": "^0.1.1",
     "@loupeteam/omjson": "^1.4.0",
     "@loupeteam/persist": "^0.0.7"
   }

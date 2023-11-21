@@ -1,7 +1,7 @@
 {
   "name": "hmi",
   "version": "1.0.0",
-  "description": "",
+  "description": "Install your local application by adding to the package.json at this level:\r ```\r     \"app\":\"file:./\"\r ```",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,10 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bootstrap": "3.3.4",
-    "@loupeteam/tmplits": "*",
-    "@loupeteam/tmplit-basic": "*",
-    "@loupeteam/webhmi" : "file:../../src/HMI",
-    "app" : "file:./"
+    "@loupeteam/tmplit-basic": "^0.0.1",
+    "@loupeteam/tmplits": "^0.0.9"
   }
 }

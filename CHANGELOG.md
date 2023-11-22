@@ -5,7 +5,7 @@
 	  - Fix copy/paste pv
 	  - Remove processing of elements without valid plc variables
 
-1.4.0 - Add unit conversion feature for webhmi-num-value using
+1.4.0 - Add unit conversion feature for lux-num-value using
 		https://convert.js.org/ library
 		Add support for databinding to hmi-side data
 	   	Add user levels
@@ -18,12 +18,12 @@
 
 1.2.3 - Ensure databinding still starts when included after dom is fully loaded
 
-1.2.2 - Add support for webhmi-num-value updating inputs on drag
+1.2.2 - Add support for lux-num-value updating inputs on drag
 
 1.2.1 - Fix nav tabs that use href
 		Clean up version history
 
-1.2.0 - Add webhmi-ignore-bubbling and webhmi-confirm functionality  
+1.2.0 - Add lux-ignore-bubbling and lux-confirm functionality  
       	Add support for led with same data-led-true and data-led-false classes 
      	Add support for nav tabs with data-target instead of href
       	Improve databind update efficiency 
@@ -39,7 +39,7 @@
 
 1.0.0 - First release
 
-0.13.0 - Change webhmi-tab class name to webhmi-tab-pane
+0.13.0 - Change lux-tab class name to lux-tab-pane
 		Remove '.arg' from the end of all event names
 
 0.12.0 - Add documentation
@@ -49,5 +49,5 @@
 0.11.0 - Update version to match OMJSON for upcoming release
 
 0.2.1 -	Add additional support for less used tags
-		Add option support for .webhmi-text-value (options are not visible)
-		Add textarea support for .webhmi-text-value
+		Add option support for .lux-text-value (options are not visible)
+		Add textarea support for .lux-text-value

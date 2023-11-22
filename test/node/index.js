@@ -1,11 +1,11 @@
 
-//Require Jquery and WebHMI
+//Require Jquery and Loupe UX
 const { JSDOM } = require( "jsdom" );
 const { window } = new JSDOM( "" );
 global.$ = global.jQuery = require("jquery")( window );
-const WEBHMI = require("@loupeteam/webhmi");
+const LUX = require("@loupeteam/loupe-ux");
 
-let dataManager = new WEBHMI.HMI(()=>{
+let dataManager = new LUX.HMI(()=>{
 
 })
 
@@ -20,7 +20,7 @@ try {
 }
 let plc = JSON.parse(rawdata);
 
-WEBHMI.extend(true, dataManager, plc);
+LUX.extend(true, dataManager, plc);
 
 let newData = false
 //Intermittently write to the PLC to the file
@@ -81,6 +81,6 @@ function getProcessVariable( data ){
 }
 
 function setProcessVariable( data ){
-    WEBHMI.extend(true, dataManager, data);
+    LUX.extend(true, dataManager, data);
     return data;
 }

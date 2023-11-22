@@ -1,33 +1,33 @@
 /*
- * File: webhmi-data-bind.js
+ * File: lux-data-bind.js
  * Copyright (c) 2023 Loupe
  * https://loupe.team
  * 
- * This file is part of WebHMI, licensed under the MIT License.
+ * This file is part of Loupe UX, licensed under the MIT License.
  * 
  */
 
-// Check for webHMI global object
-if (typeof WEBHMI === 'undefined') {
-	throw new Error('WEBHMI data binding requires WEBHMI core');
+// Check for lux global object
+if (typeof LUX === 'undefined') {
+	throw new Error('LUX data binding requires LUX core');
 }
 
-WEBHMI.dataBindVersion = '1.6.0';
+LUX.dataBindVersion = '1.6.0';
 
 // Check for being a 'number'
 function isNumeric (obj) {
 	return !Number.isNaN(parseFloat(obj)) && isFinite(obj)
 }
 
-WEBHMI.isNumeric = isNumeric
+LUX.isNumeric = isNumeric
 
 // Make sure the convert library is included
 let convertFeatEnable = false;
 if ((typeof convert === 'undefined') || (typeof convert.convert !== 'function')){
 	console.warn('Convert library not defined in index.html and will be disabled')
-	console.warn('Inclusion Example: <script src="webHMI/convert.prod.js"></script>')
+	console.warn('Inclusion Example: <script src="lux/convert.prod.js"></script>')
 }else{
-	WEBHMI.convert = convert.convert
+	LUX.convert = convert.convert
 	convertFeatEnable = true;
 }
 
@@ -63,7 +63,7 @@ function isTrue (value) {
 	
 }
 
-WEBHMI.isTrue = isTrue
+LUX.isTrue = isTrue
 
 // Check for custom equality
 // Types supported: Undefined, Boolean, Number, String
@@ -99,29 +99,29 @@ function isEqual (in1, in2) {
 // Get attribute values
 //----------------------
 
-WEBHMI.getVarName = function ($element) {
+LUX.getVarName = function ($element) {
 	return $element.attr('data-var-name');
 };
 
-WEBHMI.getHideVarName = function ($element) {
+LUX.getHideVarName = function ($element) {
 	var value = $element.attr('data-var-name-hide');
 	if (value === undefined) {
-		value = WEBHMI.getVarName($element);
+		value = LUX.getVarName($element);
 		$element.attr('data-var-name-hide', value);
 	}
 	return value;
 };
 
-WEBHMI.getLockVarName = function ($element) {
+LUX.getLockVarName = function ($element) {
 	var value = $element.attr('data-var-name-lock');
 	if (value === undefined) {
-		value = WEBHMI.getVarName($element);
+		value = LUX.getVarName($element);
 		$element.attr('data-var-name-lock', value);
 	}
 	return value;
 };
 
-WEBHMI.getMachineName = function ($element) {
+LUX.getMachineName = function ($element) {
 	var value = $element.attr('data-machine-name');
 	if (value === undefined) {
 		value = 'machine';
@@ -130,12 +130,12 @@ WEBHMI.getMachineName = function ($element) {
 	return value;
 };
 
-WEBHMI.getMachine = function ($element) {
+LUX.getMachine = function ($element) {
 	// Abstract this in case there is not a window. or something else unheard of.
-	return window[WEBHMI.getMachineName($element)];
+	return window[LUX.getMachineName($element)];
 }
 
-WEBHMI.getLedTrue = function ($element) {
+LUX.getLedTrue = function ($element) {
 	var value = $element.attr('data-led-true');
 	if (value === undefined) {
 		value = 'led-on';
@@ -144,7 +144,7 @@ WEBHMI.getLedTrue = function ($element) {
 	return value;
 }
 
-WEBHMI.getLedFalse = function ($element) {
+LUX.getLedFalse = function ($element) {
 	var value = $element.attr('data-led-false');
 	if (value === undefined) {
 		value = 'led-off';
@@ -153,7 +153,7 @@ WEBHMI.getLedFalse = function ($element) {
 	return value;
 };
 
-WEBHMI.getSetValue = function ($element) {
+LUX.getSetValue = function ($element) {
 	var value = $element.attr('data-set-value');
 	if (value === undefined) {
 		value = true;
@@ -162,7 +162,7 @@ WEBHMI.getSetValue = function ($element) {
 	return value;
 };
 
-WEBHMI.getHideTrue = function ($element) {
+LUX.getHideTrue = function ($element) {
 	var value = $element.attr('data-hide-true');
 	if (value === undefined) {
 		value = 'hidden';
@@ -171,7 +171,7 @@ WEBHMI.getHideTrue = function ($element) {
 	return value;
 };
 
-WEBHMI.getLockTrue = function ($element) {
+LUX.getLockTrue = function ($element) {
 	var value = $element.attr('data-lock-true');
 	if (value === undefined) {
 		value = 'disabled';
@@ -180,7 +180,7 @@ WEBHMI.getLockTrue = function ($element) {
 	return value;
 };
 
-WEBHMI.getResetValue = function ($element) {
+LUX.getResetValue = function ($element) {
 	var value = $element.attr('data-reset-value');
 	if (value === undefined) {
 		value = false;
@@ -189,7 +189,7 @@ WEBHMI.getResetValue = function ($element) {
 	return value;
 };
 
-WEBHMI.getHideSetValue = function ($element) {
+LUX.getHideSetValue = function ($element) {
 	var value = $element.attr('data-hide-set');
 	if (value === undefined) {
 		value = true;
@@ -198,7 +198,7 @@ WEBHMI.getHideSetValue = function ($element) {
 	return value;
 };
 
-WEBHMI.getLockSetValue = function ($element) {
+LUX.getLockSetValue = function ($element) {
 	var value = $element.attr('data-lock-set');
 	if (value === undefined) {
 		value = true;
@@ -207,15 +207,15 @@ WEBHMI.getLockSetValue = function ($element) {
 	return value;
 };
 
-WEBHMI.getUserLevelShow = function ($element) {
+LUX.getUserLevelShow = function ($element) {
 	return $element.attr('min-user-level-show');
 };
 
-WEBHMI.getUserLevelUnlock = function ($element) {
+LUX.getUserLevelUnlock = function ($element) {
 	return $element.attr('min-user-level-unlock');
 };
 
-WEBHMI.getRange = function ($element) {
+LUX.getRange = function ($element) {
 	var value = $element.attr('data-range');
 	if (value === undefined) {
 		value = '[-1, 0, 1, 2]';
@@ -224,18 +224,18 @@ WEBHMI.getRange = function ($element) {
 	return JSON.parse(value);
 };
 
-WEBHMI.getValue = function ($element) {
+LUX.getValue = function ($element) {
 	
-	//var localMachine = window[WEBHMI.getMachineName($element)];
-	var localMachine = WEBHMI.getMachine($element); // NOTE: Try this here before migrating everything else...
+	//var localMachine = window[LUX.getMachineName($element)];
+	var localMachine = LUX.getMachine($element); // NOTE: Try this here before migrating everything else...
 	
-	var varName = WEBHMI.getVarName($element);
+	var varName = LUX.getVarName($element);
 	if (varName === undefined) {
 		return "No variable";
 	}
 	if( $element.attr( 'data-var-name-added' ) != varName){
 		$element.attr( 'data-var-name-added', varName)
-		localMachine.initCyclicReadGroup( WEBHMI.getDataReadGroup($element) ,varName);
+		localMachine.initCyclicReadGroup( LUX.getDataReadGroup($element) ,varName);
 	}
 	
 	var varValue = localMachine.value(varName);
@@ -244,19 +244,19 @@ WEBHMI.getValue = function ($element) {
 
 }
 
-WEBHMI.getHideValue = function ($element) {
+LUX.getHideValue = function ($element) {
 	
-	//var localMachine = window[WEBHMI.getMachineName($element)];
-	var localMachine = WEBHMI.getMachine($element); // NOTE: Try this here before migrating everything else...
+	//var localMachine = window[LUX.getMachineName($element)];
+	var localMachine = LUX.getMachine($element); // NOTE: Try this here before migrating everything else...
 	
-	var varName = WEBHMI.getHideVarName($element);
+	var varName = LUX.getHideVarName($element);
 	if (varName === undefined) {
 		return "No variable";
 	}
 
 	if( $element.attr( 'data-var-name-added-hide' ) != varName){
 		$element.attr( 'data-var-name-added-hide', varName)
-		localMachine.initCyclicReadGroup( WEBHMI.getDataReadGroup($element) ,varName);
+		localMachine.initCyclicReadGroup( LUX.getDataReadGroup($element) ,varName);
 	}
 	
 	var varValue = localMachine.value(varName);
@@ -264,18 +264,18 @@ WEBHMI.getHideValue = function ($element) {
 
 }
 
-WEBHMI.getLockValue = function ($element) {
+LUX.getLockValue = function ($element) {
 	
-	//var localMachine = window[WEBHMI.getMachineName($element)];
-	var localMachine = WEBHMI.getMachine($element); // NOTE: Try this here before migrating everything else...
+	//var localMachine = window[LUX.getMachineName($element)];
+	var localMachine = LUX.getMachine($element); // NOTE: Try this here before migrating everything else...
 	
-	var varName = WEBHMI.getLockVarName($element);
+	var varName = LUX.getLockVarName($element);
 	if (varName === undefined) {
 		return "No variable";
 	}
 	if( $element.attr( 'data-var-name-lock-added' ) != varName){
 		$element.attr( 'data-var-name-lock-added', varName)
-		localMachine.initCyclicReadGroup( WEBHMI.getDataReadGroup($element) ,varName);
+		localMachine.initCyclicReadGroup( LUX.getDataReadGroup($element) ,varName);
 	}
 	
 	var varValue = localMachine.value(varName);
@@ -284,7 +284,7 @@ WEBHMI.getLockValue = function ($element) {
 
 }
 
-WEBHMI.getDataReadGroup = function($element){
+LUX.getDataReadGroup = function($element){
 	var ReadGroupName = $element[0].closest('[data-read-group]');
 	if ( ReadGroupName != null ) {
 		return ReadGroupName.getAttribute('data-read-group');
@@ -294,18 +294,18 @@ WEBHMI.getDataReadGroup = function($element){
 	}
 }
 
-WEBHMI.getUserLevel = function ($element) {
+LUX.getUserLevel = function ($element) {
 
-	//var localMachine = window[WEBHMI.getMachineName($element)];
-	var localMachine = WEBHMI.getMachine($element); // NOTE: Try this here before migrating everything else...
+	//var localMachine = window[LUX.getMachineName($element)];
+	var localMachine = LUX.getMachine($element); // NOTE: Try this here before migrating everything else...
 	
 	return localMachine.getUserLevel(); // Handles everything we need it to
 
 }
 // NOTE: What is the point of this function? I guess it will init things that are not already in the list, but that is a funny name if that is the point.
-WEBHMI.getCyclicReads = function () {
+LUX.getCyclicReads = function () {
 	$("[data-var-name]").each(function (index, element) { 
-		WEBHMI.getValue($(this));
+		LUX.getValue($(this));
 	});
 }
 
@@ -313,68 +313,68 @@ WEBHMI.getCyclicReads = function () {
 //----------------------
 
 // find all LED elems
-WEBHMI.queryLEDs = function () {
-	WEBHMI.elems.led = Array.prototype.slice.call(document.querySelectorAll('.webhmi-led'));
+LUX.queryLEDs = function () {
+	LUX.elems.led = Array.prototype.slice.call(document.querySelectorAll('.lux-led'));
 }
 
-WEBHMI.updateLEDs = function () {
+LUX.updateLEDs = function () {
 
-	// iterate over array of visible webhmi led elements
-	WEBHMI.visibleElems.led.forEach(function (element) {
+	// iterate over array of visible lux led elements
+	LUX.visibleElems.led.forEach(function (element) {
 
 		const $this = $(element);
-		const varValue = WEBHMI.getValue($this);
+		const varValue = LUX.getValue($this);
 		if ( typeof varValue !== "undefined" && !isEqual($this.attr('data-machine-value-led'), varValue)) {
 			$this.attr('data-machine-value-led', varValue)
-			const setValue = WEBHMI.getSetValue($this);
-			const resetValue = WEBHMI.getResetValue($this);
+			const setValue = LUX.getSetValue($this);
+			const resetValue = LUX.getResetValue($this);
 
 			// if (typeof varValue === 'boolean') {
-			// 	setValue = WEBHMI.isTrue(setValue);
-			// 	resetValue = WEBHMI.isTrue(resetValue);
+			// 	setValue = LUX.isTrue(setValue);
+			// 	resetValue = LUX.isTrue(resetValue);
 			// }
 
 			if (isEqual(varValue, setValue)) {
-				$this.removeClass(WEBHMI.getLedFalse($this)).addClass(WEBHMI.getLedTrue($this));
+				$this.removeClass(LUX.getLedFalse($this)).addClass(LUX.getLedTrue($this));
 			} else if (isEqual(varValue, resetValue)) {
-				$this.removeClass(WEBHMI.getLedTrue($this)).addClass(WEBHMI.getLedFalse($this));
+				$this.removeClass(LUX.getLedTrue($this)).addClass(LUX.getLedFalse($this));
 			} else {
-				$this.removeClass(WEBHMI.getLedFalse($this)).removeClass(WEBHMI.getLedTrue($this));
+				$this.removeClass(LUX.getLedFalse($this)).removeClass(LUX.getLedTrue($this));
 			}
 		}
 	})
 }
 
 // find hide/show elems
-WEBHMI.queryHide = function () {
-	WEBHMI.elems.hide = Array.prototype.slice.call(document.querySelectorAll('.webhmi-hide, .webhmi-show, [min-user-level-show]'));
+LUX.queryHide = function () {
+	LUX.elems.hide = Array.prototype.slice.call(document.querySelectorAll('.lux-hide, .lux-show, [min-user-level-show]'));
 }
 
-WEBHMI.updateHide = function () {
+LUX.updateHide = function () {
 
-	WEBHMI.elems.hide.forEach(function (element) {
+	LUX.elems.hide.forEach(function (element) {
 
 		const $this = $(element);
 		
 		const hasHideUserLevel = ($this.attr('min-user-level-show') !== undefined);
-		const hasHide = $this.hasClass('webhmi-hide');
-		const hasShow = $this.hasClass('webhmi-show');
+		const hasHide = $this.hasClass('lux-hide');
+		const hasShow = $this.hasClass('lux-show');
 
-		const varValue = WEBHMI.getHideValue($this);
-		const userLevel = WEBHMI.getUserLevel($this);
+		const varValue = LUX.getHideValue($this);
+		const userLevel = LUX.getUserLevel($this);
 
 		if (((hasHide || hasShow) && !isEqual($this.attr('data-machine-value-hide'), varValue)) || (hasHideUserLevel && !isEqual($this.attr('data-machine-value-user-level-show'), userLevel))) {
 		
 			if(hasHide || hasShow) $this.attr('data-machine-value-hide', varValue);
 			if(hasHideUserLevel) $this.attr('data-machine-value-user-level-show', userLevel);
 
-			const setValue = WEBHMI.getHideSetValue($this); // elements that only have user level will get data-hide-set here; this is fine
-			const userLevelShow = WEBHMI.getUserLevelShow($this);
+			const setValue = LUX.getHideSetValue($this); // elements that only have user level will get data-hide-set here; this is fine
+			const userLevelShow = LUX.getUserLevelShow($this);
 
 			if ((hasHide && isEqual(varValue, setValue)) || (hasShow && !isEqual(varValue, setValue)) || (hasHideUserLevel && (userLevel < userLevelShow))) {
-				$this.addClass(WEBHMI.getHideTrue($this));
+				$this.addClass(LUX.getHideTrue($this));
 			} else {
-				$this.removeClass(WEBHMI.getHideTrue($this));
+				$this.removeClass(LUX.getHideTrue($this));
 			}
 
 		}
@@ -384,36 +384,36 @@ WEBHMI.updateHide = function () {
 }
 
 // find lock/unlock elems
-WEBHMI.queryLock = function () {
-	WEBHMI.elems.lock = Array.prototype.slice.call(document.querySelectorAll('.webhmi-lock, .webhmi-unlock, [min-user-level-unlock]'));
+LUX.queryLock = function () {
+	LUX.elems.lock = Array.prototype.slice.call(document.querySelectorAll('.lux-lock, .lux-unlock, [min-user-level-unlock]'));
 }
 
-WEBHMI.updateLock = function () {
+LUX.updateLock = function () {
 
-	WEBHMI.elems.lock.forEach(function (element) {
+	LUX.elems.lock.forEach(function (element) {
 
 		const $this = $(element);
 
 		const hasLockUserLevel = ($this.attr('min-user-level-unlock') !== undefined);
-		const hasLock = $this.hasClass('webhmi-lock');
-		const hasUnlock = $this.hasClass('webhmi-unlock');
+		const hasLock = $this.hasClass('lux-lock');
+		const hasUnlock = $this.hasClass('lux-unlock');
 
-		const varValue = WEBHMI.getLockValue($this);
-		const userLevel = WEBHMI.getUserLevel($this);
+		const varValue = LUX.getLockValue($this);
+		const userLevel = LUX.getUserLevel($this);
 
 		if (((hasLock || hasUnlock) && !isEqual($this.attr('data-machine-value-lock'), varValue)) || (hasLockUserLevel && !isEqual($this.attr('data-machine-value-user-level-unlock'), userLevel))) {
 		
 			if(hasLock || hasUnlock) $this.attr('data-machine-value-lock', varValue);
 			if(hasLockUserLevel) $this.attr('data-machine-value-user-level-unlock', userLevel);
 
-			const setValue = WEBHMI.getLockSetValue($this); // elements that only have user level will get data-lock-set here; this is fine
-			const userLevelUnlock = WEBHMI.getUserLevelUnlock($this);
+			const setValue = LUX.getLockSetValue($this); // elements that only have user level will get data-lock-set here; this is fine
+			const userLevelUnlock = LUX.getUserLevelUnlock($this);
 
 			if ((hasLock && isEqual(varValue, setValue)) || (hasUnlock && !isEqual(varValue, setValue)) || (hasLockUserLevel && (userLevel < userLevelUnlock))) {
-				$this.addClass(WEBHMI.getLockTrue($this));
+				$this.addClass(LUX.getLockTrue($this));
 				$this.prop('disabled', true);
 			} else {
-				$this.removeClass(WEBHMI.getLockTrue($this));
+				$this.removeClass(LUX.getLockTrue($this));
 				$this.prop('disabled', false);
 			}
 
@@ -424,22 +424,22 @@ WEBHMI.updateLock = function () {
 }
 
 // find all toggle btn elems
-WEBHMI.queryToggleButtons = function () {
-	WEBHMI.elems.toggleButton = Array.prototype.slice.call(document.querySelectorAll('.webhmi-btn-toggle'));
+LUX.queryToggleButtons = function () {
+	LUX.elems.toggleButton = Array.prototype.slice.call(document.querySelectorAll('.lux-btn-toggle'));
 }
 
-WEBHMI.updateToggleButtons = function () {
+LUX.updateToggleButtons = function () {
 
-	WEBHMI.visibleElems.toggleButton.forEach(function (element) {
+	LUX.visibleElems.toggleButton.forEach(function (element) {
 
 		var $this = $(element);
 
-		var varValue = WEBHMI.getValue($this);
+		var varValue = LUX.getValue($this);
 		if ( typeof varValue !== 'undefined' && !isEqual($this.attr('data-machine-value-toggle'), varValue)) {
 			$this.attr('data-machine-value-toggle', varValue)
-			if (isEqual(varValue, WEBHMI.getSetValue($this))) {
+			if (isEqual(varValue, LUX.getSetValue($this))) {
 				$this.addClass('toggle-active');
-			} else if (isEqual(varValue, WEBHMI.getResetValue($this))) {
+			} else if (isEqual(varValue, LUX.getResetValue($this))) {
 				$this.removeClass('toggle-active');
 			} else {
 				$this.removeClass('toggle-active');
@@ -450,27 +450,27 @@ WEBHMI.updateToggleButtons = function () {
 };
 
 // find all checkbox elems
-WEBHMI.queryCheckboxes = function () {
-	WEBHMI.elems.checkbox = Array.prototype.slice.call(document.querySelectorAll('.webhmi-checkbox'));
+LUX.queryCheckboxes = function () {
+	LUX.elems.checkbox = Array.prototype.slice.call(document.querySelectorAll('.lux-checkbox'));
 }
 
-WEBHMI.updateCheckboxes = function () {
+LUX.updateCheckboxes = function () {
 
-	// if (webHMI.numActiveWrites !== 0)
+	// if (lux.numActiveWrites !== 0)
 	// return;
 
-	WEBHMI.visibleElems.checkbox.forEach(function (element) {
+	LUX.visibleElems.checkbox.forEach(function (element) {
 
 		var $this = $(element);
 
 		var isChecked = $this.prop('checked');
 
-		var varValue = WEBHMI.getValue($this);
+		var varValue = LUX.getValue($this);
 		if ( typeof varValue !== 'undefined' && !isEqual($this.attr('data-machine-value-checkbox'), varValue)) {
 			$this.attr('data-machine-value-checkbox', varValue)
-			if (isEqual(varValue, WEBHMI.getSetValue($this)) && !isChecked) {
+			if (isEqual(varValue, LUX.getSetValue($this)) && !isChecked) {
 				$this.prop('checked', true);
-			} else if (isEqual(varValue, WEBHMI.getResetValue($this)) && isChecked) {
+			} else if (isEqual(varValue, LUX.getResetValue($this)) && isChecked) {
 				$this.prop('checked', false);
 			}
 		}
@@ -479,23 +479,23 @@ WEBHMI.updateCheckboxes = function () {
 };
 
 // find tab elems
-WEBHMI.queryTabs = function () {
-	WEBHMI.elems.tab = Array.prototype.slice.call(document.querySelectorAll('.webhmi-tab-pane'));
+LUX.queryTabs = function () {
+	LUX.elems.tab = Array.prototype.slice.call(document.querySelectorAll('.lux-tab-pane'));
 }
 
-WEBHMI.updateTabs = function () {
+LUX.updateTabs = function () {
 
-	// if (webHMI.numActiveWrites !== 0)
+	// if (lux.numActiveWrites !== 0)
 	// return;
 
-	WEBHMI.elems.tab.forEach(function (element) {
+	LUX.elems.tab.forEach(function (element) {
 
 		var $this = $(element);
 
-		var varValue = WEBHMI.getValue($this);
+		var varValue = LUX.getValue($this);
 		if (typeof varValue !== 'undefined' && !isEqual($this.attr('data-machine-value-tab'), varValue)) {
 			$this.attr('data-machine-value-tab', varValue)
-			if ((varValue == WEBHMI.getSetValue($this))) {
+			if ((varValue == LUX.getSetValue($this))) {
 				var tabs = $('.nav-tabs');
 				var tab = tabs.find('a[data-target="#' + $this[0].id + '"]');
 				if (tab.length == 0)
@@ -508,20 +508,20 @@ WEBHMI.updateTabs = function () {
 };
 
 // find all range elems
-WEBHMI.queryRange = function () {
-	WEBHMI.elems.range = Array.prototype.slice.call(document.querySelectorAll('.webhmi-range'));
+LUX.queryRange = function () {
+	LUX.elems.range = Array.prototype.slice.call(document.querySelectorAll('.lux-range'));
 }
 
-WEBHMI.updateRange = function () {
+LUX.updateRange = function () {
 
-	WEBHMI.visibleElems.range.forEach(function (element) {
+	LUX.visibleElems.range.forEach(function (element) {
 
 		var $this = $(element);
 
-		var varValue = WEBHMI.getValue($this);
+		var varValue = LUX.getValue($this);
 		if (typeof varValue !== 'undefined' &&  !isEqual($this.attr('data-machine-value-range'), varValue)) {
 			$this.attr('data-machine-value-range', varValue)
-			var Range = WEBHMI.getRange($this);
+			var Range = LUX.getRange($this);
 
 			var rangeNumber = -1;
 
@@ -539,22 +539,22 @@ WEBHMI.updateRange = function () {
 };
 
 // find all input elems
-WEBHMI.queryInputs = function () {
-	WEBHMI.elems.num = Array.prototype.slice.call(document.querySelectorAll('.webhmi-num-value'));
-	WEBHMI.elems.text = Array.prototype.slice.call(document.querySelectorAll('.webhmi-text-value:not(option)'));
-	WEBHMI.elems.textOption = Array.prototype.slice.call(document.querySelectorAll('option.webhmi-text-value'));
-	WEBHMI.elems.dropdown = Array.prototype.slice.call(document.querySelectorAll('.webhmi-dropdown'));
+LUX.queryInputs = function () {
+	LUX.elems.num = Array.prototype.slice.call(document.querySelectorAll('.lux-num-value'));
+	LUX.elems.text = Array.prototype.slice.call(document.querySelectorAll('.lux-text-value:not(option)'));
+	LUX.elems.textOption = Array.prototype.slice.call(document.querySelectorAll('option.lux-text-value'));
+	LUX.elems.dropdown = Array.prototype.slice.call(document.querySelectorAll('.lux-dropdown'));
 }
 
-WEBHMI.updateInputs = function () {
+LUX.updateInputs = function () {
 
-	WEBHMI.visibleElems.num.forEach(function (element) {
+	LUX.visibleElems.num.forEach(function (element) {
 		
 		var $this = $(element);
 
 		if (!$this.is(":focus") && !$this.hasClass("editing")) {
 
-			var varValue = WEBHMI.getValue($this);
+			var varValue = LUX.getValue($this);
 			if ( typeof varValue !== "undefined" && !isEqual($this.attr('data-machine-value-num'), varValue)) {
 				$this.attr('data-machine-value-num', varValue)
 				if (varValue === false) {
@@ -593,12 +593,12 @@ WEBHMI.updateInputs = function () {
 					
 						// no divisor in either element so convert as normal
 						if ((sourceUnitsSplit.length == 1) && (displayUnitsSplit.length == 1)){
-							varValue = WEBHMI.convert(varValue, sourceUnitsSplit[0]).to(displayUnitsSplit[0]);
+							varValue = LUX.convert(varValue, sourceUnitsSplit[0]).to(displayUnitsSplit[0]);
 						}
 						// divisor in both elements so do dimentional analysis
 						else if ((sourceUnitsSplit.length == 2) && (displayUnitsSplit.length == 2)){
-							varValue = WEBHMI.convert(varValue, sourceUnitsSplit[0]).to(displayUnitsSplit[0]) /
-						 				WEBHMI.convert(1, sourceUnitsSplit[1]).to(displayUnitsSplit[1]);
+							varValue = LUX.convert(varValue, sourceUnitsSplit[0]).to(displayUnitsSplit[0]) /
+						 				LUX.convert(1, sourceUnitsSplit[1]).to(displayUnitsSplit[1]);
 						}
 						// divisor in one element but not the other so warning
 						else if (+$this.attr('data-complex-unit-warning') != 1) {
@@ -648,13 +648,13 @@ WEBHMI.updateInputs = function () {
 		// not in focus
 	});
 
-	WEBHMI.visibleElems.text.forEach(function (element) {
+	LUX.visibleElems.text.forEach(function (element) {
 
 		var $this = $(element);
 
 		if (!$this.is(":focus")) {
 
-			var varValue = WEBHMI.getValue($this);
+			var varValue = LUX.getValue($this);
 			var string = varValue
 			if( typeof varValue === 'object' ){
 				string = JSON.stringify(varValue, null, 4)
@@ -672,13 +672,13 @@ WEBHMI.updateInputs = function () {
 		}
 	});
 
-	WEBHMI.elems.textOption.forEach(function (element) {
+	LUX.elems.textOption.forEach(function (element) {
 
 		var $this = $(element);
 
 		if (!$this.is(":focus")) {
 
-			var varValue = WEBHMI.getValue($this);
+			var varValue = LUX.getValue($this);
 
 			if (typeof varValue !== 'undefined' && !isEqual($this.attr('data-machine-value-text-option'), varValue)) {
 				$this.attr('data-machine-value-text-option', varValue)
@@ -693,13 +693,13 @@ WEBHMI.updateInputs = function () {
 		}
 	});
 
-	WEBHMI.visibleElems.dropdown.forEach(function (element){
+	LUX.visibleElems.dropdown.forEach(function (element){
 		
 		var $this = $(element);
 
 		if (!$this.is(":focus")) {
 
-			var varValue = WEBHMI.getValue($this);
+			var varValue = LUX.getValue($this);
 			if (typeof varValue !== 'undefined' && !isEqual($this.attr('data-machine-value-dropdown'), varValue)) {
 				$this.attr('data-machine-value-dropdown', varValue)
 				element.options.selectedIndex = varValue;
@@ -709,14 +709,14 @@ WEBHMI.updateInputs = function () {
 	
 };
 
-WEBHMI.addVarWriteEvents = function () {
+LUX.addVarWriteEvents = function () {
 
 	$(document).on(
 		{
 			mousedown: function (event) {
 				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
-				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+				var localMachine = window[LUX.getMachineName($this)];
+				localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
 				$this.one('mouseleave', function () {
 					$this.trigger('mouseup');
 				});
@@ -724,8 +724,8 @@ WEBHMI.addVarWriteEvents = function () {
 
 			mouseup: function (event) {
 				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
-				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
+				var localMachine = window[LUX.getMachineName($this)];
+				localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
 				$this.blur();
 				$this.off('mouseleave');
 			},
@@ -733,61 +733,61 @@ WEBHMI.addVarWriteEvents = function () {
 			touchstart: function (event) {
 				event.preventDefault();
 				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
-				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+				var localMachine = window[LUX.getMachineName($this)];
+				localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
 				//$this.one('touchleave', function(){$this.trigger('touchend');});
 			},
 
 			touchend: function (event) {
 				event.preventDefault();
 				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
-				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
+				var localMachine = window[LUX.getMachineName($this)];
+				localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
 				$this.blur();
 				//$this.off('touchleave');
 			}
 		}, 
-		'.webhmi-btn-momentary');
+		'.lux-btn-momentary');
 	// momentary button
 
 	$(document).on(
 		{
 			click: function (event) {
 				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
+				var localMachine = window[LUX.getMachineName($this)];
 
-				if ($this.hasClass("webhmi-ignore-bubbling") && (this !== event.target)) {
+				if ($this.hasClass("lux-ignore-bubbling") && (this !== event.target)) {
 					return;
 				}
-				if ($this.hasClass("webhmi-confirm")) {
-					WebhmiConfirmModal('Do you want to "' + $this.context.innerHTML + '"?', function () {
-						localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+				if ($this.hasClass("lux-confirm")) {
+					LuxConfirmModal('Do you want to "' + $this.context.innerHTML + '"?', function () {
+						localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
 					})
 				}
 				else {
-					localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+					localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
 				}
 			}
 		},
-		'.webhmi-btn-set');
+		'.lux-btn-set');
 	// set button
 
-	function WebhmiConfirmModal(btnMsg, callbackFunc) {
+	function LuxConfirmModal(btnMsg, callbackFunc) {
 		var YesClick = function () {
 			if (typeof (callbackFunc) == "function") {
 				callbackFunc();
 			}
-			$('#WebhmiConfirmModal').modal('hide');
-			$('#WebhmiConfirmModal .btn-yes-popup, #WebhmiConfirmModal .btn-no-popup').unbind('click')
+			$('#LuxConfirmModal').modal('hide');
+			$('#LuxConfirmModal .btn-yes-popup, #LuxConfirmModal .btn-no-popup').unbind('click')
 		}
 		var NoClick = function () {
-			$('#WebhmiConfirmModal').modal('hide');
-			$('#WebhmiConfirmModal .btn-yes-popup, #WebhmiConfirmModal .btn-no-popup').unbind('click')
+			$('#LuxConfirmModal').modal('hide');
+			$('#LuxConfirmModal .btn-yes-popup, #LuxConfirmModal .btn-no-popup').unbind('click')
 		}
 
-		if(!$('#WebhmiConfirmModal')[0]){
+		if(!$('#LuxConfirmModal')[0]){
 			// add confirmation pop-up to html if it hasn't been added yet
-			var myModal = `<div class="modal fade" id="WebhmiConfirmModal" role="dialog">
+			var myModal = `<div class="modal fade" id="LuxConfirmModal" role="dialog">
 				<div class="modal-dialog">
 					<div class="modal-content">
 					<div class="modal-header">
@@ -809,10 +809,10 @@ WEBHMI.addVarWriteEvents = function () {
 
 			$('body').append(myModal);
 		}
-		$('#WebhmiConfirmModal .btn-yes-popup').click(YesClick);
-		$('#WebhmiConfirmModal .btn-no-popup').click(NoClick);
+		$('#LuxConfirmModal .btn-yes-popup').click(YesClick);
+		$('#LuxConfirmModal .btn-no-popup').click(NoClick);
 		$('.modal-msg').text(btnMsg);
-		$('#WebhmiConfirmModal').modal('show');
+		$('#LuxConfirmModal').modal('show');
 	}
 
 	$(document).on(
@@ -820,43 +820,43 @@ WEBHMI.addVarWriteEvents = function () {
 			click: function (event) {
 
 				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
+				var localMachine = window[LUX.getMachineName($this)];
 
-				if ($this.hasClass("webhmi-ignore-bubbling") && (this !== event.target)) {
+				if ($this.hasClass("lux-ignore-bubbling") && (this !== event.target)) {
 					return;
 				}
 
-				if ($this.hasClass("webhmi-confirm")) {
-					WebhmiConfirmModal('Do you want to "' + $this.context.innerHTML + '"?', function () {
-						var varValue = WEBHMI.getValue($this);
+				if ($this.hasClass("lux-confirm")) {
+					LuxConfirmModal('Do you want to "' + $this.context.innerHTML + '"?', function () {
+						var varValue = LUX.getValue($this);
 
-						if (isEqual(varValue, WEBHMI.getSetValue($this))) {
-							localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
-						} else if (isEqual(varValue, WEBHMI.getResetValue($this))) {
-							localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+						if (isEqual(varValue, LUX.getSetValue($this))) {
+							localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
+						} else if (isEqual(varValue, LUX.getResetValue($this))) {
+							localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
 						} else {
-							localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+							localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
 						}
 
 						$this.blur();
 					})
 				}
 				else {
-					var varValue = WEBHMI.getValue($this);
+					var varValue = LUX.getValue($this);
 
-					if (isEqual(varValue, WEBHMI.getSetValue($this))) {
-						localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
-					} else if (isEqual(varValue, WEBHMI.getResetValue($this))) {
-						localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+					if (isEqual(varValue, LUX.getSetValue($this))) {
+						localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
+					} else if (isEqual(varValue, LUX.getResetValue($this))) {
+						localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
 					} else {
-						localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+						localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
 					}
 
 					$this.blur();
 				}
 			}
 		},
-		'.webhmi-btn-toggle');
+		'.lux-btn-toggle');
 	// toggle button
 
 	$(document).on(
@@ -867,16 +867,16 @@ WEBHMI.addVarWriteEvents = function () {
 				// So, checkboxes do not behave like toggles.
 
 				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
+				var localMachine = window[LUX.getMachineName($this)];
 
 				if ($this.prop('checked')) {
-					localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+					localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
 				} else {
-					localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
+					localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
 				}
 			}
 		},
-		'input:checkbox.webhmi-checkbox');
+		'input:checkbox.lux-checkbox');
 	// checkbox
 
 	$(document).on(
@@ -913,12 +913,12 @@ WEBHMI.addVarWriteEvents = function () {
 
 					// no divisor in either element so convert as normal
 					if ((sourceUnitsSplit.length == 1) && (displayUnitsSplit.length == 1)){
-						varValue = WEBHMI.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]);
+						varValue = LUX.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]);
 					}
 					// divisor in both elements so do dimentional analysis
 					else if ((sourceUnitsSplit.length == 2) && (displayUnitsSplit.length == 2)){
-						varValue = WEBHMI.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]) /
-									WEBHMI.convert(1, displayUnitsSplit[1]).to(sourceUnitsSplit[1]);
+						varValue = LUX.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]) /
+									LUX.convert(1, displayUnitsSplit[1]).to(sourceUnitsSplit[1]);
 					}
 					// divisor in one element but not the other so warning
 					else if (+$this.attr('data-complex-unit-warning') != 1) {
@@ -927,14 +927,14 @@ WEBHMI.addVarWriteEvents = function () {
 					}
 				}
 
-				var localMachine = window[WEBHMI.getMachineName($this)];
-				localMachine.writeVariable(WEBHMI.getVarName($this), varValue);
+				var localMachine = window[LUX.getMachineName($this)];
+				localMachine.writeVariable(LUX.getVarName($this), varValue);
 				$this.blur();
 
 			}
 
 		},
-		'input.webhmi-num-value, invisible-input.webhmi-num-value');
+		'input.lux-num-value, invisible-input.lux-num-value');
 	// num-value input
 
 	$(document).on(
@@ -973,12 +973,12 @@ WEBHMI.addVarWriteEvents = function () {
 
 					// no divisor in either element so convert as normal
 					if ((sourceUnitsSplit.length == 1) && (displayUnitsSplit.length == 1)){
-						varValue = WEBHMI.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]);
+						varValue = LUX.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]);
 					}
 					// divisor in both elements so do dimentional analysis
 					else if ((sourceUnitsSplit.length == 2) && (displayUnitsSplit.length == 2)){
-						varValue = WEBHMI.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]) /
-									WEBHMI.convert(1, displayUnitsSplit[1]).to(sourceUnitsSplit[1]);
+						varValue = LUX.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]) /
+									LUX.convert(1, displayUnitsSplit[1]).to(sourceUnitsSplit[1]);
 					}
 					// divisor in one element but not the other so warning
 					else if (+$this.attr('data-complex-unit-warning') != 1) {
@@ -987,43 +987,43 @@ WEBHMI.addVarWriteEvents = function () {
 					}
 				}
 
-				var localMachine = window[WEBHMI.getMachineName($this)];
-				localMachine.writeVariable(WEBHMI.getVarName($this), varValue);
+				var localMachine = window[LUX.getMachineName($this)];
+				localMachine.writeVariable(LUX.getVarName($this), varValue);
 				$this.blur();
 
 			}
 
 		},
-		'input.webhmi-num-value.ondrag, invisible-input.webhmi-num-value.ondrag');
+		'input.lux-num-value.ondrag, invisible-input.lux-num-value.ondrag');
 	// num-value continuous change
 
 	$(document).on(
 		{
 			change: function (event) {
 				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
-				localMachine.writeVariable(WEBHMI.getVarName($this), $this.val());
-				localMachine.readVariable(WEBHMI.getVarName($this));
+				var localMachine = window[LUX.getMachineName($this)];
+				localMachine.writeVariable(LUX.getVarName($this), $this.val());
+				localMachine.readVariable(LUX.getVarName($this));
 			}
 		},
-		'input.webhmi-text-value, invisible-input.webhmi-text-value, textarea.webhmi-text-value');
+		'input.lux-text-value, invisible-input.lux-text-value, textarea.lux-text-value');
 	// text-value input or textarea
 
 	$(document).on(
 		{
 			change: function (event) {
 				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
-				localMachine.writeVariable(WEBHMI.getVarName($this), $this[0].options.selectedIndex);
-				localMachine.readVariable(WEBHMI.getVarName($this));
+				var localMachine = window[LUX.getMachineName($this)];
+				localMachine.writeVariable(LUX.getVarName($this), $this[0].options.selectedIndex);
+				localMachine.readVariable(LUX.getVarName($this));
 			}
 		},
-		'.webhmi-dropdown');
+		'.lux-dropdown');
 	// dropdown
 
 };
-WEBHMI.updateReadGroupComms = function(){
-	WEBHMI.machines.forEach(machine => {
+LUX.updateReadGroupComms = function(){
+	LUX.machines.forEach(machine => {
 		machine.getReadGroupList().forEach(ReadGroupName=>{
 			if( ReadGroupName != 'global'){
 				machine.readGroupShouldManage(ReadGroupName, document.querySelector( `[data-read-group=${ReadGroupName}]`) != null)
@@ -1032,10 +1032,10 @@ WEBHMI.updateReadGroupComms = function(){
 	});
 }
 
-WEBHMI.observers = [];
+LUX.observers = [];
 
 /**
- * Webhmi databinding types
+ * Lux databinding types
  * @typedef {Object} DataBinding_types
  * @property {Element[]} num
  * @property {Element[]} text
@@ -1050,10 +1050,10 @@ WEBHMI.observers = [];
  * @property {Element[]} lock
  */
 
-/** Current webhmi elements in DOM
+/** Current lux elements in DOM
  * @type {DataBinding_types}
  */
-WEBHMI.elems = {
+LUX.elems = {
 	num: [], 
 	text: [],
 	textOption: [],
@@ -1067,10 +1067,10 @@ WEBHMI.elems = {
 	lock: []
 };
 
-/** Currently visible webhmi elements in DOM
+/** Currently visible lux elements in DOM
  * @type {DataBinding_types}
  */
-WEBHMI.visibleElems = {
+LUX.visibleElems = {
 	num: [], 
 	text: [],
 	textOption: [],
@@ -1085,46 +1085,46 @@ WEBHMI.visibleElems = {
 };
 
 // FORCES LAYOUT REFLOW
-WEBHMI.checkVisibility = function () {
+LUX.checkVisibility = function () {
 	// TODO: Don't rebuild array from scratch each call
-	Object.keys(WEBHMI.elems).forEach(function (key) {
-		if (WEBHMI.visibleElems.hasOwnProperty(key)) {
-			WEBHMI.visibleElems[key] = WEBHMI.elems[key].filter(elem => (elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length || (elem.getAttribute('force-hmi-update') == 'true') ));
+	Object.keys(LUX.elems).forEach(function (key) {
+		if (LUX.visibleElems.hasOwnProperty(key)) {
+			LUX.visibleElems[key] = LUX.elems[key].filter(elem => (elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length || (elem.getAttribute('force-hmi-update') == 'true') ));
 		}
 	});
 };
 
-WEBHMI.queryDom = function () {
-	// TODO: insted of querying document for each class, first query document for class*=webhmi and then sort based on the different types
-	WEBHMI.queryInputs();
-	WEBHMI.queryToggleButtons();
-	WEBHMI.queryLEDs();
-	WEBHMI.queryRange();
-	WEBHMI.queryTabs();
-	WEBHMI.queryHide();
-	WEBHMI.queryLock();
+LUX.queryDom = function () {
+	// TODO: insted of querying document for each class, first query document for class*=lux and then sort based on the different types
+	LUX.queryInputs();
+	LUX.queryToggleButtons();
+	LUX.queryLEDs();
+	LUX.queryRange();
+	LUX.queryTabs();
+	LUX.queryHide();
+	LUX.queryLock();
 };
 
-WEBHMI.updateHMI = function () {
-	WEBHMI.updateLocalData(); // run custom callbacks first so that local data is up-to-date for our element updates
-	WEBHMI.checkVisibility(); // FORCES LAYOUT REFLOW
-	WEBHMI.trigger("update-hmi");
-	WEBHMI.updateInputs();
-	WEBHMI.updateToggleButtons();
-	WEBHMI.updateLEDs();
-	WEBHMI.updateRange();
-	WEBHMI.updateTabs();
-	WEBHMI.updateHide();
-	WEBHMI.updateLock();
-	WEBHMI.updateReadGroupComms();
+LUX.updateHMI = function () {
+	LUX.updateLocalData(); // run custom callbacks first so that local data is up-to-date for our element updates
+	LUX.checkVisibility(); // FORCES LAYOUT REFLOW
+	LUX.trigger("update-hmi");
+	LUX.updateInputs();
+	LUX.updateToggleButtons();
+	LUX.updateLEDs();
+	LUX.updateRange();
+	LUX.updateTabs();
+	LUX.updateHide();
+	LUX.updateLock();
+	LUX.updateReadGroupComms();
 }
 
-WEBHMI.updateBindings = function () {
-	WEBHMI.getCyclicReads();
+LUX.updateBindings = function () {
+	LUX.getCyclicReads();
 }
 
 // Include files into an HTML document
-WEBHMI.includeFiles = function (successCallback) {
+LUX.includeFiles = function (successCallback) {
 
 	var numberFiles = 0;
 	$("[data-include]").each(function (index, element) {
@@ -1147,7 +1147,7 @@ WEBHMI.includeFiles = function (successCallback) {
 };
 
 // Load a template
-WEBHMI.loadTemplate = function (fileName, data, id, callback) {
+LUX.loadTemplate = function (fileName, data, id, callback) {
 
 	$.get(fileName, function (response) {
 		//console.log("loading " + fileName);
@@ -1159,66 +1159,66 @@ WEBHMI.loadTemplate = function (fileName, data, id, callback) {
 
 };
 
-WEBHMI.callbacks = [];
-WEBHMI.on = function (callback) {
-	WEBHMI.callbacks.push(callback);
+LUX.callbacks = [];
+LUX.on = function (callback) {
+	LUX.callbacks.push(callback);
 }
-WEBHMI.trigger = function (eventName) {
+LUX.trigger = function (eventName) {
 	var args = Array.prototype.slice.call(arguments);
 	args.shift();
-	WEBHMI.callbacks.forEach(function (userCallbacks) {
+	LUX.callbacks.forEach(function (userCallbacks) {
 		Object.keys(userCallbacks).forEach(function (callBack) {
 			if (callBack == eventName) {
 				try {
 					userCallbacks[callBack].apply(this, args);	
 				} catch (e) {
-					console.error("webhmi-data-bind:"+eventName+": ",e);
+					console.error("lux-data-bind:"+eventName+": ",e);
 				}
 			}
 		})
 	})
 }
 
-WEBHMI.addVarWriteEvents();
+LUX.addVarWriteEvents();
 
 // start observer with IIFE call
 (function () {
 	// DOM observer to trigger queries
-	// TODO: handle adding or removing webhmi class from existing node
+	// TODO: handle adding or removing lux class from existing node
 	var observer = new MutationObserver(function (mutations) {
 
-		// Was a new webhmi element added to the DOM?
-		// Use Arrray.some() instead of Array.forEach() for easy loop break when we find a webhmi element added or remove from DOM
+		// Was a new lux element added to the DOM?
+		// Use Arrray.some() instead of Array.forEach() for easy loop break when we find a lux element added or remove from DOM
 		var requestQuery = Array.prototype.slice.call(mutations).some(function (mutation) {
-			// check added nodes for webhmi changes
+			// check added nodes for lux changes
 			var changed = Array.prototype.slice.call(mutation.addedNodes).some(function (node) {
 				if (node.nodeType == node.ELEMENT_NODE) {
 					// check elem, check descendents
-					if (node.matches("[class*='webhmi']")) {
-						// elem has a class starting with 'webhmi'
+					if (node.matches("[class*='lux']")) {
+						// elem has a class starting with 'lux'
 						return true;
-					} else if (node.querySelector("[class*='webhmi']")) {
-						// elem has a descendant element with a class starting with 'webhmi'
+					} else if (node.querySelector("[class*='lux']")) {
+						// elem has a descendant element with a class starting with 'lux'
 						return true;
 					}
 				}
-				// node is not an element or doesn't contain webhmi class
+				// node is not an element or doesn't contain lux class
 				return false;
 			});
 
-			// check removed nodes for webhmi changes
+			// check removed nodes for lux changes
 			changed |= Array.prototype.slice.call(mutation.removedNodes).some(function (node) {
 				if (node.nodeType == node.ELEMENT_NODE) {
 					// check elem, check descendents
-					if (node.matches("[class*='webhmi']")) {
-						// elem has a class starting with 'webhmi'
+					if (node.matches("[class*='lux']")) {
+						// elem has a class starting with 'lux'
 						return true;
-					} else if (node.querySelector("[class*='webhmi']")) {
-						// elem has a descendant element with a class starting with 'webhmi'
+					} else if (node.querySelector("[class*='lux']")) {
+						// elem has a descendant element with a class starting with 'lux'
 						return true;
 					}
 				}
-				// node is not an element or doesn't contain webhmi class
+				// node is not an element or doesn't contain lux class
 				return false;
 			});
 
@@ -1228,7 +1228,7 @@ WEBHMI.addVarWriteEvents();
 		// If so, re-query
 		if (requestQuery) {
 			// TODO: Call this outside the callback (setTimeout with no time arg to add to queue, queue each query individually to give room for interrupts?)
-			WEBHMI.queryDom();
+			LUX.queryDom();
 		}
 
 	})
@@ -1243,19 +1243,19 @@ WEBHMI.addVarWriteEvents();
 	// start DOM observer
 	observer.observe(document, observerOptions);
 
-	WEBHMI.observers.push(observer);
+	LUX.observers.push(observer);
 
 	// run initial query in case DOM is already loaded
-	WEBHMI.queryDom();
+	LUX.queryDom();
 
 })();
 
 // Start updating the HMI after the first successful read
 $(document).one({
 	'readsuccess': function () {
-		// TODO: Move this to a parameter in webhmi.js, probably, when you make a new machine
-		var refresh = WEBHMI.hmiRefresh ? WEBHMI.hmiRefresh : 100;
-		setInterval(WEBHMI.updateHMI, refresh);	
+		// TODO: Move this to a parameter in lux.js, probably, when you make a new machine
+		var refresh = LUX.hmiRefresh ? LUX.hmiRefresh : 100;
+		setInterval(LUX.updateHMI, refresh);	
 	}
 });
 

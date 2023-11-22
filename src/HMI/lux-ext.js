@@ -1,9 +1,9 @@
 /*
- * File: webhmi-ext.js
+ * File: lux-ext.js
  * Copyright (c) 2023 Loupe
  * https://loupe.team
  * 
- * This file is part of WebHMI, licensed under the MIT License.
+ * This file is part of Loupe UX, licensed under the MIT License.
  * 
  */
 

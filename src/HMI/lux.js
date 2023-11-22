@@ -1,25 +1,25 @@
 /*
- * File: webhmi.js
+ * File: lux.js
  * Copyright (c) 2023 Loupe
  * https://loupe.team
  * 
- * This file is part of WebHMI, licensed under the MIT License.
+ * This file is part of Loupe UX, licensed under the MIT License.
  * 
  */
 // Use uppercase namespace
-var WEBHMI = {
+var LUX = {
 	version: '1.6.1'
 };
 
-// export default WEBHMI
+// export default LUX
 
 // UMD (Universal Module Definition)
 if (typeof define === 'function' && define.amd) {
 	// AMD
-	define('webhmi', WEBHMI);
+	define('lux', LUX);
 } else if (typeof module === 'object' && typeof module.exports === 'object') {
 	// Node.js
-	module.exports = WEBHMI;
+	module.exports = LUX;
 }
 
 var jQueryImport;
@@ -41,10 +41,10 @@ if (typeof jQuery === 'undefined') {
 	jQueryImport = jQuery;
 }
 
-WEBHMI.extend = jQueryImport.extend;
-WEBHMI.isEmptyObject = jQueryImport.isEmptyObject;
-WEBHMI.each = jQueryImport.each;
-WEBHMI.machines = [];
+LUX.extend = jQueryImport.extend;
+LUX.isEmptyObject = jQueryImport.isEmptyObject;
+LUX.each = jQueryImport.each;
+LUX.machines = [];
 /**
  * The complete machine-options.
  * @typedef {Object} Machine_Options
@@ -64,13 +64,13 @@ WEBHMI.machines = [];
  * 
  * @param {Machine_Options} options 
  */
-WEBHMI.Machine = function (options) {
+LUX.Machine = function (options) {
 	'use strict';
 
 	var thisMachine;
 
 	//Add this machine to the global list of machines
-	WEBHMI.machines.push(this) 
+	LUX.machines.push(this) 
 
 	// Grab machine scope for lower functions
 	thisMachine = this;
@@ -89,7 +89,7 @@ WEBHMI.Machine = function (options) {
 		maxReconnectCount: 5,
 		maxMessageFrequency: 60
 	};
-	settings = WEBHMI.extend({}, defaults, options);
+	settings = LUX.extend({}, defaults, options);
 
 	// Value functions
 	//-----------------------------------------------------
@@ -235,7 +235,7 @@ WEBHMI.Machine = function (options) {
 	//-----------------------------------------------------
 
 	/**
-	 * @param {any} context WEBHMI.Machine
+	 * @param {any} context LUX.Machine
 	 * @param {Machine_Options} settings 
 	 */
 	function WebSocketConnection(context, settings) {
@@ -256,7 +256,7 @@ WEBHMI.Machine = function (options) {
 		// write is the main structure for writing variables to the PLC
 		// TODO: Since these are block local variables, what happens if you make more than one 
 		// connection? I think this works fine
-		// Does each new WEBHMI.Machine() get a new read/write?
+		// Does each new LUX.Machine() get a new read/write?
 		write = {};
 
 		// write.context is an object that is built up to be written
@@ -522,14 +522,14 @@ WEBHMI.Machine = function (options) {
 		function processQueue() {
 			if (!read.reading && !write.writing && ws.readyState === ws.OPEN) {
 				let list;
-				if (!WEBHMI.isEmptyObject(write.context) && write.consecutiveWrites < 1 ) {					
+				if (!LUX.isEmptyObject(write.context) && write.consecutiveWrites < 1 ) {					
 					write.consecutiveWrites++;
 					write.writing = true;
 					write.retryCount = 0;
 					writeVariableList(write.context, write.variableList);
 					write.context = {};
 					write.variableList = {};
-				} else if (!read.waiting && !WEBHMI.isEmptyObject(read.singleList[0]) && read.consecutiveSingleReads < 1 ) {
+				} else if (!read.waiting && !LUX.isEmptyObject(read.singleList[0]) && read.consecutiveSingleReads < 1 ) {
 					read.consecutiveSingleReads++;
 					read.reading = true;
 					read.retryCount = 0;
@@ -543,11 +543,11 @@ WEBHMI.Machine = function (options) {
 					readVariableList(list);
 				}
 				//If there was a write or single read, then we need to process the queue again
-				else if( !WEBHMI.isEmptyObject(write.context) && write.consecutiveWrites > 0 ){
+				else if( !LUX.isEmptyObject(write.context) && write.consecutiveWrites > 0 ){
 					write.consecutiveWrites = 0;
 					processQueue();
 				}
-				else if( !WEBHMI.isEmptyObject(read.singleList[0]) && read.consecutiveSingleReads > 0 && !read.waiting ){
+				else if( !LUX.isEmptyObject(read.singleList[0]) && read.consecutiveSingleReads > 0 && !read.waiting ){
 					read.consecutiveSingleReads = 0;
 					processQueue();
 				}
@@ -575,7 +575,7 @@ WEBHMI.Machine = function (options) {
 					if( element.enable ){
 						if( now - element.lastReadTime > element.minReadTime ){
 							element.lastReadTime = now
-							WEBHMI.extend( list, element.data ) 
+							LUX.extend( list, element.data ) 
 						}
 					}			
 				}
@@ -614,13 +614,13 @@ WEBHMI.Machine = function (options) {
 				if (name.length === 0) return
 				if (name[0].indexOf('.') >= 0 || name[0].indexOf('[') >= 0) {
 					parsed = {};
-					WEBHMI.each(entry, function (prop, value) {
+					LUX.each(entry, function (prop, value) {
 						setDeepValue(parsed, prop, value);
 						entry = parsed;
 					});
 				}
 				// Extend the read context with the variable read back
-				WEBHMI.extend(true, read.context, entry);
+				LUX.extend(true, read.context, entry);
 			});
 
 			// Trigger events
@@ -946,7 +946,7 @@ WEBHMI.Machine = function (options) {
 			// Add the object to the write context, being careful to clone objects and not point to already existing objects
 			var tempObj = {};
 			setDeepValue(tempObj, variableName, setValue);
-			WEBHMI.extend(true, write.context, tempObj);
+			LUX.extend(true, write.context, tempObj);
 
 			// Add a callback event if given
 			if (callback) {
@@ -1357,7 +1357,7 @@ WEBHMI.Machine = function (options) {
 	 * @param {Machine_Options} options 
 	 */
 	function updateSettings(options) {
-		WEBHMI.extend(settings, options); // Overwrite current settings but do not create a new object
+		LUX.extend(settings, options); // Overwrite current settings but do not create a new object
 	}
 	
 	// Machine API definition
@@ -1406,11 +1406,11 @@ WEBHMI.Machine = function (options) {
 //---------------------------------------------
 
 // Compose HMI data update function from list of all custom callbacks
-WEBHMI.localDataCallbacks = [];
+LUX.localDataCallbacks = [];
 
 // Execute list of custom callbacks
 // Used by data-binding cyclic update loop
-WEBHMI.updateLocalData = function () {
+LUX.updateLocalData = function () {
 
 	this.localDataCallbacks.forEach( function (cb) {
 		
@@ -1429,10 +1429,10 @@ WEBHMI.updateLocalData = function () {
 };
 
 // HMI (Local Machine) constructor
-WEBHMI.HMI = function (...dataCallbacks) {
+LUX.HMI = function (...dataCallbacks) {
 
 	// add custom callback[s] to list of all local machine callbacks
-	WEBHMI.localDataCallbacks.push(...dataCallbacks);
+	LUX.localDataCallbacks.push(...dataCallbacks);
 
 	var machineOptions = {
 		protocol: 'none',
@@ -1441,14 +1441,14 @@ WEBHMI.HMI = function (...dataCallbacks) {
 		maxReconnectCount: 0 
 	  };
 	// use Machine constructor with this scope then override some functions (fancy)
-	WEBHMI.Machine.call(this, machineOptions);
+	LUX.Machine.call(this, machineOptions);
 
 	this.writeVariable = function (variableName, setValue, successCallback) {
 
 		// Add the object to the write context, being careful to clone objects and not point to already existing objects
 		var tempObj = {};
 		this.value.call(tempObj, variableName, setValue);
-		WEBHMI.extend(true, this, tempObj);
+		LUX.extend(true, this, tempObj);
 
 		// don't register callback, just call it immediately because there's no comms or anything
 		if (successCallback) {
@@ -1492,7 +1492,7 @@ WEBHMI.HMI = function (...dataCallbacks) {
 
 // JSON stringify a property within a structure or array
 // TODO: Why are you out here?
-WEBHMI.jsonStringifyDeepProperty = function (obj, prop) {
+LUX.jsonStringifyDeepProperty = function (obj, prop) {
 
 	var e, startArrayIndex, type, i;
 
@@ -1511,7 +1511,7 @@ WEBHMI.jsonStringifyDeepProperty = function (obj, prop) {
 			type = Object.prototype.toString.call(obj[e]);
 			if (type !== "[object Object]")
 				return 'undefined';
-			return WEBHMI.jsonStringifyDeepProperty(obj[e], prop);
+			return LUX.jsonStringifyDeepProperty(obj[e], prop);
 		} else {
 			i = parseInt(e.substring(startArrayIndex + 1), 10);
 			e = e.substring(0, startArrayIndex);
@@ -1521,7 +1521,7 @@ WEBHMI.jsonStringifyDeepProperty = function (obj, prop) {
 			type = Object.prototype.toString.call(obj[e][i]);
 			if (type !== "[object Object]")
 				return 'undefined';
-			return WEBHMI.jsonStringifyDeepProperty(obj[e][i], prop);
+			return LUX.jsonStringifyDeepProperty(obj[e][i], prop);
 		}
 
 	} else {

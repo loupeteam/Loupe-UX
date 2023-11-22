@@ -1,3 +1,5 @@
+2.0.0 - Transition webHMI name to Lux / Loupe UX
+
 1.6.0 - Add read groups attribute to support more sophisticated machine variable reads with frequency limits and callbacks
 
 1.5.0 - Add a max frequency to cyclic reads

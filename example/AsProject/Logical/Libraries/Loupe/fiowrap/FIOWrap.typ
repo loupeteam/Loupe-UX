@@ -1,10 +1,10 @@
-(********************************************************************
- * COPYRIGHT --  Automation Resources Group
- ********************************************************************
- * Library: FIOWrap
+(*
  * File: FIOWrap.typ
- * Author: blackburnd
- * Created: June 18, 2009
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of FIOWrap, licensed under the MIT License.
+ * 
  ********************************************************************
  * Data types of library FIOWrap
  ********************************************************************)

@@ -1,13 +1,11 @@
-(********************************************************************
- * COPYRIGHT --  
- ********************************************************************
- * Library: DataBuffer
- * File: DataBuffer.var
- * Author: davidblackburn
- * Created: June 23, 2014
- ********************************************************************
- * Constants of library DataBuffer
- ********************************************************************)
+(*
+* File: DataBuffer.var
+* Copyright (c) 2023 Loupe
+* https://loupe.team
+* 
+* This file is part of DataBuffer, licensed under the MIT License.
+* 
+*)
 
 VAR CONSTANT
 

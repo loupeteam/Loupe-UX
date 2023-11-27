@@ -21,19 +21,19 @@ extern "C"
 		#include "AsBrStr.h"
 		#include "astime.h"
 		#include "FileIO.h"
-		#include "StringExt.h"
+		#include "stringext.h"
 #endif
 #ifdef _SG4
 		#include "AsBrStr.h"
 		#include "astime.h"
 		#include "FileIO.h"
-		#include "StringExt.h"
+		#include "stringext.h"
 #endif
 #ifdef _SGC
 		#include "AsBrStr.h"
 		#include "astime.h"
 		#include "FileIO.h"
-		#include "StringExt.h"
+		#include "stringext.h"
 #endif
 
 

@@ -2,11 +2,11 @@
   "name": "@loupeteam/csvfilelib",
   "version": "1.2.2",
   "description": "Loupe's csvfilelib library for Automation Runtime",
-  "homepage": "https://loupeteam.github.io/Sandbox/libraries/csvfilelib.html",
+  "homepage": "https://loupeteam.github.io/LoupeDocs/libraries/csvfilelib.html",
   "scripts": {},
   "keywords": [],
   "author": "Loupe",
-  "license": "Loupe Software License Agreement",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/loupeteam/csvfilelib"

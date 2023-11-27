@@ -1,13 +1,10 @@
-/********************************************************************
- * COPYRIGHT --  
- ********************************************************************
- * Program: FirstInitProg
+/*
  * File: FirstInitProgInit.c
- * Author: ScismD
- * Created: January 07, 2014
- ********************************************************************
- * Implementation of program FirstInitProg
- ********************************************************************/
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of FirstInitProg, licensed under the MIT License.
+ */
 
 #include <bur/plctypes.h>
 
@@ -19,7 +16,18 @@
 
 void _INIT FirstInitProgInit(void)
 {
-
+	// Set gTransfer to be whether or not FirstInit cyclic has ran
+	gTransfer.transfer = gTransfer.cyclic;
+	
+	// Check to see if this is a new transfer or FirstInit cyclic has ran
+	//if( strcmp(_buildDate, buildDate) != 0 || gTransfer.transfer){
+	//	gTransfer.bootAfterTransfer = !gTransfer.transfer;
+	//}
+	
+	// Update build date
+	//if(!gTransfer.transfer){
+	//	strcpy(_buildDate, buildDate);
+	//}
 	// Check for simulation
 	// This is a DevLink using a Windows share which is not supported by ARsim
 	// We use this instead of Diag function to support older CPU's
@@ -39,7 +47,7 @@ void _INIT FirstInitProgInit(void)
 	createLogInit("Application", 1000000, arEVENTLOG_PERSISTENCE_VOLATILE);	
 
 	// Initialize error collector
-	ErrorCollectorFn_Init(&gErrorCollector);
+	//ErrorCollectorFn_Init(&gErrorCollector);
 
 	// Link file devices
 	//-------------------------------------------------------
@@ -80,13 +88,22 @@ void _INIT FirstInitProgInit(void)
 		
 		DevLink(&fileDeviceDevLink[i]);
 		
-		if (fileDeviceDevLink[i].status != 0)
-			errcolAddError((UDINT)"File Devices", (UDINT)"Error linking file device", fileDeviceDevLink[i].status, 0, &gErrorCollector);
+		//if (fileDeviceDevLink[i].status != 0)
+		//	errcolAddError((UDINT)"File Devices", (UDINT)"Error linking file device", fileDeviceDevLink[i].status, 0, &gErrorCollector);
 
 	}
 		
 	// Initialize Persisters
 	//-------------------------------------------------------
+	
+	#ifdef NUM_PERSISTERS
+	// Reset the data if we need to
+	if (gTransfer.bootAfterTransfer || gTransfer.transfer) {
+		// Reset all data valids to false
+		for (i = 0; i < NUM_PERSISTERS; i++) {
+			gDataValid[i] = 0;
+		}
+	}
 	
 	// Working variables
 	
@@ -169,5 +186,7 @@ void _INIT FirstInitProgInit(void)
 
 	// Load configuration.csv every startup
 	//CSVOpenFile_Init(&gPermBackup[PERM_CONFIGURATION]);
+	
+	#endif
 
 } // _INIT

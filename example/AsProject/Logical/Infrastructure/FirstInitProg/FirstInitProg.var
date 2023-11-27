@@ -1,12 +1,9 @@
 (********************************************************************
- * COPYRIGHT --  
- ********************************************************************
- * Program: FirstInitCProg
- * File: FirstInitCProg.var
- * Author: ScismD
- * Created: January 07, 2014
- ********************************************************************
- * Local variables of program FirstInitCProg
+ * File: FirstInitProg.var
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of FirstInitProg, licensed under the MIT License.
  ********************************************************************)
 VAR CONSTANT
 	NUM_FILEDEVICES : USINT := 4;
@@ -21,4 +18,7 @@ VAR
 	i : DINT := 0;
 	indexString : STRING[320] := '';
 	axisString : STRING[320] := '';
+END_VAR
+VAR RETAIN
+	_buildDate : STRING[80];
 END_VAR

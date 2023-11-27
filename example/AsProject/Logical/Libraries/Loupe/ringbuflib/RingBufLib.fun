@@ -1,10 +1,10 @@
-(********************************************************************
- * COPYRIGHT --  
- ********************************************************************
- * Library: RingBufST
- * File: RingBufST.fun
- * Author: Josh
- * Created: December 07, 2012
+(*
+ * File: RingBufLib.fun
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of RingBufLib, licensed under the MIT License.
+ *
  ********************************************************************
  * Functions and function blocks of library RingBufST
  ********************************************************************)

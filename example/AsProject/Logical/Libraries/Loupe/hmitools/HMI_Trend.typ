@@ -1,13 +1,11 @@
-(********************************************************************
- * COPYRIGHT -- Automation Resources Group
- ********************************************************************
- * Library: HMITools
- * File: HMI_Trend.typ
- * Author: David Blackburn
- * Created: April 01, 2013
- ********************************************************************
- * Data types of library HMITools
- ********************************************************************)
+(*
+* File: HMI_Trend.typ
+* Copyright (c) 2023 Loupe
+* https://loupe.team
+* 
+* This file is part of HMITools, licensed under the MIT License.
+* 
+*)
 
 TYPE
 	HMI_TrendValueScale_typ : 	STRUCT 

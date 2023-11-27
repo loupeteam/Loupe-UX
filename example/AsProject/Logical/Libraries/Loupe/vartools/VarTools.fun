@@ -1,13 +1,11 @@
-(********************************************************************
- * COPYRIGHT --  
- ********************************************************************
- * Library: VarInfo
- * File: VarInfo.fun
- * Author: davidblackburn
- * Created: June 02, 2014
- ********************************************************************
- * Functions and function blocks of library VarInfo
- ********************************************************************)
+(*
+ * File: VarTools.fun
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of VarTools, licensed under the MIT License.
+ *
+ *)
 
 FUNCTION varGetInfo : UINT (*Get variable information*) (*$GROUP=User*)
 	VAR_INPUT

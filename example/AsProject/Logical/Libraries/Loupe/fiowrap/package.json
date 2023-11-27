@@ -2,14 +2,17 @@
   "name": "@loupeteam/fiowrap",
   "version": "0.9.1",
   "description": "Loupe's fiowrap library for Automation Runtime",
-  "homepage": "https://loupeteam.github.io/Sandbox/libraries/fiowrap.html",
+  "homepage": "https://loupeteam.github.io/LoupeDocs/libraries/fiowrap.html",
   "scripts": {},
   "keywords": [],
   "author": "Loupe",
-  "license": "Loupe Software License Agreement",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/loupeteam/fiowrap"
+  },
+  "lpm": {
+    "type": "library"
   },
   "dependencies": {
     "@loupeteam/stringext": ">=0.11.0"

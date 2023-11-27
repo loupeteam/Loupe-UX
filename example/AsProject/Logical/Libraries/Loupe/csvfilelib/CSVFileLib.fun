@@ -1,13 +1,11 @@
-(********************************************************************
- * COPYRIGHT -- Automation Resources Group
- ********************************************************************
- * Library: CSVFileLib
- * File: CSVFileLib.fun
- * Author: David Blackburn
- * Created: January 04, 2012
- ********************************************************************
- * Functions and function blocks of library CSVFileLib
- ********************************************************************)
+(*
+* File: CSVFileLib.fun
+* Copyright (c) 2023 Loupe
+* https://loupe.team
+* 
+* This file is part of CSVFileLib, licensed under the MIT License.
+* 
+*)
 
 FUNCTION CSVFn_Init : UINT (*CSVFileMgr initialization function*)
 	VAR_IN_OUT

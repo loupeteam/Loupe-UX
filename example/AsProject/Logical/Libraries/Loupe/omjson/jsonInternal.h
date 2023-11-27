@@ -1,13 +1,10 @@
-/********************************************************************
- * COPYRIGHT --  
- ********************************************************************
- * Library: OMJSON
+/*
  * File: jsonInternal.h
- * Author: davidblackburn
- * Created: September 22, 2014
- ********************************************************************
- * Implementation of library OMJSON
- ********************************************************************/
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of OMJSON, licensed under the MIT License.
+ */
 
 #ifndef __JSON_INTERNAL_H__
 #define __JSON_INTERNAL_H__
@@ -27,7 +24,6 @@ unsigned short jsonInternalSetReadListError(unsigned short ErrorID, struct jsonR
 unsigned short jsonInternalSetReadError(unsigned short ErrorID, struct jsonReadVariable* t);
 unsigned short jsonInternalSetAddError(unsigned short ErrorID, struct jsonAddVariableToCache* t);
 unsigned short jsonInternalSetReadNoCacheError(unsigned short ErrorID, struct jsonReadVariableNoCache* t);
-plcbit jsonInternalLicenseIsOk();
 
 #ifdef __cplusplus
 	};

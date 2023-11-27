@@ -1,3 +1,11 @@
+(*
+ * File: Types.typ
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of LogThat, licensed under the MIT License.
+ *)
+
 
 TYPE
 	InteralLogFubs_typ : 	STRUCT 

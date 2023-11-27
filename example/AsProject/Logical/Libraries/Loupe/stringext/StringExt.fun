@@ -1,13 +1,11 @@
-(********************************************************************
- * COPYRIGHT -- Automation Resources Group
- ********************************************************************
- * Library: StringExt
+(*
  * File: StringExt.fun
- * Author: David Blackburn
- * Created: January 26, 2012
- ********************************************************************
- * Functions and function blocks of library StringExt
- ********************************************************************)
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of StringExt, licensed under the MIT License.
+ *
+ *)
 
 FUNCTION lstrip : UDINT (*Strips the leading characters from a string*)
 	VAR_INPUT

@@ -1,3 +1,11 @@
+(*
+ * File: TCPConnectionMgr.typ
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of TCPComm, licensed under the MIT License.
+ *
+ *)
 
 TYPE
 	TCPCOMM_MODE_enum : 

@@ -1,11 +1,11 @@
-(********************************************************************
- * COPYRIGHT -- Automation Resources Group
- ********************************************************************
- * Library: ErrorLib
+(*
  * File: ErrorCollector_HMI.typ
- * Author: David Blackburn
- * Created: December 09, 2011
- ********************************************************************
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of ErrorLib, licensed under the MIT License.
+ * 
+  ********************************************************************
  * Data types of library ErrorLib
  ********************************************************************)
 

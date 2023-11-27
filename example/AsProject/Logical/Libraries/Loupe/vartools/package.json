@@ -2,11 +2,11 @@
   "name": "@loupeteam/vartools",
   "version": "0.11.3",
   "description": "Loupe's vartools library for Automation Runtime",
-  "homepage": "https://loupeteam.github.io/Sandbox/libraries/vartools.html",
+  "homepage": "https://loupeteam.github.io/LoupeDocs/libraries/vartools.html",
   "scripts": {},
   "keywords": [],
   "author": "Loupe",
-  "license": "Loupe Software License Agreement",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/loupeteam/vartools"

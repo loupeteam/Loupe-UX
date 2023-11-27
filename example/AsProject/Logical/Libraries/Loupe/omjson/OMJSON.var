@@ -1,13 +1,11 @@
-(********************************************************************
- * COPYRIGHT --  
- ********************************************************************
- * Library: OMJSON
+(*
  * File: OMJSON.var
- * Author: davidblackburn
- * Created: September 22, 2014
- ********************************************************************
- * Constants of library OMJSON
- ********************************************************************)
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of OMJSON, licensed under the MIT License.
+ *)
+
 VAR CONSTANT
 	JSON_DEFAULT_SERVERPORT : UINT := 8000;
 	JSON_DEFAULT_BUFFERSIZE : UDINT := 100000;

@@ -1,10 +1,10 @@
-import WEBHMI from '../webhmi'
+import LUX from '../lux'
 
 test('Import successful', ()=>{
-    expect(WEBHMI).toBeDefined()
+    expect(LUX).toBeDefined()
 })
 
 test('Variables defined', ()=>{
-    expect(WEBHMI.Machine).toBeDefined()
-    expect(typeof WEBHMI.version).toBe("string")
+    expect(LUX.Machine).toBeDefined()
+    expect(typeof LUX.version).toBe("string")
 })

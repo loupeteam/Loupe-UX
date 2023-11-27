@@ -2,14 +2,17 @@
   "name": "@loupeteam/tcpcomm",
   "version": "0.10.0",
   "description": "Loupe's tcpcomm library for Automation Runtime",
-  "homepage": "https://loupeteam.github.io/Sandbox/libraries/tcpcomm.html",
+  "homepage": "https://loupeteam.github.io/LoupeDocs/libraries/tcpcomm.html",
   "scripts": {},
   "keywords": [],
   "author": "Loupe",
-  "license": "Loupe Software License Agreement",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/loupeteam/tcpcomm"
+  },
+  "lpm": {
+    "type": "library"
   },
   "dependencies": {}
 }

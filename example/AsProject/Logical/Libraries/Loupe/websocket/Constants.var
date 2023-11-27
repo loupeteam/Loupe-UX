@@ -1,0 +1,15 @@
+(*
+ * File: jsonAux.c
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of WebSocket, licensed under the MIT License.
+ *)
+VAR CONSTANT
+	WS_HEADER_MAX_LEN : USINT := 14;
+	WS_HEADER_MIN_LEN : USINT := 2;
+	WS_STRLEN_ERRORSTRING : UINT := 320;
+	WS_STRLEN_CONNECTMESSAGE : USINT := 129;
+	WS_STRLEN_KEYHEADER : UINT := 18;
+	WS_SOC_MAGICSTRING : STRING[36] := '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
+END_VAR

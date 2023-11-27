@@ -1,13 +1,11 @@
-(********************************************************************
- * COPYRIGHT -- Automation Resources Group
- ********************************************************************
- * Library: StringExt
+(*
  * File: StringExt.typ
- * Author: David Blackburn
- * Created: January 26, 2012
- ********************************************************************
- * Data types of library StringExt
- ********************************************************************)
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of StringExt, licensed under the MIT License.
+ *
+ *)
 
 TYPE
 	STREXT_ERR_enum : 

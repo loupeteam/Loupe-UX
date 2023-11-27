@@ -1,24 +1,12 @@
-(********************************************************************
- * COPYRIGHT --  
- ********************************************************************
- * Library: OMJSON
+(*
  * File: OMJSON.typ
- * Author: davidblackburn
- * Created: September 22, 2014
- ********************************************************************
- * Data types of library OMJSON
- ********************************************************************)
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of OMJSON, licensed under the MIT License.
+ *)
 
 TYPE
-	JSON_WS_OPCODE_enum : 
-		(
-		JSON_WS_OPCODE_CONTINUATION := 0, (*Not supported*)
-		JSON_WS_OPCODE_TEXT := 1,
-		JSON_WS_OPCODE_BINARY := 2, (*Not supported*)
-		JSON_WS_OPCODE_CLOSE := 8,
-		JSON_WS_OPCODE_PING := 9, (*Not supported*)
-		JSON_WS_OPCODE_PONG := 10 (*Not supported*)
-		);
 	JSON_ERR_enum : 
 		(
 		JSON_ERR_INVALIDINPUT := 50000,
@@ -67,24 +55,20 @@ TYPE
 		oldDataReceived : BOOL;
 	END_STRUCT;
 	jsonWSServer_int_client_typ : 	STRUCT 
-		tcpStream : TCPStream_typ;
+		wsStream : WSStream_typ;
 		pReceiveData : UDINT;
 		pSendData : UDINT;
 		messageBuffer : datbufBuffer_typ;
-		wsConnect : jsonWSConnect;
 		wsConnected : BOOL;
-		wsDecode : jsonWSDecode;
-		wsEncode : jsonWSEncode;
 		writeVariable : jsonWriteVariable;
 		readVariableList : jsonReadVariableList;
 		debug : jsonWSS_client_debug_typ;
-		excessDataLength : DINT;
 		requestTimer : TON_10ms;
 		pCache : REFERENCE TO jsonCache_typ;
 	END_STRUCT;
 	jsonWSServer_Internal_typ : 	STRUCT 
 		initialized : BOOL;
-		tcpServer : TCPConnectionMgr_typ;
+		wsServer : WSConnectionManager_typ;
 		client : ARRAY[0..JSON_MAI_CLIENTS]OF jsonWSServer_int_client_typ;
 		requestTimer : TON_10ms;
 		iClient : UINT;

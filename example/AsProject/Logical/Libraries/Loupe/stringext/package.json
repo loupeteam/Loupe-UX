@@ -2,11 +2,11 @@
   "name": "@loupeteam/stringext",
   "version": "0.14.4",
   "description": "Loupe's stringext library for Automation Runtime",
-  "homepage": "https://loupeteam.github.io/Sandbox/libraries/stringext.html",
+  "homepage": "https://loupeteam.github.io/LoupeDocs/libraries/stringext.html",
   "scripts": {},
   "keywords": [],
   "author": "Loupe",
-  "license": "Loupe Software License Agreement",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/loupeteam/stringext"

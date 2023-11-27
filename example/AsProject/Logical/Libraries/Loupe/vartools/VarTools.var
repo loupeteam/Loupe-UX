@@ -1,13 +1,11 @@
-(********************************************************************
- * COPYRIGHT --  
- ********************************************************************
- * Library: VarInfo
- * File: VarInfo.var
- * Author: davidblackburn
- * Created: June 02, 2014
- ********************************************************************
- * Constants of library VarInfo
- ********************************************************************)
+(*
+ * File: VarTools.var
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of VarTools, licensed under the MIT License.
+ *
+ *)
 VAR CONSTANT
 	VAR_STRLEN_NAME : USINT := 120;
 	VAR_STRLEN_VALUE : USINT := 120;

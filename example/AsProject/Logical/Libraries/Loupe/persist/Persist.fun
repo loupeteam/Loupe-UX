@@ -1,11 +1,11 @@
-(********************************************************************
- * COPYRIGHT --  
- ********************************************************************
- * Library: Persist
+(*
  * File: Persist.fun
- * Author: davidblackburn
- * Created: October 04, 2013
- ********************************************************************
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of Persist, licensed under the MIT License.
+ *
+ * ********************************************************************
  * Functions and function blocks of library Persist
  ********************************************************************)
 

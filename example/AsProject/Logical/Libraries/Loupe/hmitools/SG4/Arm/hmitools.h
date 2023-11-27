@@ -22,27 +22,27 @@ extern "C"
 		#include "AsBrStr.h"
 		#include "FileIO.h"
 		#include "standard.h"
-		#include "LogThat.h"
-		#include "RingBufLib.h"
-		#include "StringExt.h"
+		#include "ringbuflib.h"
+		#include "logthat.h"
+		#include "stringext.h"
 #endif
 #ifdef _SG4
 		#include "AsArLog.h"
 		#include "AsBrStr.h"
 		#include "FileIO.h"
 		#include "standard.h"
-		#include "LogThat.h"
-		#include "RingBufLib.h"
-		#include "StringExt.h"
+		#include "ringbuflib.h"
+		#include "logthat.h"
+		#include "stringext.h"
 #endif
 #ifdef _SGC
 		#include "AsArLog.h"
 		#include "AsBrStr.h"
 		#include "FileIO.h"
 		#include "standard.h"
-		#include "LogThat.h"
-		#include "RingBufLib.h"
-		#include "StringExt.h"
+		#include "ringbuflib.h"
+		#include "logthat.h"
+		#include "stringext.h"
 #endif
 
 
@@ -706,7 +706,7 @@ _BUR_PUBLIC unsigned short GetDataObjectList(unsigned long List, unsigned long M
 __asm__(".section \".plc\"");
 
 /* Additional IEC dependencies */
-__asm__(".ascii \"iecdep \\\"Logical/Libraries/Loupe/LogThat/Constants.var\\\" scope \\\"global\\\"\\n\"");
+__asm__(".ascii \"iecdep \\\"Logical/Libraries/Loupe/logthat/Constants.var\\\" scope \\\"global\\\"\\n\"");
 
 __asm__(".previous");
 

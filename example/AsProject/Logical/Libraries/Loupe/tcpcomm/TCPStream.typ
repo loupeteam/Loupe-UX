@@ -1,3 +1,12 @@
+(*
+ * File: TCPStream.typ
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of TCPComm, licensed under the MIT License.
+ *
+ *)
+
 (*For each client lets instantiate an interface*)
 
 TYPE

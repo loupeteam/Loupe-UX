@@ -1,6 +1,6 @@
 {
   "name": "@loupeteam/plc-sim",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/loupeteam/webHMI.git"
+    "url": "git+https://github.com/loupeteam/Loupe-UX.git"
   },
   "author": "Josh Polansky",
   "license": "MIT",
@@ -16,6 +16,6 @@
     "jquery": "^3.7.0",
     "jsdom": "^22.1.0",
     "ws": "^8.13.0",
-    "@loupeteam/webHMI": "*"
+    "@loupeteam/loupe-ux": "*"
   }
 }

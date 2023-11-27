@@ -1,13 +1,11 @@
-(********************************************************************
- * COPYRIGHT -- Automation Resources Group
- ********************************************************************
- * Library: HMITools
- * File: HMI_File_Browse.typ
- * Author: David Blackburn
- * Created: March 22, 2012
- ********************************************************************
- * Data types of library HMITools
- ********************************************************************)
+(*
+* File: HMI_File_Browse.typ
+* Copyright (c) 2023 Loupe
+* https://loupe.team
+* 
+* This file is part of HMITools, licensed under the MIT License.
+* 
+*)
 
 TYPE
 	HMI_File_Browse_internal_typ : 	STRUCT 

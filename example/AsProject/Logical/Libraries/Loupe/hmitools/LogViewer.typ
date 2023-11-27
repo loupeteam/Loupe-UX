@@ -1,13 +1,11 @@
-(********************************************************************
- * COPYRIGHT --  
- ********************************************************************
- * Library: LogExport
- * File: LogExport.typ
- * Author: Josh
- * Created: August 14, 2012
- ********************************************************************
- * Data types of library LogExport
- ********************************************************************)
+(*
+* File: LogViewer.typ
+* Copyright (c) 2023 Loupe
+* https://loupe.team
+* 
+* This file is part of HMITools, licensed under the MIT License.
+* 
+*)
 
 TYPE
 	LogView_HMI_typ : 	STRUCT 

@@ -1,3 +1,11 @@
+(*
+ * File: Constants.var
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of LogThat, licensed under the MIT License.
+ *)
+
 VAR CONSTANT
 	LOG_STRLEN_LOGGERNAME : UINT := 8;
 	LOG_STRLEN_MESSAGE : UINT := 320;

@@ -1,9 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Library xmlns="http://br-automation.co.at/AS/Library" Version="1.02.2" SubType="Binary">
   <Files>
-    <File>CSVFileLib.html</File>
-    <File>CSVFileLib.md</File>
-    <File>VersionHistory.txt</File>
     <File Description="Exported data types">CSVFileLib.typ</File>
     <File Description="Exported constants">CSVFileLib.var</File>
     <File Description="Exported functions and function blocks">CSVFileLib.fun</File>
@@ -11,6 +8,7 @@
     <File Description="Exported data types">CSVFileMgr.typ</File>
     <File Description="Exported data types">CSVFileMgr_HMI.typ</File>
     <File>BuildOptions.txt</File>
+    <File Type="File">CHANGELOG.md</File>
   </Files>
   <Dependencies>
     <Dependency ObjectName="astime" />

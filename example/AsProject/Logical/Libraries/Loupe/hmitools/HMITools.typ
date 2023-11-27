@@ -1,13 +1,11 @@
-(********************************************************************
- * COPYRIGHT --  
- ********************************************************************
- * Library: HMITools
- * File: HMITools.typ
- * Author: Josh
- * Created: November 07, 2012
- ********************************************************************
- * Data types of library HMITools
- ********************************************************************)
+(*
+* File: HMITools.typ
+* Copyright (c) 2023 Loupe
+* https://loupe.team
+* 
+* This file is part of HMITools, licensed under the MIT License.
+* 
+*)
 
 TYPE
 	HMI_ERR_enum : 

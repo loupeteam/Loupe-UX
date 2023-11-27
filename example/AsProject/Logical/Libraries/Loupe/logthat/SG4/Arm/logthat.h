@@ -20,17 +20,17 @@ extern "C"
 #ifdef _SG3
 		#include "ArEventLog.h"
 		#include "AsBrStr.h"
-		#include "StringExt.h"
+		#include "stringext.h"
 #endif
 #ifdef _SG4
 		#include "ArEventLog.h"
 		#include "AsBrStr.h"
-		#include "StringExt.h"
+		#include "stringext.h"
 #endif
 #ifdef _SGC
 		#include "ArEventLog.h"
 		#include "AsBrStr.h"
-		#include "StringExt.h"
+		#include "stringext.h"
 #endif
 
 

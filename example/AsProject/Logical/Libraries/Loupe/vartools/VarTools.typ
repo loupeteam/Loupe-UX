@@ -1,13 +1,11 @@
-(********************************************************************
- * COPYRIGHT --  
- ********************************************************************
- * Library: VarInfo
- * File: VarInfo.typ
- * Author: davidblackburn
- * Created: June 02, 2014
- ********************************************************************
- * Data types of library VarInfo
- ********************************************************************)
+(*
+ * File: VarTools.typ
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of VarTools, licensed under the MIT License.
+ *
+ *)
 
 TYPE
 	VAR_ERR_enum : 

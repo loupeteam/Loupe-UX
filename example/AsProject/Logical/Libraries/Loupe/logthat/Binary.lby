@@ -5,8 +5,7 @@
     <File Description="Exported constants">Constants.var</File>
     <File Description="Exported functions and function blocks">LogThat.fun</File>
     <File>LogInternalWrite.h</File>
-    <File>README.md</File>
-    <File>LICENSE.md</File>
+    <File Type="File">CHANGELOG.md</File>
   </Files>
   <Dependencies>
     <Dependency ObjectName="ArEventLog" />

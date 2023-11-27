@@ -6,7 +6,7 @@
     <Object Type="File" Description="Global variables">Global.var</Object>
     <Object Type="File" Description="Local data types">Types.typ</Object>
     <Object Type="Package" Description="Global libraries">Libraries</Object>
-    <Object Type="Package">webHMI</Object>
+    <Object Type="Package">Lux</Object>
     <Object Type="Package">Infrastructure</Object>
     <Object Type="Program" Language="IEC">demo</Object>
     <Object Type="Program" Language="IEC">demoGlobal</Object>

@@ -1,11 +1,11 @@
-(********************************************************************
- * COPYRIGHT -- Automation Resources Group
- ********************************************************************
- * Library: ErrorLib
+(*
  * File: ErrorLib_enum.typ
- * Author: David Blackburn
- * Created: November 23, 2011
- ********************************************************************
+ * Copyright (c) 2023 Loupe
+ * https://loupe.team
+ * 
+ * This file is part of ErrorLib, licensed under the MIT License.
+ * 
+  ********************************************************************
  * Data types of library ErrorLib
  ********************************************************************)
 

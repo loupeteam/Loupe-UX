@@ -15,7 +15,7 @@ if (typeof LUX === 'undefined') {
 LUX.dataBindVersion = '1.6.0';
 
 // Check for being a 'number'
-function isNumeric (obj) {
+function isNumeric(obj) {
 	return !Number.isNaN(parseFloat(obj)) && isFinite(obj)
 }
 
@@ -23,22 +23,22 @@ LUX.isNumeric = isNumeric
 
 // Make sure the convert library is included
 let convertFeatEnable = false;
-if ((typeof convert === 'undefined') || (typeof convert.convert !== 'function')){
+if ((typeof convert === 'undefined') || (typeof convert.convert !== 'function')) {
 	console.warn('Convert library not defined in index.html and will be disabled')
 	console.warn('Inclusion Example: <script src="lux/convert.prod.js"></script>')
-}else{
+} else {
 	LUX.convert = convert.convert
 	convertFeatEnable = true;
 }
 
 // BOOLify something
-function isTrue (value) {
+function isTrue(value) {
 
 	switch (typeof value) {
 
 		case 'boolean':
 			return value
-		
+
 		case 'number':
 			return value !== 0
 
@@ -56,18 +56,18 @@ function isTrue (value) {
 						return false
 				}
 			}
-	
+
 		default:
 			return false
 	}
-	
+
 }
 
 LUX.isTrue = isTrue
 
 // Check for custom equality
 // Types supported: Undefined, Boolean, Number, String
-function isEqual (in1, in2) {
+function isEqual(in1, in2) {
 
 	// If you don't have either input, default to false
 	if (in1 === undefined || in2 === undefined) {
@@ -93,7 +93,7 @@ function isEqual (in1, in2) {
 	// If you get to this point, check for isTrue()
 	// This allows comparing 'boolean like' strings and numbers
 	return isTrue(in1) === isTrue(in2)
-	
+
 }
 
 // Get attribute values
@@ -225,19 +225,19 @@ LUX.getRange = function ($element) {
 };
 
 LUX.getValue = function ($element) {
-	
+
 	//var localMachine = window[LUX.getMachineName($element)];
 	var localMachine = LUX.getMachine($element); // NOTE: Try this here before migrating everything else...
-	
+
 	var varName = LUX.getVarName($element);
 	if (varName === undefined) {
 		return "No variable";
 	}
-	if( $element.attr( 'data-var-name-added' ) != varName){
-		$element.attr( 'data-var-name-added', varName)
-		localMachine.initCyclicReadGroup( LUX.getDataReadGroup($element) ,varName);
+	if ($element.attr('data-var-name-added') != varName) {
+		$element.attr('data-var-name-added', varName)
+		localMachine.initCyclicReadGroup(LUX.getDataReadGroup($element), varName);
 	}
-	
+
 	var varValue = localMachine.value(varName);
 
 	return varValue;
@@ -245,51 +245,51 @@ LUX.getValue = function ($element) {
 }
 
 LUX.getHideValue = function ($element) {
-	
+
 	//var localMachine = window[LUX.getMachineName($element)];
 	var localMachine = LUX.getMachine($element); // NOTE: Try this here before migrating everything else...
-	
+
 	var varName = LUX.getHideVarName($element);
 	if (varName === undefined) {
 		return "No variable";
 	}
 
-	if( $element.attr( 'data-var-name-added-hide' ) != varName){
-		$element.attr( 'data-var-name-added-hide', varName)
-		localMachine.initCyclicReadGroup( LUX.getDataReadGroup($element) ,varName);
+	if ($element.attr('data-var-name-added-hide') != varName) {
+		$element.attr('data-var-name-added-hide', varName)
+		localMachine.initCyclicReadGroup(LUX.getDataReadGroup($element), varName);
 	}
-	
+
 	var varValue = localMachine.value(varName);
 	return varValue;
 
 }
 
 LUX.getLockValue = function ($element) {
-	
+
 	//var localMachine = window[LUX.getMachineName($element)];
 	var localMachine = LUX.getMachine($element); // NOTE: Try this here before migrating everything else...
-	
+
 	var varName = LUX.getLockVarName($element);
 	if (varName === undefined) {
 		return "No variable";
 	}
-	if( $element.attr( 'data-var-name-lock-added' ) != varName){
-		$element.attr( 'data-var-name-lock-added', varName)
-		localMachine.initCyclicReadGroup( LUX.getDataReadGroup($element) ,varName);
+	if ($element.attr('data-var-name-lock-added') != varName) {
+		$element.attr('data-var-name-lock-added', varName)
+		localMachine.initCyclicReadGroup(LUX.getDataReadGroup($element), varName);
 	}
-	
+
 	var varValue = localMachine.value(varName);
 
 	return varValue;
 
 }
 
-LUX.getDataReadGroup = function($element){
+LUX.getDataReadGroup = function ($element) {
 	var ReadGroupName = $element[0].closest('[data-read-group]');
-	if ( ReadGroupName != null ) {
+	if (ReadGroupName != null) {
 		return ReadGroupName.getAttribute('data-read-group');
 	}
-	else{
+	else {
 		return 'global'
 	}
 }
@@ -298,13 +298,13 @@ LUX.getUserLevel = function ($element) {
 
 	//var localMachine = window[LUX.getMachineName($element)];
 	var localMachine = LUX.getMachine($element); // NOTE: Try this here before migrating everything else...
-	
+
 	return localMachine.getUserLevel(); // Handles everything we need it to
 
 }
 // NOTE: What is the point of this function? I guess it will init things that are not already in the list, but that is a funny name if that is the point.
 LUX.getCyclicReads = function () {
-	$("[data-var-name]").each(function (index, element) { 
+	$("[data-var-name]").each(function (index, element) {
 		LUX.getValue($(this));
 	});
 }
@@ -324,7 +324,7 @@ LUX.updateLEDs = function () {
 
 		const $this = $(element);
 		const varValue = LUX.getValue($this);
-		if ( typeof varValue !== "undefined" && !isEqual($this.attr('data-machine-value-led'), varValue)) {
+		if (typeof varValue !== "undefined" && !isEqual($this.attr('data-machine-value-led'), varValue)) {
 			$this.attr('data-machine-value-led', varValue)
 			const setValue = LUX.getSetValue($this);
 			const resetValue = LUX.getResetValue($this);
@@ -355,7 +355,7 @@ LUX.updateHide = function () {
 	LUX.elems.hide.forEach(function (element) {
 
 		const $this = $(element);
-		
+
 		const hasHideUserLevel = ($this.attr('min-user-level-show') !== undefined);
 		const hasHide = $this.hasClass('lux-hide');
 		const hasShow = $this.hasClass('lux-show');
@@ -364,9 +364,9 @@ LUX.updateHide = function () {
 		const userLevel = LUX.getUserLevel($this);
 
 		if (((hasHide || hasShow) && !isEqual($this.attr('data-machine-value-hide'), varValue)) || (hasHideUserLevel && !isEqual($this.attr('data-machine-value-user-level-show'), userLevel))) {
-		
-			if(hasHide || hasShow) $this.attr('data-machine-value-hide', varValue);
-			if(hasHideUserLevel) $this.attr('data-machine-value-user-level-show', userLevel);
+
+			if (hasHide || hasShow) $this.attr('data-machine-value-hide', varValue);
+			if (hasHideUserLevel) $this.attr('data-machine-value-user-level-show', userLevel);
 
 			const setValue = LUX.getHideSetValue($this); // elements that only have user level will get data-hide-set here; this is fine
 			const userLevelShow = LUX.getUserLevelShow($this);
@@ -402,9 +402,9 @@ LUX.updateLock = function () {
 		const userLevel = LUX.getUserLevel($this);
 
 		if (((hasLock || hasUnlock) && !isEqual($this.attr('data-machine-value-lock'), varValue)) || (hasLockUserLevel && !isEqual($this.attr('data-machine-value-user-level-unlock'), userLevel))) {
-		
-			if(hasLock || hasUnlock) $this.attr('data-machine-value-lock', varValue);
-			if(hasLockUserLevel) $this.attr('data-machine-value-user-level-unlock', userLevel);
+
+			if (hasLock || hasUnlock) $this.attr('data-machine-value-lock', varValue);
+			if (hasLockUserLevel) $this.attr('data-machine-value-user-level-unlock', userLevel);
 
 			const setValue = LUX.getLockSetValue($this); // elements that only have user level will get data-lock-set here; this is fine
 			const userLevelUnlock = LUX.getUserLevelUnlock($this);
@@ -420,7 +420,7 @@ LUX.updateLock = function () {
 		}
 
 	})
-	
+
 }
 
 // find all toggle btn elems
@@ -435,7 +435,7 @@ LUX.updateToggleButtons = function () {
 		var $this = $(element);
 
 		var varValue = LUX.getValue($this);
-		if ( typeof varValue !== 'undefined' && !isEqual($this.attr('data-machine-value-toggle'), varValue)) {
+		if (typeof varValue !== 'undefined' && !isEqual($this.attr('data-machine-value-toggle'), varValue)) {
 			$this.attr('data-machine-value-toggle', varValue)
 			if (isEqual(varValue, LUX.getSetValue($this))) {
 				$this.addClass('toggle-active');
@@ -466,7 +466,7 @@ LUX.updateCheckboxes = function () {
 		var isChecked = $this.prop('checked');
 
 		var varValue = LUX.getValue($this);
-		if ( typeof varValue !== 'undefined' && !isEqual($this.attr('data-machine-value-checkbox'), varValue)) {
+		if (typeof varValue !== 'undefined' && !isEqual($this.attr('data-machine-value-checkbox'), varValue)) {
 			$this.attr('data-machine-value-checkbox', varValue)
 			if (isEqual(varValue, LUX.getSetValue($this)) && !isChecked) {
 				$this.prop('checked', true);
@@ -519,7 +519,7 @@ LUX.updateRange = function () {
 		var $this = $(element);
 
 		var varValue = LUX.getValue($this);
-		if (typeof varValue !== 'undefined' &&  !isEqual($this.attr('data-machine-value-range'), varValue)) {
+		if (typeof varValue !== 'undefined' && !isEqual($this.attr('data-machine-value-range'), varValue)) {
 			$this.attr('data-machine-value-range', varValue)
 			var Range = LUX.getRange($this);
 
@@ -549,13 +549,13 @@ LUX.queryInputs = function () {
 LUX.updateInputs = function () {
 
 	LUX.visibleElems.num.forEach(function (element) {
-		
+
 		var $this = $(element);
 
 		if (!$this.is(":focus") && !$this.hasClass("editing")) {
 
 			var varValue = LUX.getValue($this);
-			if ( typeof varValue !== "undefined" && !isEqual($this.attr('data-machine-value-num'), varValue)) {
+			if (typeof varValue !== "undefined" && !isEqual($this.attr('data-machine-value-num'), varValue)) {
 				$this.attr('data-machine-value-num', varValue)
 				if (varValue === false) {
 					$this.html('false');
@@ -578,27 +578,27 @@ LUX.updateInputs = function () {
 					}
 
 					varValue = varValue * unitFactor + unitOffset;
-					
+
 					var sourceUnits = $this.attr('data-source-units');
 					var displayUnits = $this.attr('data-display-units');
 
 					// make sure both source and target units are defined
-					if ((Object.prototype.toString.call(sourceUnits) !== '[object Undefined]') && 
+					if ((Object.prototype.toString.call(sourceUnits) !== '[object Undefined]') &&
 						(Object.prototype.toString.call(displayUnits) !== '[object Undefined]') &&
-						convertFeatEnable){
-						
+						convertFeatEnable) {
+
 						// split the units into string arrays
 						let sourceUnitsSplit = sourceUnits.split('/');
 						let displayUnitsSplit = displayUnits.split('/');
-					
+
 						// no divisor in either element so convert as normal
-						if ((sourceUnitsSplit.length == 1) && (displayUnitsSplit.length == 1)){
+						if ((sourceUnitsSplit.length == 1) && (displayUnitsSplit.length == 1)) {
 							varValue = LUX.convert(varValue, sourceUnitsSplit[0]).to(displayUnitsSplit[0]);
 						}
 						// divisor in both elements so do dimentional analysis
-						else if ((sourceUnitsSplit.length == 2) && (displayUnitsSplit.length == 2)){
+						else if ((sourceUnitsSplit.length == 2) && (displayUnitsSplit.length == 2)) {
 							varValue = LUX.convert(varValue, sourceUnitsSplit[0]).to(displayUnitsSplit[0]) /
-						 				LUX.convert(1, sourceUnitsSplit[1]).to(displayUnitsSplit[1]);
+								LUX.convert(1, sourceUnitsSplit[1]).to(displayUnitsSplit[1]);
 						}
 						// divisor in one element but not the other so warning
 						else if (+$this.attr('data-complex-unit-warning') != 1) {
@@ -630,7 +630,7 @@ LUX.updateInputs = function () {
 						unitText = '';
 						// fallback to target units if none specified
 						if ((Object.prototype.toString.call(displayUnits) !== '[object Undefined]') &&
-							(convertFeatEnable)){
+							(convertFeatEnable)) {
 							unitText = displayUnits;
 						}
 					}
@@ -656,10 +656,10 @@ LUX.updateInputs = function () {
 
 			var varValue = LUX.getValue($this);
 			var string = varValue
-			if( typeof varValue === 'object' ){
+			if (typeof varValue === 'object') {
 				string = JSON.stringify(varValue, null, 4)
 			}
-			if ( typeof varValue !== "undefined" && !isEqual($this.attr('data-machine-value-text'), string )) {
+			if (typeof varValue !== "undefined" && !isEqual($this.attr('data-machine-value-text'), string)) {
 				$this.attr('data-machine-value-text', varValue)
 				if (varValue === false) {
 					$this.html('false');
@@ -693,8 +693,8 @@ LUX.updateInputs = function () {
 		}
 	});
 
-	LUX.visibleElems.dropdown.forEach(function (element){
-		
+	LUX.visibleElems.dropdown.forEach(function (element) {
+
 		var $this = $(element);
 
 		if (!$this.is(":focus")) {
@@ -706,7 +706,7 @@ LUX.updateInputs = function () {
 			}
 		}
 	});
-	
+
 };
 
 LUX.addVarWriteEvents = function () {
@@ -718,7 +718,8 @@ LUX.addVarWriteEvents = function () {
 				var localMachine = window[LUX.getMachineName($this)];
 				localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
 				$this.one('mouseleave', function () {
-					$this.trigger('mouseup');
+					localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
+					$this.blur();
 				});
 			},
 
@@ -744,9 +745,10 @@ LUX.addVarWriteEvents = function () {
 				var localMachine = window[LUX.getMachineName($this)];
 				localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
 				$this.blur();
+				//This is not required because touchend is triggered when the touch leaves the element
 				//$this.off('touchleave');
 			}
-		}, 
+		},
 		'.lux-btn-momentary');
 	// momentary button
 
@@ -785,7 +787,7 @@ LUX.addVarWriteEvents = function () {
 			$('#LuxConfirmModal .btn-yes-popup, #LuxConfirmModal .btn-no-popup').unbind('click')
 		}
 
-		if(!$('#LuxConfirmModal')[0]){
+		if (!$('#LuxConfirmModal')[0]) {
 			// add confirmation pop-up to html if it hasn't been added yet
 			var myModal = `<div class="modal fade" id="LuxConfirmModal" role="dialog">
 				<div class="modal-dialog">
@@ -903,22 +905,22 @@ LUX.addVarWriteEvents = function () {
 				var displayUnits = $this.attr('data-display-units');
 
 				// make sure both source and target units are defined
-				if ((Object.prototype.toString.call(sourceUnits) !== '[object Undefined]') && 
+				if ((Object.prototype.toString.call(sourceUnits) !== '[object Undefined]') &&
 					(Object.prototype.toString.call(displayUnits) !== '[object Undefined]') &&
-					convertFeatEnable){
-				
+					convertFeatEnable) {
+
 					// split the units into string array
 					let sourceUnitsSplit = sourceUnits.split('/');
 					let displayUnitsSplit = displayUnits.split('/');
 
 					// no divisor in either element so convert as normal
-					if ((sourceUnitsSplit.length == 1) && (displayUnitsSplit.length == 1)){
+					if ((sourceUnitsSplit.length == 1) && (displayUnitsSplit.length == 1)) {
 						varValue = LUX.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]);
 					}
 					// divisor in both elements so do dimentional analysis
-					else if ((sourceUnitsSplit.length == 2) && (displayUnitsSplit.length == 2)){
+					else if ((sourceUnitsSplit.length == 2) && (displayUnitsSplit.length == 2)) {
 						varValue = LUX.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]) /
-									LUX.convert(1, displayUnitsSplit[1]).to(sourceUnitsSplit[1]);
+							LUX.convert(1, displayUnitsSplit[1]).to(sourceUnitsSplit[1]);
 					}
 					// divisor in one element but not the other so warning
 					else if (+$this.attr('data-complex-unit-warning') != 1) {
@@ -943,7 +945,7 @@ LUX.addVarWriteEvents = function () {
 
 				var $this = $(this);
 
-				if($this.attr('data-prevent-drag')) return
+				if ($this.attr('data-prevent-drag')) return
 
 				var varValue = parseFloat($this.val());
 
@@ -963,22 +965,22 @@ LUX.addVarWriteEvents = function () {
 				var displayUnits = $this.attr('data-display-units');
 
 				// make sure both source and target units are defined
-				if ((Object.prototype.toString.call(sourceUnits) !== '[object Undefined]') && 
+				if ((Object.prototype.toString.call(sourceUnits) !== '[object Undefined]') &&
 					(Object.prototype.toString.call(displayUnits) !== '[object Undefined]') &&
-					convertFeatEnable){
-				
+					convertFeatEnable) {
+
 					// split the units into string array
 					let sourceUnitsSplit = sourceUnits.split('/');
 					let displayUnitsSplit = displayUnits.split('/');
 
 					// no divisor in either element so convert as normal
-					if ((sourceUnitsSplit.length == 1) && (displayUnitsSplit.length == 1)){
+					if ((sourceUnitsSplit.length == 1) && (displayUnitsSplit.length == 1)) {
 						varValue = LUX.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]);
 					}
 					// divisor in both elements so do dimentional analysis
-					else if ((sourceUnitsSplit.length == 2) && (displayUnitsSplit.length == 2)){
+					else if ((sourceUnitsSplit.length == 2) && (displayUnitsSplit.length == 2)) {
 						varValue = LUX.convert(varValue, displayUnitsSplit[0]).to(sourceUnitsSplit[0]) /
-									LUX.convert(1, displayUnitsSplit[1]).to(sourceUnitsSplit[1]);
+							LUX.convert(1, displayUnitsSplit[1]).to(sourceUnitsSplit[1]);
 					}
 					// divisor in one element but not the other so warning
 					else if (+$this.attr('data-complex-unit-warning') != 1) {
@@ -1022,11 +1024,11 @@ LUX.addVarWriteEvents = function () {
 	// dropdown
 
 };
-LUX.updateReadGroupComms = function(){
+LUX.updateReadGroupComms = function () {
 	LUX.machines.forEach(machine => {
-		machine.getReadGroupList().forEach(ReadGroupName=>{
-			if( ReadGroupName != 'global'){
-				machine.readGroupShouldManage(ReadGroupName, document.querySelector( `[data-read-group=${ReadGroupName}]`) != null)
+		machine.getReadGroupList().forEach(ReadGroupName => {
+			if (ReadGroupName != 'global') {
+				machine.readGroupShouldManage(ReadGroupName, document.querySelector(`[data-read-group=${ReadGroupName}]`) != null)
 			}
 		})
 	});
@@ -1054,7 +1056,7 @@ LUX.observers = [];
  * @type {DataBinding_types}
  */
 LUX.elems = {
-	num: [], 
+	num: [],
 	text: [],
 	textOption: [],
 	dropdown: [],
@@ -1071,7 +1073,7 @@ LUX.elems = {
  * @type {DataBinding_types}
  */
 LUX.visibleElems = {
-	num: [], 
+	num: [],
 	text: [],
 	textOption: [],
 	dropdown: [],
@@ -1081,7 +1083,7 @@ LUX.visibleElems = {
 	range: [],
 	tab: [],
 	hide: [],
-	lock: [] 
+	lock: []
 };
 
 // FORCES LAYOUT REFLOW
@@ -1089,7 +1091,7 @@ LUX.checkVisibility = function () {
 	// TODO: Don't rebuild array from scratch each call
 	Object.keys(LUX.elems).forEach(function (key) {
 		if (LUX.visibleElems.hasOwnProperty(key)) {
-			LUX.visibleElems[key] = LUX.elems[key].filter(elem => (elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length || (elem.getAttribute('force-hmi-update') == 'true') ));
+			LUX.visibleElems[key] = LUX.elems[key].filter(elem => (elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length || (elem.getAttribute('force-hmi-update') == 'true')));
 		}
 	});
 };
@@ -1141,7 +1143,7 @@ LUX.includeFiles = function (successCallback) {
 			}
 		});
 	});
-	if(numberFiles==0){
+	if (numberFiles == 0) {
 		successCallback();
 	}
 };
@@ -1170,9 +1172,9 @@ LUX.trigger = function (eventName) {
 		Object.keys(userCallbacks).forEach(function (callBack) {
 			if (callBack == eventName) {
 				try {
-					userCallbacks[callBack].apply(this, args);	
+					userCallbacks[callBack].apply(this, args);
 				} catch (e) {
-					console.error("lux-data-bind:"+eventName+": ",e);
+					console.error("lux-data-bind:" + eventName + ": ", e);
 				}
 			}
 		})
@@ -1255,28 +1257,28 @@ $(document).one({
 	'readsuccess': function () {
 		// TODO: Move this to a parameter in lux.js, probably, when you make a new machine
 		var refresh = LUX.hmiRefresh ? LUX.hmiRefresh : 100;
-		setInterval(LUX.updateHMI, refresh);	
+		setInterval(LUX.updateHMI, refresh);
 	}
 });
 
 //This element can be used to catch value changed events on elements that wouldn't normally have an "Input"
 class invisibleInput extends HTMLElement {
-    constructor() {
-        super()
-		this.setAttribute('force-hmi-update',true)
-    }
-    set value( v ){
-        this._value = v
-        this.setAttribute('value', v)
-        let evt = new Event("change", {
-            "bubbles": true,
-            "cancelable": true
-        });
-        this.dispatchEvent(evt);
-    }
-    get value( ){
-        return this._value || 0
-    }
+	constructor() {
+		super()
+		this.setAttribute('force-hmi-update', true)
+	}
+	set value(v) {
+		this._value = v
+		this.setAttribute('value', v)
+		let evt = new Event("change", {
+			"bubbles": true,
+			"cancelable": true
+		});
+		this.dispatchEvent(evt);
+	}
+	get value() {
+		return this._value || 0
+	}
 }
-      
+
 customElements.define('invisible-input', invisibleInput);

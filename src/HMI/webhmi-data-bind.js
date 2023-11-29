@@ -7,7 +7,7 @@ if (typeof WEBHMI === 'undefined') {
 	throw new Error('WEBHMI data binding requires WEBHMI core');
 }
 
-WEBHMI.dataBindVersion = '1.6.0';
+WEBHMI.dataBindVersion = '1.6.1';
 
 // Check for being a 'number'
 function isNumeric (obj) {
@@ -713,7 +713,8 @@ WEBHMI.addVarWriteEvents = function () {
 				var localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
 				$this.one('mouseleave', function () {
-					$this.trigger('mouseup');
+					localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
+					$this.blur();
 				});
 			},
 
@@ -730,6 +731,7 @@ WEBHMI.addVarWriteEvents = function () {
 				var $this = $(this);
 				var localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+				//This is not required because touchend is triggered when the touch leaves the element
 				//$this.one('touchleave', function(){$this.trigger('touchend');});
 			},
 
@@ -739,9 +741,10 @@ WEBHMI.addVarWriteEvents = function () {
 				var localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
 				$this.blur();
+				//This is not required because touchend is triggered when the touch leaves the element
 				//$this.off('touchleave');
 			}
-		}, 
+		},
 		'.webhmi-btn-momentary');
 	// momentary button
 

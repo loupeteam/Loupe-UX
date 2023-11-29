@@ -5,8 +5,8 @@ name: Publish Loupe UX
 
 on:
   push:
-    branches: main, webhmi/main
-
+    branches: main
+    
 jobs:
   build:
     runs-on: ubuntu-latest

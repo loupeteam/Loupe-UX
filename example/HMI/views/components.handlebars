@@ -1,253 +1,251 @@
-
 <h2>Demo Components</h2>
-    {{#widget 'Columns' 'Inputs' }}
-        {{widget 'Led' "Led"}}
-        {{widget 'Text' "TextInput"}}
-        {{widget 'Numeric' "NumericInput"}}
-        {{widget 'Button' 'Set Button' buttonType='set' }}
-        {{widget 'Button' 'Toggle Button' 'toggle'  }}
-        {{widget 'Button' 'Momentary Button' 'momentary' }}
-        {{widget 'Led' "side=right" side="right" }}
-        {{widget 'Led' "side=middle" side="middle" }}
-        {{widget 'Led' "side=left" side="left" }}    
-        <div>mydiv</div>
-        {{#widget 'Columns' 'Test Elements' style="grid-column: span 3;" }}
-            {{widget 'Button' 'Set Power' 'set' class='btn-primary' style="color:red" data-var-name="demo:test.command"}}
-            {{widget 'Button' 'Toggle Power' 'toggle'  class='btn-danger' data-var-name="demo:test.command"}}
-            {{widget 'Button' 'Momentary Power' 'momentary' class='btn-warning' data-var-name="demo:test.command"}}
-            {{#widget 'Led' data-var-name="demo:test.command" }}
-                <h3>
-                    Home
-                </h3>
-            {{/widget}}
-            {{#widget 'Led' data-var-name="demo:test.command" buttonType='toggle' buttonVarName='demo:test.command' }}
-            (Led Pv!=Button Pv)
-            {{/widget}}
-            {{#widget 'Led' buttonType='toggle' data-var-name='demo:test.command' }}
-            (Led Pv==Button Pv)
-            {{/widget}}
-            {{widget 'Numeric' 'Numeric Input' data-var-name="demo:test.command"}}
-            {{widget 'Numeric' 'Numeric Input' data-var-name="demo:test.slider"}}
-            {{widget 'Text' 'Text Input' data-var-name="gMotorBasic[0].OUT.State.PowerOn"}}
-        {{/widget}}
-    {{/widget}}                
-    {{#widget 'Columns' 'Sliders in a centered grid' centerItems=1}}
-        {{#widget 'Slider' '0' data-var-name="demo:test.slider" min=-10 max= 10}}
-            {{widget 'Numeric' data-var-name="demo:test.slider" style="width:100px; margin-left:-30px;bottom:-150px;"}}
-        {{/widget}}
-        {{widget 'Slider' style='height:200px;' data-var-name="demo:test.slider"}}
-        {{widget 'Slider' style='height:100px;width:50px;' data-var-name="demo:test.slider"}}
-        {{widget 'Slider' direction=1 data-var-name="demo:test.slider"}}
-        {{#widget 'Slider' style='height:100px;width:300px;grid-column:span 2' direction=1 data-var-name="demo:test.slider"}}
-        {{widget 'Numeric' data-var-name="demo:test.slider" style="width:100px;left:100px;top:30px; "}}
-        {{/widget}}
-        {{#widget 'Slider' style='height:30px;width:100%;grid-column:span 3' direction=1 data-var-name="demo:test.slider"}}
-        {{/widget}}
-    {{/widget}}
-    {{#widget 'Columns' 'ValueUpDown' }}
+{{#widget 'Columns' 'Inputs' }}
+{{widget 'Led' "Led"}}
+{{widget 'Text' "TextInput"}}
+{{widget 'Numeric' "NumericInput"}}
+{{widget 'Button' 'Set Button' buttonType='set' data-var-name="demo:test.command"}}
+{{widget 'Button' 'Toggle Button' buttonType='toggle' data-var-name="demo:test.command"}}
+{{widget 'Button' 'Momentary Button' buttonType='momentary' data-var-name="demo:test.command"}}
+{{widget 'Led' "side=right" side="right" }}
+{{widget 'Led' "side=middle" side="middle" }}
+{{widget 'Led' "side=left" side="left" }}
+<div>mydiv</div>
+{{#widget 'Columns' 'Test Elements' style="grid-column: span 3;" }}
+{{widget 'Button' 'Set Power' buttonType='set' class='btn-primary' style="color:red" data-var-name="demo:test.command"}}
+{{widget 'Button' 'Toggle Power' buttonType='toggle' class='btn-danger' data-var-name="demo:test.command"}}
+{{widget 'Button' 'Momentary Power' buttonType='momentary' class='btn-warning' data-var-name="demo:test.command"}}
+{{#widget 'Led' data-var-name="demo:test.command" }}
+<h3>
+    Home
+</h3>
+{{/widget}}
+{{#widget 'Led' data-var-name="demo:test.command" buttonType='toggle' buttonVarName='demo:test.command' }}
+(Led Pv!=Button Pv)
+{{/widget}}
+{{#widget 'Led' buttonType='toggle' data-var-name='demo:test.command' }}
+(Led Pv==Button Pv)
+{{/widget}}
+{{widget 'Numeric' 'Numeric Input' data-var-name="demo:test.command"}}
+{{widget 'Numeric' 'Numeric Input' data-var-name="demo:test.slider"}}
+{{widget 'Text' 'Text Input' data-var-name="gMotorBasic[0].OUT.State.PowerOn"}}
+{{/widget}}
+{{/widget}}
+{{#widget 'Columns' 'Sliders in a centered grid' centerItems=1}}
+{{#widget 'Slider' '0' data-var-name="demo:test.slider" min=-10 max= 10}}
+{{widget 'Numeric' data-var-name="demo:test.slider" style="width:100px; margin-left:-30px;bottom:-150px;"}}
+{{/widget}}
+{{widget 'Slider' style='height:200px;' data-var-name="demo:test.slider"}}
+{{widget 'Slider' style='height:100px;width:50px;' data-var-name="demo:test.slider"}}
+{{widget 'Slider' direction=1 data-var-name="demo:test.slider"}}
+{{#widget 'Slider' style='height:100px;width:300px;grid-column:span 2' direction=1 data-var-name="demo:test.slider"}}
+{{widget 'Numeric' data-var-name="demo:test.slider" style="width:100px;left:100px;top:30px; "}}
+{{/widget}}
+{{#widget 'Slider' style='height:30px;width:100%;grid-column:span 3' direction=1 data-var-name="demo:test.slider"}}
+{{/widget}}
+{{/widget}}
+{{#widget 'Columns' 'ValueUpDown' }}
 
-    {{W 'ValueUpDown' 1 data-var-name="demo:test.slider" buttonStyle='padding:10px' inputStyle="width:50px" }}
-    {{W 'ValueUpDown'  data-var-name="demo:test.slider" buttonStyle='padding:20px' inputStyle="width:50px"}}
-    {{W 'ValueUpDown'  data-var-name="demo:test.slider" buttonStyle='padding:30px' inputStyle="width:200px"}}
-    {{#W 'ValueUpDown' 1 data-var-name="demo:test.slider" }}
-    <div> </div>
-    {{/W}}
-    {{/widget}}
-        <h3>Dropdowns</h3>
-    {{#widget 'Columns' maxColumns=4}}
-    <h3>Empty Dropdown</h3>
-    {{widget 'DropdownTable'}}
-    <h3>Non Selectable Options</h3>
-    {{#widget 'DropdownTable'}}
-    <dropdown>
-        <div>Not Option</div>
-        <div class="option">Option 1</div>
-        <div>Not Option</div>
-        <div class="option">Option 2</div>
-        <div>Not Option</div>
-        <div class="option">Option 3</div>
-    </dropdown>
-    {{/widget}}
-    <h3>Table based</h3>
-    {{#widget 'DropdownTable'}}
-    <options>
-        <div>Option many :!</div>
-        <div>Option many ::</div>
-        <div>Option many :)</div>
-        <div>Option many :(</div>
-    </options>
-    <option>
-        <div>Individual Option 1</div>
-    </option>
-    <option>
-        <div>Individual Option 2</div>
-    </option>
-    <options>
-        {{#repeat 4}}
-        <div>Repeat {{@index}}</div>
-        {{/repeat}}
-    </options>
-    {{/widget}}
-    <h3>Custom Field</h3>
-    {{#widget 'Dropdown'}}
-    <dropdown>
-        <div class="option">Option 1</div>
-        <div class="option">Option 2</div>
-        <div class="option">Option 3</div>
-    </dropdown>
-    <field>
-        <div style="background-color: cadetblue;"><span class="selected-item-text">Remove</span><span> [units]</span></div>
-    </field>
-    {{/widget}}
-    {{/widget}}
-    {{#widget 'MultiSelect' maxColumns=10 data-var-name="demo:test.slider"}}
-    <options>
-        <div>Option many :!</div>
-        <div>Option many ::</div>
-        <div>Option many :)</div>
-        <div>Option many :(</div>
-    </options>
-    <option data-value="4.5">
-        <div>data-value=4.5</div>
-    </option>
-    <option>
-        <div>Individual Option 2</div>
-    </option>
-    <options>
-        {{#repeat 4}}
-        <div>Repeat {{@index}}</div>
-        {{/repeat}}
-    </options>
-    {{/widget}}
+{{W 'ValueUpDown' 1 data-var-name="demo:test.slider" buttonStyle='padding:10px' inputStyle="width:50px" }}
+{{W 'ValueUpDown' data-var-name="demo:test.slider" buttonStyle='padding:20px' inputStyle="width:50px"}}
+{{W 'ValueUpDown' data-var-name="demo:test.slider" buttonStyle='padding:30px' inputStyle="width:200px"}}
+{{#W 'ValueUpDown' 1 data-var-name="demo:test.slider" }}
+<div> </div>
+{{/W}}
+{{/widget}}
+<h3>Dropdowns</h3>
+{{#widget 'Columns' maxColumns=4}}
+<h3>Empty Dropdown</h3>
+{{widget 'DropdownTable'}}
+<h3>Non Selectable Options</h3>
+{{#widget 'DropdownTable'}}
+<dropdown>
+    <div>Not Option</div>
+    <div class="option">Option 1</div>
+    <div>Not Option</div>
+    <div class="option">Option 2</div>
+    <div>Not Option</div>
+    <div class="option">Option 3</div>
+</dropdown>
+{{/widget}}
+<h3>Table based</h3>
+{{#widget 'DropdownTable'}}
+<options>
+    <div>Option many :!</div>
+    <div>Option many ::</div>
+    <div>Option many :)</div>
+    <div>Option many :(</div>
+</options>
+<option>
+    <div>Individual Option 1</div>
+</option>
+<option>
+    <div>Individual Option 2</div>
+</option>
+<options>
+    {{#repeat 4}}
+    <div>Repeat {{@index}}</div>
+    {{/repeat}}
+</options>
+{{/widget}}
+<h3>Custom Field</h3>
+{{#widget 'Dropdown'}}
+<dropdown>
+    <div class="option">Option 1</div>
+    <div class="option">Option 2</div>
+    <div class="option">Option 3</div>
+</dropdown>
+<field>
+    <div style="background-color: cadetblue;"><span class="selected-item-text">Remove</span><span> [units]</span></div>
+</field>
+{{/widget}}
+{{/widget}}
+{{#widget 'MultiSelect' maxColumns=10 data-var-name="demo:test.slider"}}
+<options>
+    <div>Option many :!</div>
+    <div>Option many ::</div>
+    <div>Option many :)</div>
+    <div>Option many :(</div>
+</options>
+<option data-value="4.5">
+    <div>data-value=4.5</div>
+</option>
+<option>
+    <div>Individual Option 2</div>
+</option>
+<options>
+    {{#repeat 4}}
+    <div>Repeat {{@index}}</div>
+    {{/repeat}}
+</options>
+{{/widget}}
 
-    {{#widget 'MultiSelect' maxColumns=10 data-var-name="demo:test.slider"}}
-    <options>
-        <div>Option many :!</div>
-        <div>Option many ::</div>
-        <div>Option many :)</div>
-        <div>Option many :(</div>
-    </options>
-    <option>
-        <div>Individual Option 1</div>
-    </option>
-    <option>
-        <div>Individual Option 2</div>
-    </option>
-    <options>
-        {{#repeat 4}}
-        <div>Repeat {{@index}}</div>
-        {{/repeat}}
-    </options>
-    {{/widget}}
+{{#widget 'MultiSelect' maxColumns=10 data-var-name="demo:test.slider"}}
+<options>
+    <div>Option many :!</div>
+    <div>Option many ::</div>
+    <div>Option many :)</div>
+    <div>Option many :(</div>
+</options>
+<option>
+    <div>Individual Option 1</div>
+</option>
+<option>
+    <div>Individual Option 2</div>
+</option>
+<options>
+    {{#repeat 4}}
+    <div>Repeat {{@index}}</div>
+    {{/repeat}}
+</options>
+{{/widget}}
 
-    {{#widget 'Columns' 'ValueUpDown in a centered grid' centerItems=1}}
-        {{W 'ValueUpDown' 1 data-var-name="demo:test.slider" buttonStyle='padding:10px' }}
-        {{W 'ValueUpDown'  data-var-name="demo:test.slider" buttonStyle='padding:20px' }}
-        {{W 'ValueUpDown'  data-var-name="demo:test.slider" buttonStyle='padding:30px' }}
-        {{W 'ValueUpDown' 1 }}
-        {{#W 'ValueUpDown' 1 data-var-name="demo:test.slider" }}
-        <span>No Display!</span>
-        {{/W}}
-    {{/widget}}
-    <h3>Columns</h3>
-    <h4>Std</h4>
-    {{#widget 'Columns'}}
-        {{widget 'Led' "Input1"}}
-        {{widget 'Led' "Input2"}}
-        {{widget 'Led' "Input3"}}
-        {{widget 'Led' "Input4"}}
-        {{widget 'Led' "Input5"}}
-        {{widget 'Led' "Input6"}}
-    {{/widget}}
+{{#widget 'Columns' 'ValueUpDown in a centered grid' centerItems=1}}
+{{W 'ValueUpDown' 1 data-var-name="demo:test.slider" buttonStyle='padding:10px' }}
+{{W 'ValueUpDown' data-var-name="demo:test.slider" buttonStyle='padding:20px' }}
+{{W 'ValueUpDown' data-var-name="demo:test.slider" buttonStyle='padding:30px' }}
+{{W 'ValueUpDown' 1 }}
+{{#W 'ValueUpDown' 1 data-var-name="demo:test.slider" }}
+<span>No Display!</span>
+{{/W}}
+{{/widget}}
+<h3>Columns</h3>
+<h4>Std</h4>
+{{#widget 'Columns'}}
+{{widget 'Led' "Input1"}}
+{{widget 'Led' "Input2"}}
+{{widget 'Led' "Input3"}}
+{{widget 'Led' "Input4"}}
+{{widget 'Led' "Input5"}}
+{{widget 'Led' "Input6"}}
+{{/widget}}
 
-    {{#widget 'Columns' maxColumns=2}}
-        {{#widget 'Columns' 'Box Title 1' maxColumns=2}}
-            {{widget 'Led' "Input1"}}
-            {{widget 'Led' "Input2"}}
-            {{widget 'Led' "Input3"}}
-            {{widget 'Led' "Input4"}}
-        {{/widget}}
-        {{#widget 'Columns' 'Box Title 2' maxColumns=2 style='background-color:gray' }}
-            {{widget 'Led' "Input1" style='background-color:darkgray'}}
-            {{widget 'Led' "Input2" style='background-color:lightgray'}}
-        {{/widget}}
-        {{#widget 'Columns' 'Box Title 3' maxColumns=2 side="left" style='background-color:gray' }}
-            {{widget 'Led' "Input1" style='background-color:darkgray'}}
-            {{widget 'Led' "Input2" style='background-color:lightgray'}}
-        {{/widget}}
-        {{#widget 'Columns' maxColumns=2}}
-            {{widget 'Led' "Input1"}}
-            {{widget 'Led' "Input2"}}
-            {{widget 'Led' "Input3"}}
-            {{widget 'Led' "Input4"}}
-        {{/widget}}
-        {{widget 'Led' "Input1"}}
-        {{widget 'Led' "Input2"}}
-        {{widget 'Led' "Input3"}}
-        {{widget 'Led' "Input4"}}
-    {{/widget}}
+{{#widget 'Columns' maxColumns=2}}
+{{#widget 'Columns' 'Box Title 1' maxColumns=2}}
+{{widget 'Led' "Input1"}}
+{{widget 'Led' "Input2"}}
+{{widget 'Led' "Input3"}}
+{{widget 'Led' "Input4"}}
+{{/widget}}
+{{#widget 'Columns' 'Box Title 2' maxColumns=2 style='background-color:gray' }}
+{{widget 'Led' "Input1" style='background-color:darkgray'}}
+{{widget 'Led' "Input2" style='background-color:lightgray'}}
+{{/widget}}
+{{#widget 'Columns' 'Box Title 3' maxColumns=2 side="left" style='background-color:gray' }}
+{{widget 'Led' "Input1" style='background-color:darkgray'}}
+{{widget 'Led' "Input2" style='background-color:lightgray'}}
+{{/widget}}
+{{#widget 'Columns' maxColumns=2}}
+{{widget 'Led' "Input1"}}
+{{widget 'Led' "Input2"}}
+{{widget 'Led' "Input3"}}
+{{widget 'Led' "Input4"}}
+{{/widget}}
+{{widget 'Led' "Input1"}}
+{{widget 'Led' "Input2"}}
+{{widget 'Led' "Input3"}}
+{{widget 'Led' "Input4"}}
+{{/widget}}
 
-    {{#widget 'Columns' columnFlow=1 maxColumns=2}}
-        {{#widget 'Columns' 'Box Title 1' maxColumns=2}}
-            {{widget 'Led' "Input1"}}
-            {{widget 'Led' "Input2"}}
-            {{widget 'Led' "Input3"}}
-            {{widget 'Led' "Input4"}}
-        {{/widget}}
-        {{#widget 'Columns' 'Box Title 2' maxColumns=2}}
-            {{widget 'Led' "Input1"}}
-            {{widget 'Led' "Input2"}}
-        {{/widget}}
-        {{#widget 'Columns' maxColumns=2}}
-            {{widget 'Led' "Input1"}}
-            {{widget 'Led' "Input2"}}
-            {{widget 'Led' "Input3"}}
-            {{widget 'Led' "Input4"}}
-        {{/widget}}
-        {{#widget 'Columns' maxColumns=2}}
-            {{widget 'Led' "Input1"}}
-            {{widget 'Led' "Input2"}}
-            {{widget 'Led' "Input3"}}
-            {{widget 'Led' "Input4"}}
-        {{/widget}}
+{{#widget 'Columns' columnFlow=1 maxColumns=2}}
+{{#widget 'Columns' 'Box Title 1' maxColumns=2}}
+{{widget 'Led' "Input1"}}
+{{widget 'Led' "Input2"}}
+{{widget 'Led' "Input3"}}
+{{widget 'Led' "Input4"}}
+{{/widget}}
+{{#widget 'Columns' 'Box Title 2' maxColumns=2}}
+{{widget 'Led' "Input1"}}
+{{widget 'Led' "Input2"}}
+{{/widget}}
+{{#widget 'Columns' maxColumns=2}}
+{{widget 'Led' "Input1"}}
+{{widget 'Led' "Input2"}}
+{{widget 'Led' "Input3"}}
+{{widget 'Led' "Input4"}}
+{{/widget}}
+{{#widget 'Columns' maxColumns=2}}
+{{widget 'Led' "Input1"}}
+{{widget 'Led' "Input2"}}
+{{widget 'Led' "Input3"}}
+{{widget 'Led' "Input4"}}
+{{/widget}}
 
 {{/widget}}
 
-    <h4>columnFlow=1</h4>
-    {{#widget 'Columns' columnFlow=1}}
-    {{widget 'Led' "Input1"}}
-    {{widget 'Led' "Input2"}}
-    {{widget 'Led' "Input3"}}
-    {{widget 'Led' "Input4"}}
-    {{widget 'Led' "Input5"}}
-    {{widget 'Led' "Input6"}}
-    {{/widget}}
+<h4>columnFlow=1</h4>
+{{#widget 'Columns' columnFlow=1}}
+{{widget 'Led' "Input1"}}
+{{widget 'Led' "Input2"}}
+{{widget 'Led' "Input3"}}
+{{widget 'Led' "Input4"}}
+{{widget 'Led' "Input5"}}
+{{widget 'Led' "Input6"}}
+{{/widget}}
 
-    <h4>maxColumns=2</h4>
-    {{#widget 'Columns' maxColumns=2}}
-    {{widget 'Led' "Input1"}}
-    {{widget 'Led' "Input2"}}
-    {{widget 'Led' "Input3"}}
-    {{widget 'Led' "Input4"}}
-    {{widget 'Led' "Input5"}}
-    {{widget 'Led' "Input6"}}
-    {{/widget}}
-    
-    <h3>Create object helper</h3>
-    {{obj "{title:'test'}"}}
+<h4>maxColumns=2</h4>
+{{#widget 'Columns' maxColumns=2}}
+{{widget 'Led' "Input1"}}
+{{widget 'Led' "Input2"}}
+{{widget 'Led' "Input3"}}
+{{widget 'Led' "Input4"}}
+{{widget 'Led' "Input5"}}
+{{widget 'Led' "Input6"}}
+{{/widget}}
 
-    <h3>Create object block helper</h3>
-    {{#obj "{title:'Worked'}"}}
-    <div>{{title}}</div>
-    {{/obj}}
+<h3>Create object helper</h3>
+{{obj "{title:'test'}"}}
 
-    <h3>These should fail:</h3>
-    {{widget dropdownerror}}
-    {{#widget dropdownerrorblk}}
+<h3>Create object block helper</h3>
+{{#obj "{title:'Worked'}"}}
+<div>{{title}}</div>
+{{/obj}}
+
+<h3>These should fail:</h3>
+{{widget dropdownerror}}
+{{#widget dropdownerrorblk}}
+<h3>Child<h3>
+        {{/widget }}
+        {{widget 'dropdownerror'}}
+        {{#widget 'dropdownerrorblk'}}
         <h3>Child<h3>
-    {{/widget }}
-    {{widget 'dropdownerror'}}
-    {{#widget 'dropdownerrorblk'}}
-        <h3>Child<h3>
-    {{/widget }}    
-
+                {{/widget }}

@@ -5,7 +5,7 @@ name: Publish Loupe UX
 
 on:
   push:
-    branches: main
+    branches: main, webhmi/main
 
 jobs:
   build:

@@ -712,8 +712,10 @@ WEBHMI.addVarWriteEvents = function () {
 				var $this = $(this);
 				var localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+				$this.removeAttr('data-machine-value');
 				$this.one('mouseleave', function () {
 					localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
+					$this.removeAttr('data-machine-value');
 					$this.blur();
 				});
 			},
@@ -722,6 +724,7 @@ WEBHMI.addVarWriteEvents = function () {
 				var $this = $(this);
 				var localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
+				$this.removeAttr('data-machine-value');
 				$this.blur();
 				$this.off('mouseleave');
 			},
@@ -732,6 +735,7 @@ WEBHMI.addVarWriteEvents = function () {
 				var localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
 				//This is not required because touchend is triggered when the touch leaves the element
+				$this.removeAttr('data-machine-value');
 				//$this.one('touchleave', function(){$this.trigger('touchend');});
 			},
 
@@ -740,6 +744,7 @@ WEBHMI.addVarWriteEvents = function () {
 				var $this = $(this);
 				var localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
+				$this.removeAttr('data-machine-value');
 				$this.blur();
 				//This is not required because touchend is triggered when the touch leaves the element
 				//$this.off('touchleave');
@@ -760,10 +765,12 @@ WEBHMI.addVarWriteEvents = function () {
 				if ($this.hasClass("webhmi-confirm")) {
 					WebhmiConfirmModal('Do you want to "' + $this.context.innerHTML + '"?', function () {
 						localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+						$this.removeAttr('data-machine-value');
 					})
 				}
 				else {
 					localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+					$this.removeAttr('data-machine-value');
 				}
 			}
 		},
@@ -835,7 +842,7 @@ WEBHMI.addVarWriteEvents = function () {
 						} else {
 							localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
 						}
-
+						$this.removeAttr('data-machine-value');
 						$this.blur();
 					})
 				}
@@ -849,7 +856,7 @@ WEBHMI.addVarWriteEvents = function () {
 					} else {
 						localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
 					}
-
+					$this.removeAttr('data-machine-value');
 					$this.blur();
 				}
 			}
@@ -872,6 +879,7 @@ WEBHMI.addVarWriteEvents = function () {
 				} else {
 					localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
 				}
+				$this.removeAttr('data-machine-value');
 			}
 		},
 		'input:checkbox.webhmi-checkbox');
@@ -927,6 +935,7 @@ WEBHMI.addVarWriteEvents = function () {
 
 				var localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), varValue);
+				$this.removeAttr('data-machine-value');
 				$this.blur();
 
 			}
@@ -987,6 +996,7 @@ WEBHMI.addVarWriteEvents = function () {
 
 				var localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), varValue);
+				$this.removeAttr('data-machine-value');
 				$this.blur();
 
 			}
@@ -1002,6 +1012,7 @@ WEBHMI.addVarWriteEvents = function () {
 				var localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), $this.val());
 				localMachine.readVariable(WEBHMI.getVarName($this));
+				$this.removeAttr('data-machine-value');
 			}
 		},
 		'input.webhmi-text-value, invisible-input.webhmi-text-value, textarea.webhmi-text-value');
@@ -1014,6 +1025,7 @@ WEBHMI.addVarWriteEvents = function () {
 				var localMachine = window[WEBHMI.getMachineName($this)];
 				localMachine.writeVariable(WEBHMI.getVarName($this), $this[0].options.selectedIndex);
 				localMachine.readVariable(WEBHMI.getVarName($this));
+				$this.removeAttr('data-machine-value');
 			}
 		},
 		'.webhmi-dropdown');

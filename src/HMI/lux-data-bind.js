@@ -717,8 +717,10 @@ LUX.addVarWriteEvents = function () {
 				var $this = $(this);
 				var localMachine = window[LUX.getMachineName($this)];
 				localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+				$this.removeAttr('data-machine-value');
 				$this.one('mouseleave', function () {
 					localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
+					$this.removeAttr('data-machine-value');
 					$this.blur();
 				});
 			},
@@ -727,6 +729,7 @@ LUX.addVarWriteEvents = function () {
 				var $this = $(this);
 				var localMachine = window[LUX.getMachineName($this)];
 				localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
+				$this.removeAttr('data-machine-value');
 				$this.blur();
 				$this.off('mouseleave');
 			},
@@ -736,6 +739,7 @@ LUX.addVarWriteEvents = function () {
 				var $this = $(this);
 				var localMachine = window[LUX.getMachineName($this)];
 				localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+				$this.removeAttr('data-machine-value');
 				//$this.one('touchleave', function(){$this.trigger('touchend');});
 			},
 
@@ -744,6 +748,7 @@ LUX.addVarWriteEvents = function () {
 				var $this = $(this);
 				var localMachine = window[LUX.getMachineName($this)];
 				localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
+				$this.removeAttr('data-machine-value');
 				$this.blur();
 				//This is not required because touchend is triggered when the touch leaves the element
 				//$this.off('touchleave');
@@ -764,10 +769,12 @@ LUX.addVarWriteEvents = function () {
 				if ($this.hasClass("lux-confirm")) {
 					LuxConfirmModal('Do you want to "' + $this.context.innerHTML + '"?', function () {
 						localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+						$this.removeAttr('data-machine-value');
 					})
 				}
 				else {
 					localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+					$this.removeAttr('data-machine-value');
 				}
 			}
 		},
@@ -839,7 +846,7 @@ LUX.addVarWriteEvents = function () {
 						} else {
 							localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
 						}
-
+						$this.removeAttr('data-machine-value');
 						$this.blur();
 					})
 				}
@@ -853,7 +860,7 @@ LUX.addVarWriteEvents = function () {
 					} else {
 						localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
 					}
-
+					$this.removeAttr('data-machine-value');
 					$this.blur();
 				}
 			}
@@ -876,6 +883,7 @@ LUX.addVarWriteEvents = function () {
 				} else {
 					localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
 				}
+				$this.removeAttr('data-machine-value');
 			}
 		},
 		'input:checkbox.lux-checkbox');
@@ -931,6 +939,7 @@ LUX.addVarWriteEvents = function () {
 
 				var localMachine = window[LUX.getMachineName($this)];
 				localMachine.writeVariable(LUX.getVarName($this), varValue);
+				$this.removeAttr('data-machine-value');
 				$this.blur();
 
 			}
@@ -991,6 +1000,7 @@ LUX.addVarWriteEvents = function () {
 
 				var localMachine = window[LUX.getMachineName($this)];
 				localMachine.writeVariable(LUX.getVarName($this), varValue);
+				$this.removeAttr('data-machine-value');
 				$this.blur();
 
 			}
@@ -1006,6 +1016,7 @@ LUX.addVarWriteEvents = function () {
 				var localMachine = window[LUX.getMachineName($this)];
 				localMachine.writeVariable(LUX.getVarName($this), $this.val());
 				localMachine.readVariable(LUX.getVarName($this));
+				$this.removeAttr('data-machine-value');
 			}
 		},
 		'input.lux-text-value, invisible-input.lux-text-value, textarea.lux-text-value');
@@ -1018,6 +1029,7 @@ LUX.addVarWriteEvents = function () {
 				var localMachine = window[LUX.getMachineName($this)];
 				localMachine.writeVariable(LUX.getVarName($this), $this[0].options.selectedIndex);
 				localMachine.readVariable(LUX.getVarName($this));
+				$this.removeAttr('data-machine-value');
 			}
 		},
 		'.lux-dropdown');

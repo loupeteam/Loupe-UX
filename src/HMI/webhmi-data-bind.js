@@ -1266,7 +1266,7 @@ class invisibleInput extends HTMLElement {
     set value( v ){
         this._value = v
         this.setAttribute('value', v)
-        let evt = new Event("change", {
+		let evt = new Event("render", {
             "bubbles": true,
             "cancelable": true
         });

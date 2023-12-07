@@ -1259,22 +1259,34 @@ $(document).one({
 
 //This element can be used to catch value changed events on elements that wouldn't normally have an "Input"
 class invisibleInput extends HTMLElement {
-    constructor() {
-        super()
-		this.setAttribute('force-hmi-update',true)
-    }
-    set value( v ){
-        this._value = v
-        this.setAttribute('value', v)
-        let evt = new Event("change", {
-            "bubbles": true,
-            "cancelable": true
-        });
-        this.dispatchEvent(evt);
-    }
-    get value( ){
-        return this._value || 0
-    }
+	constructor() {
+		super()
+		this.setAttribute('force-hmi-update', true)
+	}
+	set value(v) {
+		this._value = v
+		this.setAttribute('value', v)
+		this._render()
+	}
+	get value() {
+		if(this._value === undefined){
+			return 0;
+		}
+		else{
+			return this._value
+		}
+	}
+	_render() {
+		let evt = new Event("render", {
+			"bubbles": true,
+			"cancelable": true
+		});
+		this.dispatchEvent(evt);
+		this.render()
+	}
+	render() {
+
+	}
 }
       
 customElements.define('invisible-input', invisibleInput);

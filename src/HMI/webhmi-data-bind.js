@@ -1269,7 +1269,12 @@ class invisibleInput extends HTMLElement {
 		this._render()
 	}
 	get value() {
-		return this._value || 0
+		if(this._value === undefined){
+			return 0;
+		}
+		else{
+			return this._value
+		}
 	}
 	_render() {
 		let evt = new Event("render", {

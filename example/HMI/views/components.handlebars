@@ -1,49 +1,49 @@
 <h2>Demo Components</h2>
-{{#widget 'Columns' 'Inputs' }}
-{{widget 'Led' "Led"}}
-{{widget 'Text' "TextInput"}}
-{{widget 'Numeric' "NumericInput"}}
-{{widget 'Button' 'Set Button' buttonType='set' data-var-name="demo:test.command"}}
-{{widget 'Button' 'Toggle Button' buttonType='toggle' data-var-name="demo:test.command"}}
-{{widget 'Button' 'Momentary Button' buttonType='momentary' data-var-name="demo:test.command"}}
-{{widget 'Led' "side=right" side="right" }}
-{{widget 'Led' "side=middle" side="middle" }}
-{{widget 'Led' "side=left" side="left" }}
-<div>mydiv</div>
-{{#widget 'Columns' 'Test Elements' style="grid-column: span 3;" }}
-{{widget 'Button' 'Set Power' buttonType='set' class='btn-primary' style="color:red" data-var-name="demo:test.command"}}
-{{widget 'Button' 'Toggle Power' buttonType='toggle' class='btn-danger' data-var-name="demo:test.command"}}
-{{widget 'Button' 'Momentary Power' buttonType='momentary' class='btn-warning' data-var-name="demo:test.command"}}
-{{#widget 'Led' data-var-name="demo:test.command" }}
-<h3>
-    Home
-</h3>
-{{/widget}}
-{{#widget 'Led' data-var-name="demo:test.command" buttonType='toggle' buttonVarName='demo:test.command' }}
-(Led Pv!=Button Pv)
-{{/widget}}
-{{#widget 'Led' buttonType='toggle' data-var-name='demo:test.command' }}
-(Led Pv==Button Pv)
-{{/widget}}
-{{widget 'Numeric' 'Numeric Input' data-var-name="demo:test.command"}}
-{{widget 'Numeric' 'Numeric Input' data-var-name="demo:test.slider"}}
-{{widget 'Text' 'Text Input' data-var-name="gMotorBasic[0].OUT.State.PowerOn"}}
-{{/widget}}
-{{/widget}}
-{{#widget 'Columns' 'Sliders in a centered grid' centerItems=1}}
-{{#widget 'Slider' '0' data-var-name="demo:test.slider" min=-10 max= 10}}
-{{widget 'Numeric' data-var-name="demo:test.slider" style="width:100px; margin-left:-30px;bottom:-150px;"}}
-{{/widget}}
-{{widget 'Slider' style='height:200px;' data-var-name="demo:test.slider"}}
-{{widget 'Slider' style='height:100px;width:50px;' data-var-name="demo:test.slider"}}
-{{widget 'Slider' direction=1 data-var-name="demo:test.slider"}}
-{{#widget 'Slider' style='height:100px;width:300px;grid-column:span 2' direction=1 data-var-name="demo:test.slider"}}
-{{widget 'Numeric' data-var-name="demo:test.slider" style="width:100px;left:100px;top:30px; "}}
-{{/widget}}
-{{#widget 'Slider' style='height:30px;width:100%;grid-column:span 3' direction=1 data-var-name="demo:test.slider"}}
-{{/widget}}
-{{/widget}}
-{{#widget 'Columns' 'ValueUpDown' }}
+    {{#widget 'Columns' 'Inputs' }}
+        {{widget 'Led' "Led"}}
+        {{widget 'Text' "TextInput"}}
+        {{widget 'Numeric' "NumericInput"}}
+        {{widget 'Button' 'Set Button' buttonType='set' data-var-name="demo:test.command"}}
+        {{widget 'Button' 'Toggle Button' buttonType='toggle' data-var-name="demo:test.command"}}
+        {{widget 'Button' 'Momentary Button' buttonType='momentary' data-var-name="demo:test.command"}}
+        {{widget 'Led' "side=right" side="right" }}
+        {{widget 'Led' "side=middle" side="middle" }}
+        {{widget 'Led' "side=left" side="left" }}    
+        <div>mydiv</div>
+        {{#widget 'Columns' 'Test Elements' style="grid-column: span 3;" }}
+            {{widget 'Button' 'Set Power' buttonType='set' class='btn-primary' style="color:red" data-var-name="demo:test.command"}}
+            {{widget 'Button' 'Toggle Power' buttonType='toggle' class='btn-danger' data-var-name="demo:test.command"}}
+            {{widget 'Button' 'Momentary Power' buttonType='momentary' class='btn-warning' data-var-name="demo:test.command"}}
+            {{#widget 'Led' data-var-name="demo:test.command" }}
+                <h3>
+                    Home
+                </h3>
+            {{/widget}}
+            {{#widget 'Led' data-var-name="demo:test.command" buttonType='toggle' buttonVarName='demo:test.command' }}
+            (Led Pv!=Button Pv)
+            {{/widget}}
+            {{#widget 'Led' buttonType='toggle' data-var-name='demo:test.command' }}
+            (Led Pv==Button Pv)
+            {{/widget}}
+            {{widget 'Numeric' 'Numeric Input' data-var-name="demo:test.command"}}
+            {{widget 'Numeric' 'Numeric Input' data-var-name="demo:test.slider"}}
+            {{widget 'Text' 'Text Input' data-var-name="gMotorBasic[0].OUT.State.PowerOn"}}
+        {{/widget}}
+    {{/widget}}                
+    {{#widget 'Columns' 'Sliders in a centered grid' centerItems=1}}
+        {{#widget 'Slider' '0' data-var-name="demo:test.slider" min=-10 max= 10}}
+            {{widget 'Numeric' data-var-name="demo:test.slider" style="width:100px; margin-left:-30px;bottom:-150px;"}}
+        {{/widget}}
+        {{widget 'Slider' style='height:200px;' data-var-name="demo:test.slider"}}
+        {{widget 'Slider' style='height:100px;width:50px;' data-var-name="demo:test.slider"}}
+        {{widget 'Slider' direction=1 data-var-name="demo:test.slider"}}
+        {{#widget 'Slider' style='height:100px;width:300px;grid-column:span 2' direction=1 data-var-name="demo:test.slider"}}
+        {{widget 'Numeric' data-var-name="demo:test.slider" style="width:100px;left:100px;top:30px; "}}
+        {{/widget}}
+        {{#widget 'Slider' style='height:30px;width:100%;grid-column:span 3' direction=1 data-var-name="demo:test.slider"}}
+        {{/widget}}
+    {{/widget}}
+    {{#widget 'Columns' 'ValueUpDown' }}
 
 {{W 'ValueUpDown' 1 data-var-name="demo:test.slider" buttonStyle='padding:10px' inputStyle="width:50px" }}
 {{W 'ValueUpDown' data-var-name="demo:test.slider" buttonStyle='padding:20px' inputStyle="width:50px"}}

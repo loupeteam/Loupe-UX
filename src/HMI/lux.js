@@ -1324,35 +1324,6 @@ LUX.Machine = function (options) {
 		return thisMachine.value(userLevelPV);
 	}
 
-	// User level
-	//---------------------------------------------
-
-	var userLevelPV;
-	var currentUserLevel = 0;
-
-	function setUserLevel(level) {
-		currentUserLevel = level;
-	}
-
-	function setUserLevelPV(levelPV) {
-		if (levelPV !== undefined) { // Don't set PV to something that doesn't exist; that's what clearUserLevelPV is for
-			userLevelPV = levelPV;
-			initCyclicRead(levelPV);
-		}
-	}
-
-	function clearUserLevelPV() {
-		userLevelPV = undefined;
-	}
-
-	function getUserLevel() {
-		if (userLevelPV === undefined) {
-			// Not using PV; use internal value instead
-			return currentUserLevel;
-		}
-		return thisMachine.value(userLevelPV);
-	}
-
 	/**
 	 * @param {Machine_Options} options 
 	 */

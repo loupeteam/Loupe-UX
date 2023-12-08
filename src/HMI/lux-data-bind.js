@@ -309,6 +309,15 @@ LUX.getCyclicReads = function () {
 	});
 }
 
+LUX.writeValueFromElement = function ($this, value) {
+	var localMachine = window[LUX.getMachineName($this)];
+	let VariableName = LUX.getVarName($this);
+	localMachine.writeVariable(VariableName, value);
+	localMachine.value(VariableName, value);
+	localMachine.readVariable(VariableName);
+	$this.attr('data-machine-value', value);
+}
+
 // Update ReadGroup elements
 //----------------------
 
@@ -715,18 +724,16 @@ LUX.addVarWriteEvents = function () {
 		{
 			mousedown: function (event) {
 				var $this = $(this);
-				var localMachine = window[LUX.getMachineName($this)];
-				localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+				LUX.writeValueFromElement($this, LUX.getSetValue($this));
 				$this.one('mouseleave', function () {
-					localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
+					LUX.writeValueFromElement($this, LUX.getResetValue($this));
 					$this.blur();
 				});
 			},
 
 			mouseup: function (event) {
 				var $this = $(this);
-				var localMachine = window[LUX.getMachineName($this)];
-				localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
+				LUX.writeValueFromElement($this, LUX.getResetValue($this));
 				$this.blur();
 				$this.off('mouseleave');
 			},
@@ -734,16 +741,15 @@ LUX.addVarWriteEvents = function () {
 			touchstart: function (event) {
 				event.preventDefault();
 				var $this = $(this);
-				var localMachine = window[LUX.getMachineName($this)];
-				localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+				LUX.writeValueFromElement($this, LUX.getSetValue($this));
+				//This is not required because touchend is triggered when the touch leaves the element
 				//$this.one('touchleave', function(){$this.trigger('touchend');});
 			},
 
 			touchend: function (event) {
 				event.preventDefault();
 				var $this = $(this);
-				var localMachine = window[LUX.getMachineName($this)];
-				localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
+				LUX.writeValueFromElement($this, LUX.getResetValue($this));
 				$this.blur();
 				//This is not required because touchend is triggered when the touch leaves the element
 				//$this.off('touchleave');
@@ -763,11 +769,11 @@ LUX.addVarWriteEvents = function () {
 				}
 				if ($this.hasClass("lux-confirm")) {
 					LuxConfirmModal('Do you want to "' + $this.context.innerHTML + '"?', function () {
-						localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+						LUX.writeValueFromElement($this, LUX.getSetValue($this));
 					})
 				}
 				else {
-					localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+					LUX.writeValueFromElement($this, LUX.getSetValue($this));
 				}
 			}
 		},
@@ -833,13 +839,12 @@ LUX.addVarWriteEvents = function () {
 						var varValue = LUX.getValue($this);
 
 						if (isEqual(varValue, LUX.getSetValue($this))) {
-							localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
+							LUX.writeValueFromElement($this, LUX.getResetValue($this));
 						} else if (isEqual(varValue, LUX.getResetValue($this))) {
-							localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+							LUX.writeValueFromElement($this, LUX.getSetValue($this));
 						} else {
-							localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+							LUX.writeValueFromElement($this, LUX.getSetValue($this));
 						}
-
 						$this.blur();
 					})
 				}
@@ -847,13 +852,12 @@ LUX.addVarWriteEvents = function () {
 					var varValue = LUX.getValue($this);
 
 					if (isEqual(varValue, LUX.getSetValue($this))) {
-						localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
+						LUX.writeValueFromElement($this, LUX.getResetValue($this));
 					} else if (isEqual(varValue, LUX.getResetValue($this))) {
-						localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+						LUX.writeValueFromElement($this, LUX.getSetValue($this));
 					} else {
-						localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+						LUX.writeValueFromElement($this, LUX.getSetValue($this));
 					}
-
 					$this.blur();
 				}
 			}
@@ -869,12 +873,11 @@ LUX.addVarWriteEvents = function () {
 				// So, checkboxes do not behave like toggles.
 
 				var $this = $(this);
-				var localMachine = window[LUX.getMachineName($this)];
 
 				if ($this.prop('checked')) {
-					localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+					LUX.writeValueFromElement($this, LUX.getSetValue($this));
 				} else {
-					localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
+					LUX.writeValueFromElement($this, LUX.getResetValue($this));
 				}
 			}
 		},
@@ -929,8 +932,7 @@ LUX.addVarWriteEvents = function () {
 					}
 				}
 
-				var localMachine = window[LUX.getMachineName($this)];
-				localMachine.writeVariable(LUX.getVarName($this), varValue);
+				LUX.writeValueFromElement($this, varValue);				
 				$this.blur();
 
 			}
@@ -989,8 +991,7 @@ LUX.addVarWriteEvents = function () {
 					}
 				}
 
-				var localMachine = window[LUX.getMachineName($this)];
-				localMachine.writeVariable(LUX.getVarName($this), varValue);
+				LUX.writeValueFromElement($this, varValue);
 				$this.blur();
 
 			}
@@ -1003,9 +1004,7 @@ LUX.addVarWriteEvents = function () {
 		{
 			change: function (event) {
 				var $this = $(this);
-				var localMachine = window[LUX.getMachineName($this)];
-				localMachine.writeVariable(LUX.getVarName($this), $this.val());
-				localMachine.readVariable(LUX.getVarName($this));
+				LUX.writeValueFromElement($this, $this.val());
 			}
 		},
 		'input.lux-text-value, invisible-input.lux-text-value, textarea.lux-text-value');
@@ -1015,9 +1014,7 @@ LUX.addVarWriteEvents = function () {
 		{
 			change: function (event) {
 				var $this = $(this);
-				var localMachine = window[LUX.getMachineName($this)];
-				localMachine.writeVariable(LUX.getVarName($this), $this[0].options.selectedIndex);
-				localMachine.readVariable(LUX.getVarName($this));
+				LUX.writeValueFromElement($this, $this[0].options.selectedIndex);
 			}
 		},
 		'.lux-dropdown');
@@ -1270,14 +1267,26 @@ class invisibleInput extends HTMLElement {
 	set value(v) {
 		this._value = v
 		this.setAttribute('value', v)
-		let evt = new Event("change", {
+		this._render()
+	}
+	get value() {
+		if(this._value === undefined){
+			return 0;
+		}
+		else{
+			return this._value
+		}
+	}
+	_render() {
+		let evt = new Event("render", {
 			"bubbles": true,
 			"cancelable": true
 		});
 		this.dispatchEvent(evt);
+		this.render()
 	}
-	get value() {
-		return this._value || 0
+	render() {
+
 	}
 }
 

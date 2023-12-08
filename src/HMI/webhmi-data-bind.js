@@ -304,6 +304,15 @@ WEBHMI.getCyclicReads = function () {
 	});
 }
 
+WEBHMI.writeValueFromElement = function ($this, value) {
+	var localMachine = window[WEBHMI.getMachineName($this)];
+	let VariableName = WEBHMI.getVarName($this);
+	localMachine.writeVariable(VariableName, value);
+	localMachine.value(VariableName, value);
+	localMachine.readVariable(VariableName);
+	$this.attr('data-machine-value', value);
+}
+
 // Update ReadGroup elements
 //----------------------
 
@@ -710,18 +719,16 @@ WEBHMI.addVarWriteEvents = function () {
 		{
 			mousedown: function (event) {
 				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
-				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+				WEBHMI.writeValueFromElement($this, WEBHMI.getSetValue($this));
 				$this.one('mouseleave', function () {
-					localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
+					WEBHMI.writeValueFromElement($this, WEBHMI.getResetValue($this));
 					$this.blur();
 				});
 			},
 
 			mouseup: function (event) {
 				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
-				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
+				WEBHMI.writeValueFromElement($this, WEBHMI.getResetValue($this));
 				$this.blur();
 				$this.off('mouseleave');
 			},
@@ -729,17 +736,16 @@ WEBHMI.addVarWriteEvents = function () {
 			touchstart: function (event) {
 				event.preventDefault();
 				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
-				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+				WEBHMI.writeValueFromElement($this, WEBHMI.getSetValue($this));
 				//This is not required because touchend is triggered when the touch leaves the element
+				$this.removeAttr('data-machine-value');
 				//$this.one('touchleave', function(){$this.trigger('touchend');});
 			},
 
 			touchend: function (event) {
 				event.preventDefault();
 				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
-				localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
+				WEBHMI.writeValueFromElement($this, WEBHMI.getResetValue($this));
 				$this.blur();
 				//This is not required because touchend is triggered when the touch leaves the element
 				//$this.off('touchleave');
@@ -759,11 +765,11 @@ WEBHMI.addVarWriteEvents = function () {
 				}
 				if ($this.hasClass("webhmi-confirm")) {
 					WebhmiConfirmModal('Do you want to "' + $this.context.innerHTML + '"?', function () {
-						localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+						WEBHMI.writeValueFromElement($this, WEBHMI.getSetValue($this));
 					})
 				}
 				else {
-					localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+					WEBHMI.writeValueFromElement($this, WEBHMI.getSetValue($this));
 				}
 			}
 		},
@@ -829,13 +835,12 @@ WEBHMI.addVarWriteEvents = function () {
 						var varValue = WEBHMI.getValue($this);
 
 						if (isEqual(varValue, WEBHMI.getSetValue($this))) {
-							localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
+							WEBHMI.writeValueFromElement($this, WEBHMI.getResetValue($this));
 						} else if (isEqual(varValue, WEBHMI.getResetValue($this))) {
-							localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+							WEBHMI.writeValueFromElement($this, WEBHMI.getSetValue($this));
 						} else {
-							localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+							WEBHMI.writeValueFromElement($this, WEBHMI.getSetValue($this));
 						}
-
 						$this.blur();
 					})
 				}
@@ -843,13 +848,12 @@ WEBHMI.addVarWriteEvents = function () {
 					var varValue = WEBHMI.getValue($this);
 
 					if (isEqual(varValue, WEBHMI.getSetValue($this))) {
-						localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
+						WEBHMI.writeValueFromElement($this, WEBHMI.getResetValue($this));
 					} else if (isEqual(varValue, WEBHMI.getResetValue($this))) {
-						localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+						WEBHMI.writeValueFromElement($this, WEBHMI.getSetValue($this));
 					} else {
-						localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+						WEBHMI.writeValueFromElement($this, WEBHMI.getSetValue($this));
 					}
-
 					$this.blur();
 				}
 			}
@@ -865,12 +869,11 @@ WEBHMI.addVarWriteEvents = function () {
 				// So, checkboxes do not behave like toggles.
 
 				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
 
 				if ($this.prop('checked')) {
-					localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getSetValue($this));
+					WEBHMI.writeValueFromElement($this, WEBHMI.getSetValue($this));
 				} else {
-					localMachine.writeVariable(WEBHMI.getVarName($this), WEBHMI.getResetValue($this));
+					WEBHMI.writeValueFromElement($this, WEBHMI.getResetValue($this));
 				}
 			}
 		},
@@ -925,8 +928,7 @@ WEBHMI.addVarWriteEvents = function () {
 					}
 				}
 
-				var localMachine = window[WEBHMI.getMachineName($this)];
-				localMachine.writeVariable(WEBHMI.getVarName($this), varValue);
+				WEBHMI.writeValueFromElement($this, varValue);				
 				$this.blur();
 
 			}
@@ -985,8 +987,7 @@ WEBHMI.addVarWriteEvents = function () {
 					}
 				}
 
-				var localMachine = window[WEBHMI.getMachineName($this)];
-				localMachine.writeVariable(WEBHMI.getVarName($this), varValue);
+				WEBHMI.writeValueFromElement($this, varValue);
 				$this.blur();
 
 			}
@@ -999,9 +1000,7 @@ WEBHMI.addVarWriteEvents = function () {
 		{
 			change: function (event) {
 				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
-				localMachine.writeVariable(WEBHMI.getVarName($this), $this.val());
-				localMachine.readVariable(WEBHMI.getVarName($this));
+				WEBHMI.writeValueFromElement($this, $this.val());
 			}
 		},
 		'input.webhmi-text-value, invisible-input.webhmi-text-value, textarea.webhmi-text-value');
@@ -1011,9 +1010,7 @@ WEBHMI.addVarWriteEvents = function () {
 		{
 			change: function (event) {
 				var $this = $(this);
-				var localMachine = window[WEBHMI.getMachineName($this)];
-				localMachine.writeVariable(WEBHMI.getVarName($this), $this[0].options.selectedIndex);
-				localMachine.readVariable(WEBHMI.getVarName($this));
+				WEBHMI.writeValueFromElement($this, $this[0].options.selectedIndex);
 			}
 		},
 		'.webhmi-dropdown');

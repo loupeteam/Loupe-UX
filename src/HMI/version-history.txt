@@ -1,3 +1,5 @@
+1.6.3 - Fix issue where writing a value to the PLC would not update the HMI if the value was clamped on the PLC to the current value
+
 1.6.2 - Fix momentary button behavior when the user leaves an element while holding the mouse down
 
 1.6.1 - Add read group functions to local HMI machine

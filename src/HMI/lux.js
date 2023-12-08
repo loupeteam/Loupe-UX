@@ -8,7 +8,7 @@
  */
 // Use uppercase namespace
 var LUX = {
-	version: '1.6.1'
+	version: '2.0.1'
 };
 
 // export default LUX

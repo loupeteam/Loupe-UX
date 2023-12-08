@@ -5,16 +5,16 @@
         {{widget 'Text' "TextInput"}}
         {{widget 'Numeric' "NumericInput"}}
         {{widget 'Button' 'Set Button' buttonType='set' }}
-        {{widget 'Button' 'Toggle Button' 'toggle'  }}
-        {{widget 'Button' 'Momentary Button' 'momentary' }}
+        {{widget 'Button' 'Toggle Button' buttonType='toggle'  }}
+        {{widget 'Button' 'Momentary Button' buttonType='momentary' }}
         {{widget 'Led' "side=right" side="right" }}
         {{widget 'Led' "side=middle" side="middle" }}
         {{widget 'Led' "side=left" side="left" }}    
         <div>mydiv</div>
         {{#widget 'Columns' 'Test Elements' style="grid-column: span 3;" }}
-            {{widget 'Button' 'Set Power' 'set' class='btn-primary' style="color:red" data-var-name="demo:test.command"}}
-            {{widget 'Button' 'Toggle Power' 'toggle'  class='btn-danger' data-var-name="demo:test.command"}}
-            {{widget 'Button' 'Momentary Power' 'momentary' class='btn-warning' data-var-name="demo:test.command"}}
+            {{widget 'Button' 'Set Power' buttonType='set' class='btn-primary' style="color:red" data-var-name="demo:test.command"}}
+            {{widget 'Button' 'Toggle Power' buttonType='toggle'  class='btn-danger' data-var-name="demo:test.command"}}
+            {{widget 'Button' 'Momentary Power' buttonType='momentary' class='btn-warning' data-var-name="demo:test.command"}}
             {{#widget 'Led' data-var-name="demo:test.command" }}
                 <h3>
                     Home

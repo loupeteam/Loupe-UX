@@ -1,6 +1,6 @@
 {
   "name": "@loupeteam/webhmi",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "The Loupe webHMI javascript library provides functionality for implementing a web-based HMI for machines",
   "main": "webhmi.js",
   "scripts": {

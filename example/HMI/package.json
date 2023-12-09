@@ -13,6 +13,7 @@
     "bootstrap": "3.3.4",
     "@loupeteam/tmplits": "*",
     "@loupeteam/tmplit-basic": "*",
+    "@loupeteam/tmplits-globalclasses": "^0.1.1",    
     "@loupeteam/loupe-ux": "file:../../src/HMI",
     "app": "file:./"
   }

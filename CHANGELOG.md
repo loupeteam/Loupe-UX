@@ -1,3 +1,7 @@
+2.0.1 - Fix issue where writing a value to the PLC would not update the HMI if the value was clamped on the PLC to the current value
+	  - Fix momentary button behavior when the user leaves an element while holding the mouse down
+      - Add read group functions to local HMI machine
+
 2.0.0 - Transition webHMI name to Lux / Loupe UX
 
 1.6.0 - Add read groups attribute to support more sophisticated machine variable reads with frequency limits and callbacks

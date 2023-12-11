@@ -12,7 +12,7 @@ if (typeof LUX === 'undefined') {
 	throw new Error('LUX data binding requires LUX core');
 }
 
-LUX.dataBindVersion = '1.6.0';
+LUX.dataBindVersion = '2.0.1';
 
 // Check for being a 'number'
 function isNumeric(obj) {
@@ -306,6 +306,46 @@ LUX.getUserLevel = function ($element) {
 LUX.getCyclicReads = function () {
 	$("[data-var-name]").each(function (index, element) {
 		LUX.getValue($(this));
+	});
+}
+
+LUX.writeValueFromElement = function ($this, value) {
+	var localMachine = window[LUX.getMachineName($this)];
+	let VariableName = LUX.getVarName($this);
+	//BUG Note: This is a temporary work around for a debounce/cache issue
+	//	Currently, every time we update an element, we cache the value
+	//	so that we don't update the element again if the value is the same.
+	//	When we write a variable, we don't update the cache because we don't
+	//	know what the value will be after the write. This means that if we
+	//	write a variable, if it gets changed on the machine to the original
+	//	value, it will not update the element. This is a problem because
+	//	if the user typed in a value, it will always show what they typed
+	//	even if the machine changed it back. This is not the desired behavior.
+	localMachine.writeVariable(VariableName, value, ()=>{
+		//BUG Note: Long term we want to do this:
+		//	This will work because we will parse the write response
+		//	when we get it back and update the cache with the new value.
+		//
+		//  Currently OMJSON does not support this 
+		//	because the response has a bug where
+		//  it does not return the value with the corrected
+		//	type in all cases. For example, if you write
+		//  a boolean as "true", it will return a string "true"
+		//	instead of transorming it to a boolean.
+		//  This means inputs that expect a boolean will
+		//	show NaN instead of true or false.
+		//	This means we can't clear the cache here
+		//	because we will immediately re-render the element
+		//	with the wrong value, and cache the wrong value.
+		
+		// $this.removeAttr('data-machine-value');
+	});
+	//As a work around we will do this
+	//  This will cause the value to be read again
+	//  from the machine and after that we can clear the cache
+	//	so it will re-render if it needs to.
+	localMachine.readVariable(VariableName, ()=>{
+		$this.removeAttr('data-machine-value');
 	});
 }
 
@@ -715,18 +755,16 @@ LUX.addVarWriteEvents = function () {
 		{
 			mousedown: function (event) {
 				var $this = $(this);
-				var localMachine = window[LUX.getMachineName($this)];
-				localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+				LUX.writeValueFromElement($this, LUX.getSetValue($this));
 				$this.one('mouseleave', function () {
-					localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
+					LUX.writeValueFromElement($this, LUX.getResetValue($this));
 					$this.blur();
 				});
 			},
 
 			mouseup: function (event) {
 				var $this = $(this);
-				var localMachine = window[LUX.getMachineName($this)];
-				localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
+				LUX.writeValueFromElement($this, LUX.getResetValue($this));
 				$this.blur();
 				$this.off('mouseleave');
 			},
@@ -734,16 +772,15 @@ LUX.addVarWriteEvents = function () {
 			touchstart: function (event) {
 				event.preventDefault();
 				var $this = $(this);
-				var localMachine = window[LUX.getMachineName($this)];
-				localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+				LUX.writeValueFromElement($this, LUX.getSetValue($this));
+				//This is not required because touchend is triggered when the touch leaves the element
 				//$this.one('touchleave', function(){$this.trigger('touchend');});
 			},
 
 			touchend: function (event) {
 				event.preventDefault();
 				var $this = $(this);
-				var localMachine = window[LUX.getMachineName($this)];
-				localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
+				LUX.writeValueFromElement($this, LUX.getResetValue($this));
 				$this.blur();
 				//This is not required because touchend is triggered when the touch leaves the element
 				//$this.off('touchleave');
@@ -763,11 +800,11 @@ LUX.addVarWriteEvents = function () {
 				}
 				if ($this.hasClass("lux-confirm")) {
 					LuxConfirmModal('Do you want to "' + $this.context.innerHTML + '"?', function () {
-						localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+						LUX.writeValueFromElement($this, LUX.getSetValue($this));
 					})
 				}
 				else {
-					localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+					LUX.writeValueFromElement($this, LUX.getSetValue($this));
 				}
 			}
 		},
@@ -833,13 +870,12 @@ LUX.addVarWriteEvents = function () {
 						var varValue = LUX.getValue($this);
 
 						if (isEqual(varValue, LUX.getSetValue($this))) {
-							localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
+							LUX.writeValueFromElement($this, LUX.getResetValue($this));
 						} else if (isEqual(varValue, LUX.getResetValue($this))) {
-							localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+							LUX.writeValueFromElement($this, LUX.getSetValue($this));
 						} else {
-							localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+							LUX.writeValueFromElement($this, LUX.getSetValue($this));
 						}
-
 						$this.blur();
 					})
 				}
@@ -847,13 +883,12 @@ LUX.addVarWriteEvents = function () {
 					var varValue = LUX.getValue($this);
 
 					if (isEqual(varValue, LUX.getSetValue($this))) {
-						localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
+						LUX.writeValueFromElement($this, LUX.getResetValue($this));
 					} else if (isEqual(varValue, LUX.getResetValue($this))) {
-						localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+						LUX.writeValueFromElement($this, LUX.getSetValue($this));
 					} else {
-						localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+						LUX.writeValueFromElement($this, LUX.getSetValue($this));
 					}
-
 					$this.blur();
 				}
 			}
@@ -869,12 +904,11 @@ LUX.addVarWriteEvents = function () {
 				// So, checkboxes do not behave like toggles.
 
 				var $this = $(this);
-				var localMachine = window[LUX.getMachineName($this)];
 
 				if ($this.prop('checked')) {
-					localMachine.writeVariable(LUX.getVarName($this), LUX.getSetValue($this));
+					LUX.writeValueFromElement($this, LUX.getSetValue($this));
 				} else {
-					localMachine.writeVariable(LUX.getVarName($this), LUX.getResetValue($this));
+					LUX.writeValueFromElement($this, LUX.getResetValue($this));
 				}
 			}
 		},
@@ -929,8 +963,7 @@ LUX.addVarWriteEvents = function () {
 					}
 				}
 
-				var localMachine = window[LUX.getMachineName($this)];
-				localMachine.writeVariable(LUX.getVarName($this), varValue);
+				LUX.writeValueFromElement($this, varValue);				
 				$this.blur();
 
 			}
@@ -989,8 +1022,7 @@ LUX.addVarWriteEvents = function () {
 					}
 				}
 
-				var localMachine = window[LUX.getMachineName($this)];
-				localMachine.writeVariable(LUX.getVarName($this), varValue);
+				LUX.writeValueFromElement($this, varValue);
 				$this.blur();
 
 			}
@@ -1003,9 +1035,7 @@ LUX.addVarWriteEvents = function () {
 		{
 			change: function (event) {
 				var $this = $(this);
-				var localMachine = window[LUX.getMachineName($this)];
-				localMachine.writeVariable(LUX.getVarName($this), $this.val());
-				localMachine.readVariable(LUX.getVarName($this));
+				LUX.writeValueFromElement($this, $this.val());
 			}
 		},
 		'input.lux-text-value, invisible-input.lux-text-value, textarea.lux-text-value');
@@ -1015,9 +1045,7 @@ LUX.addVarWriteEvents = function () {
 		{
 			change: function (event) {
 				var $this = $(this);
-				var localMachine = window[LUX.getMachineName($this)];
-				localMachine.writeVariable(LUX.getVarName($this), $this[0].options.selectedIndex);
-				localMachine.readVariable(LUX.getVarName($this));
+				LUX.writeValueFromElement($this, $this[0].options.selectedIndex);
 			}
 		},
 		'.lux-dropdown');
@@ -1270,14 +1298,26 @@ class invisibleInput extends HTMLElement {
 	set value(v) {
 		this._value = v
 		this.setAttribute('value', v)
-		let evt = new Event("change", {
+		this._render()
+	}
+	get value() {
+		if(this._value === undefined){
+			return 0;
+		}
+		else{
+			return this._value
+		}
+	}
+	_render() {
+		let evt = new Event("render", {
 			"bubbles": true,
 			"cancelable": true
 		});
 		this.dispatchEvent(evt);
+		this.render()
 	}
-	get value() {
-		return this._value || 0
+	render() {
+
 	}
 }
 

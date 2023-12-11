@@ -8,7 +8,7 @@
  */
 // Use uppercase namespace
 var LUX = {
-	version: '1.6.1'
+	version: '2.0.1'
 };
 
 // export default LUX
@@ -284,6 +284,10 @@ LUX.Machine = function (options) {
 		//Keep track of consecutive writes
 		write.consecutiveWrites = 0;
 
+		//Keep track of callbacks
+		write.callbacks = [];
+		write.activeCallbacks = [];
+
 		// Reading variables
 		//-----------------------------------------
 
@@ -326,6 +330,9 @@ LUX.Machine = function (options) {
 		read.waiting = false
 		// read.lastRequestTime is the time of the last read request
 		read.lastRequestTime = 0;
+
+		read.callbacks = [];
+		read.activeCallbacks = [];
 
 		// Statistics
 		//--------------------------------------------------
@@ -526,6 +533,8 @@ LUX.Machine = function (options) {
 					write.consecutiveWrites++;
 					write.writing = true;
 					write.retryCount = 0;
+					write.activeCallbacks = write.callbacks;
+					write.callbacks = [];
 					writeVariableList(write.context, write.variableList);
 					write.context = {};
 					write.variableList = {};
@@ -533,6 +542,8 @@ LUX.Machine = function (options) {
 					read.consecutiveSingleReads++;
 					read.reading = true;
 					read.retryCount = 0;
+					read.activeCallbacks = read.callbacks;
+					read.callbacks = [];
 					readVariableList(read.singleList[0]);
 					read.singleList[0] = {};
 				} else if ( !read.waiting && (list = getNextReadList() ) ){
@@ -540,6 +551,8 @@ LUX.Machine = function (options) {
 					write.consecutiveWrites = 0;
 					read.reading = true;
 					read.retryCount = 0;
+					read.activeCallbacks = read.callbacks;
+					read.callbacks = [];
 					readVariableList(list);
 				}
 				//If there was a write or single read, then we need to process the queue again
@@ -645,6 +658,17 @@ LUX.Machine = function (options) {
 				$(document).trigger(entry + "-readcomplete", new Array(entry));
 			});
 
+			//Trigger callbacks for the write
+			read.activeCallbacks.forEach((callback)=>{
+				try{
+					callback()
+				}catch(error){
+					console.warn('Error in write callback')
+					console.warn(error)
+				}
+			})
+			read.activeCallbacks = [];
+
 			// Done reading
 			read.reading = false;
 			clearTimeout(read.timeout);
@@ -657,7 +681,30 @@ LUX.Machine = function (options) {
 			// Call auxiliary functions
 			misc.writeSuccess();
 			misc.writeComplete();
-
+			/*
+			//TODO: This is not currently supported because OMJSON
+			//	Does not return the corrected type
+			//	Need to fix OMJSON before we can update the local 
+			//	data with the written data
+			//////////////////////////////////////////////////////
+			// Put all of the response variables into the context		
+			Object.entries(responseData).forEach(function([name,entry]) {
+				let parsed;
+				if (name.length === 0) return
+				if (name[0].indexOf('.') >= 0 || name[0].indexOf('[') >= 0) {
+					parsed = {};
+					LUX.each(entry, function (prop, value) {
+						setDeepValue(parsed, prop, value);
+						entry = parsed;
+					});
+				}
+				let obj = {}
+				obj[name] = entry
+				// Extend the read context with the variable read back
+				LUX.extend(true, thisMachine, obj);
+			});
+			*/
+						
 			// Trigger events
 			// want to do something different here
 			var variableList = [];
@@ -678,7 +725,19 @@ LUX.Machine = function (options) {
 				$(document).trigger(entry + "-writesuccess", new Array(entry));
 				$(document).trigger(entry + "-writecomplete", new Array(entry));
 			});
+
+			//Trigger callbacks for the write
+			write.activeCallbacks.forEach((callback)=>{
+				try{
+					callback()
+				}catch(error){
+					console.warn('Error in write callback')
+					console.warn(error)
+				}
+			})
 			
+			write.activeCallbacks= [];
+
 			// Done writing
 			write.writing = false;
 			clearTimeout(write.timeout);
@@ -950,7 +1009,7 @@ LUX.Machine = function (options) {
 
 			// Add a callback event if given
 			if (callback) {
-				$(document).one(variableName + '-writecomplete', callback);
+				write.callbacks.push(callback);
 			}
 
 			// Process the read/write queues
@@ -980,12 +1039,12 @@ LUX.Machine = function (options) {
 						read.singleList[0][e] = {};
 						read.completeList[0][e] = {};
 						
-						// Add the callback
-						if (callback) {
-							$(document).one(e + '-readcomplete', callback);
-						}
-
 					});
+
+					// Add the callback
+					if (callback) {
+						read.callbacks.push(callback);
+					}
 				}
 				else {
 
@@ -1000,7 +1059,7 @@ LUX.Machine = function (options) {
 					
 					// Add the callback
 					if (callback) {
-						$(document).one(variableName + '-readcomplete', callback);
+						read.callbacks.push(callback);
 					}
 				}
 
@@ -1016,9 +1075,8 @@ LUX.Machine = function (options) {
 				});
 
 				// Add the callback
-				// TODO: This might have weird timing issues
 				if (callback) {
-					$(document).one('readcomplete', callback);
+					read.callbacks.push(callback);
 				}
 			
 			}
@@ -1067,6 +1125,9 @@ LUX.Machine = function (options) {
 					// Add the callback
 					// TODO: Callback is not added if the parent is in the list
 					if (callback) {
+						//TODO: how should we handle callbacks for cyclic reads?
+						//	Single callbacks have been transitioned to using
+						//	a callback array, which is prefer.
 						$(document).on(variableName + '-readcomplete', callback);
 					}
 				}
@@ -1143,6 +1204,9 @@ LUX.Machine = function (options) {
 					// Add the callback
 					// TODO: Callback is not added if the parent is in the list
 					if (callback) {
+						//TODO: how should we handle callbacks for cyclic reads?
+						//	Single callbacks have been transitioned to using
+						//	a callback array, which is prefer.
 						$(document).on(variableName + '-readcomplete', callback);
 					}
 				}
@@ -1293,35 +1357,6 @@ LUX.Machine = function (options) {
 	//  - Third priority is the wouldShow flag
 	function setReadEnableCallback(callBack){
 		enableReadGroupsCallback = callBack;
-	}
-
-	// User level
-	//---------------------------------------------
-
-	var userLevelPV;
-	var currentUserLevel = 0;
-
-	function setUserLevel(level) {
-		currentUserLevel = level;
-	}
-
-	function setUserLevelPV(levelPV) {
-		if (levelPV !== undefined) { // Don't set PV to something that doesn't exist; that's what clearUserLevelPV is for
-			userLevelPV = levelPV;
-			initCyclicRead(levelPV);
-		}
-	}
-
-	function clearUserLevelPV() {
-		userLevelPV = undefined;
-	}
-
-	function getUserLevel() {
-		if (userLevelPV === undefined) {
-			// Not using PV; use internal value instead
-			return currentUserLevel;
-		}
-		return thisMachine.value(userLevelPV);
 	}
 
 	// User level

@@ -3,6 +3,7 @@
 Documentation can be found at https://loupeteam.github.io/Sandbox/libraries/webhmi.html.
 
 ## Revision
+- 1.7.2 - Fix caching of element values
 - 1.6.2 - Fix momentary button behavior when the user leaves an element while holding the mouse down
 - 1.6.1 - Add read group functions to local HMI machine
 - 1.6.0 - Add read groups

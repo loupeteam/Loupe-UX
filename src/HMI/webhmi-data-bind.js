@@ -307,10 +307,41 @@ WEBHMI.getCyclicReads = function () {
 WEBHMI.writeValueFromElement = function ($this, value) {
 	var localMachine = window[WEBHMI.getMachineName($this)];
 	let VariableName = WEBHMI.getVarName($this);
-	localMachine.writeVariable(VariableName, value);
-	localMachine.value(VariableName, value);
-	localMachine.readVariable(VariableName);
-	$this.attr('data-machine-value', value);
+	//BUG Note: This is a temporary work around for a debounce/cache issue
+	//	Currently, every time we update an element, we cache the value
+	//	so that we don't update the element again if the value is the same.
+	//	When we write a variable, we don't update the cache because we don't
+	//	know what the value will be after the write. This means that if we
+	//	write a variable, if it gets changed on the machine to the original
+	//	value, it will not update the element. This is a problem because
+	//	if the user typed in a value, it will always show what they typed
+	//	even if the machine changed it back. This is not the desired behavior.
+	localMachine.writeVariable(VariableName, value, ()=>{
+		//BUG Note: Long term we want to do this:
+		//	This will work because we will parse the write response
+		//	when we get it back and update the cache with the new value.
+		//
+		//  Currently OMJSON does not support this 
+		//	because the response has a bug where
+		//  it does not return the value with the corrected
+		//	type in all cases. For example, if you write
+		//  a boolean as "true", it will return a string "true"
+		//	instead of transorming it to a boolean.
+		//  This means inputs that expect a boolean will
+		//	show NaN instead of true or false.
+		//	This means we can't clear the cache here
+		//	because we will immediately re-render the element
+		//	with the wrong value, and cache the wrong value.
+		
+		// $this.removeAttr('data-machine-value');
+	});
+	//As a work around we will do this
+	//  This will cause the value to be read again
+	//  from the machine and after that we can clear the cache
+	//	so it will re-render if it needs to.
+	localMachine.readVariable(VariableName, ()=>{
+		$this.removeAttr('data-machine-value');
+	});
 }
 
 // Update ReadGroup elements
@@ -738,7 +769,6 @@ WEBHMI.addVarWriteEvents = function () {
 				var $this = $(this);
 				WEBHMI.writeValueFromElement($this, WEBHMI.getSetValue($this));
 				//This is not required because touchend is triggered when the touch leaves the element
-				$this.removeAttr('data-machine-value');
 				//$this.one('touchleave', function(){$this.trigger('touchend');});
 			},
 

@@ -423,6 +423,57 @@ LUX.updateHide = function () {
 
 }
 
+LUX.queryDataMaps = function () {
+	LUX.elems.datamap = Array.prototype.slice.call(document.querySelectorAll('[data-map]'));
+
+}
+
+function updateParameterValue($element, localMachine, key, dataVarName) {
+	if ($element.attr('data-var-name-added-' + key) != dataVarName) {
+		$element.attr('data-var-name-added-' + key, dataVarName)
+		localMachine.initCyclicReadGroup(LUX.getDataReadGroup($element), dataVarName);
+	}
+	let value = localMachine.value(dataVarName);
+	if ($element.attr('data-machine-value-' + key) != value) {
+		$element.attr('data-machine-value-' + key, value)
+		$element[0][key] = value;
+	}
+}
+function updateParameter($element, elMachine, key, value) {
+	if (typeof value === 'string') {
+		updateParameterValue($element, elMachine, key, value);
+		return
+	}
+
+	if (typeof value === 'object' && value['data-var-name']) {
+		let {
+			['data-var-name']:dataVarName,
+			machine
+		} = value;		
+		let localMachine = window[machine] 
+		if(localMachine == undefined){
+			localMachine = elMachine;
+		} 
+		updateParameterValue($element, localMachine, key, dataVarName);
+		return
+	}
+}
+LUX.updateDataMaps = function () {
+	LUX.visibleElems.datamap.forEach((el) => {
+		let mapping = el.dataMapObject;
+		if (!mapping) {
+			mapping = el.getAttribute('data-map');
+			mapping = mapping.replace(/'/g, '"');
+			mapping = JSON.parse(mapping);
+			el.dataMapObject = mapping;
+		}
+		let $element = $(el);
+		var localMachine = LUX.getMachine($element); // NOTE: Try this here before migrating everything else...
+		for (let key in mapping) {
+			updateParameter($element, localMachine, key, mapping[key]);
+		}
+	});
+}
 // find lock/unlock elems
 LUX.queryLock = function () {
 	LUX.elems.lock = Array.prototype.slice.call(document.querySelectorAll('.lux-lock, .lux-unlock, [min-user-level-unlock]'));
@@ -1107,6 +1158,7 @@ LUX.observers = [];
  * @property {Element[]} range
  * @property {Element[]} tab
  * @property {Element[]} component
+ * @property {Element[]} datamap
  * @property {Element[]} hide
  * @property {Element[]} lock
  */
@@ -1125,6 +1177,7 @@ LUX.elems = {
 	range: [],
 	tab: [],
 	component: [],
+	datamap: [],
 	hide: [],
 	lock: []
 };
@@ -1143,6 +1196,7 @@ LUX.visibleElems = {
 	range: [],
 	tab: [],
 	component: [],
+	datamap: [],
 	hide: [],
 	lock: []
 };
@@ -1165,6 +1219,7 @@ LUX.queryDom = function () {
 	LUX.queryRange();
 	LUX.queryTabs();
 	LUX.queryComponents();
+	LUX.queryDataMaps();
 	LUX.queryHide();
 	LUX.queryLock();
 };
@@ -1179,6 +1234,7 @@ LUX.updateHMI = function () {
 	LUX.updateRange();
 	LUX.updateTabs();
 	LUX.updateComponents();
+	LUX.updateDataMaps();
 	LUX.updateHide();
 	LUX.updateLock();
 	LUX.updateReadGroupComms();

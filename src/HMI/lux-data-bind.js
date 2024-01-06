@@ -60,9 +60,37 @@ function isTrue(value) {
 		default:
 			return false
 	}
-
 }
 
+function makeNumber(value) {
+
+	switch (typeof value) {
+
+		case 'boolean':
+			return value
+
+		case 'number':
+			return value
+
+		case 'string':
+			// If you are a number string, like '2', treat yourself like a number
+			if (isNumeric(value)) {
+				return value
+			} else {
+				switch (value.toLowerCase()) {
+					case 'true':
+					case 'on':
+					case 'yes':
+						return true
+					default:
+						return false
+				}
+			}
+
+		default:
+			return NaN
+	}
+}
 LUX.isTrue = isTrue
 
 // Check for custom equality
@@ -615,6 +643,9 @@ LUX.updateInputs = function () {
 			var varValue = LUX.getValue($this);
 			if (typeof varValue !== "undefined" && !isEqual($this.attr('data-machine-value-num'), varValue)) {
 				$this.attr('data-machine-value-num', varValue)
+
+				varValue = makeNumber(varValue)
+
 				if (varValue === false) {
 					$this.html('false');
 					$this.val('false');

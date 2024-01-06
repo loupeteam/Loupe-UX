@@ -547,6 +547,24 @@ LUX.updateTabs = function () {
 
 };
 
+// find all component elems
+LUX.queryComponents = function () {
+	LUX.elems.component = Array.prototype.slice.call(document.querySelectorAll('.lux-value'));
+}
+
+LUX.updateComponents = function () {
+	LUX.visibleElems.component.forEach(function (element) {
+
+		var $this = $(element);
+
+		var varValue = LUX.getValue($this);
+		if (typeof varValue !== 'undefined' && !isEqual($this.attr('data-machine-value'), varValue)) {
+			$this.attr('data-machine-value', varValue)
+			$this.val(varValue);
+		}
+	});
+};
+
 // find all range elems
 LUX.queryRange = function () {
 	LUX.elems.range = Array.prototype.slice.call(document.querySelectorAll('.lux-range'));
@@ -969,7 +987,19 @@ LUX.addVarWriteEvents = function () {
 			}
 
 		},
-		'input.lux-num-value, invisible-input.lux-num-value');
+		'input.lux-num-value, invisible-input.lux-num-value, .lux-num-value');
+	// num-value input
+
+	$(document).on(
+		{
+			change: function (event) {
+				var $this = $(this);
+				var varValue = $this.val();
+				LUX.writeValueFromElement($this, varValue);				
+				$this.blur();
+			}
+		},
+		'.lux-value');
 	// num-value input
 
 	$(document).on(
@@ -1076,6 +1106,7 @@ LUX.observers = [];
  * @property {Element[]} led
  * @property {Element[]} range
  * @property {Element[]} tab
+ * @property {Element[]} component
  * @property {Element[]} hide
  * @property {Element[]} lock
  */
@@ -1093,6 +1124,7 @@ LUX.elems = {
 	led: [],
 	range: [],
 	tab: [],
+	component: [],
 	hide: [],
 	lock: []
 };
@@ -1110,6 +1142,7 @@ LUX.visibleElems = {
 	led: [],
 	range: [],
 	tab: [],
+	component: [],
 	hide: [],
 	lock: []
 };
@@ -1131,6 +1164,7 @@ LUX.queryDom = function () {
 	LUX.queryLEDs();
 	LUX.queryRange();
 	LUX.queryTabs();
+	LUX.queryComponents();
 	LUX.queryHide();
 	LUX.queryLock();
 };
@@ -1144,6 +1178,7 @@ LUX.updateHMI = function () {
 	LUX.updateLEDs();
 	LUX.updateRange();
 	LUX.updateTabs();
+	LUX.updateComponents();
 	LUX.updateHide();
 	LUX.updateLock();
 	LUX.updateReadGroupComms();

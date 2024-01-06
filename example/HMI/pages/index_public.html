@@ -7,11 +7,12 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-	<link href="./node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Make the entire app run from within the node modules folder -->
+	<base href="../node_modules/">
+
+	<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
 	<title>Test Components</title>
-	<base href="./">
-
 </head>
 
 <body>
@@ -27,22 +28,22 @@
 		</div>
 	</footer>
 
-	<script src="./node_modules/jquery/dist/jquery.min.js" onload="if('undefined' != typeof module) window.$ = window.jQuery = module.exports;"></script>
-	<script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="jquery/dist/jquery.min.js" onload="if('undefined' != typeof module) window.$ = window.jQuery = module.exports;"></script>
+	<script src="bootstrap/dist/js/bootstrap.min.js"></script>
 
 	<!-- include Loupe UX -->
-	<script src="./node_modules/@loupeteam/loupe-ux/lux.js"></script>
-	<script src="./node_modules/@loupeteam/loupe-ux/lux-data-bind.js"></script>
-	<link  href="./node_modules/@loupeteam/loupe-ux/lux.css" rel="stylesheet">
+	<script src="@loupeteam/loupe-ux/lux.js"></script>
+	<script src="@loupeteam/loupe-ux/lux-data-bind.js"></script>
+	<link  href="@loupeteam/loupe-ux/lux.css" rel="stylesheet">
 
 	<!-- handlebars -->
-	<script src="./node_modules/handlebars/dist/handlebars.min.js" ></script>
+	<script src="handlebars/dist/handlebars.min.js" ></script>
 
 	<!--Default widget setup-->
-	<script src="./node_modules/@loupeteam/widgets/index.js" type="module"></script>
+	<script src="@loupeteam/tmplits/index.js" type="module"></script>
 
 	<!-- app -->
-	<script src="src/app.js"></script>
+	<script src="app/src/app.js"></script>
 
 </body>
 

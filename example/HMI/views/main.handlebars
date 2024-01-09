@@ -1,1 +1,16 @@
+
+<div data-map="{'innerHTML':{'data-var-name':'testData'}}">
+    <h1>Example</h1>
+    <p>Example HMI</p>
+</div>
+
+<input class="lux-text-value" data-var-name="input.color"/>
+<input class="lux-text-value" data-var-name="input.width"/>
+<input id="testInput" 
+data-map="{
+    'value':{'data-var-name':'testData'}, 
+    'style.backgroundColor':'input.color',
+    'style.width':'input.width'
+    }"/>
+
 {{> components}}

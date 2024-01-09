@@ -96,6 +96,73 @@ function isEqual(in1, in2) {
 
 }
 
+// Set a value deep within an arbitrary object
+LUX.setDeepObjectValue = function (obj, prop, value) {
+	//Note: This function was pulled out of Lux 
+	//	so that it can be used in other places
+	//	It is modified from the original to
+	//	check if an object is more generic than just
+	//	Object.prototype.toString.call(obj) === '[object Object]'
+	//	It's possible that this could be pulled back into lux
+	//	But that feels more risky than just leaving it here
+	//	Since this is a new use case..
+	var e, startArrayIndex, type, i;
+
+	// First time through, split prop
+	if (typeof prop === "string") {
+		prop = prop.split(".");
+	}
+
+	if (prop.length > 1) {
+
+		// If not at bottom of prop, keep going
+		e = prop.shift();
+
+		// Check for array elements
+		startArrayIndex = e.indexOf('[');
+
+		if (startArrayIndex === -1) {
+			// If element does not exist, create it
+			if (typeof obj[e] === "undefined") {
+				obj[e] = {};
+			}
+			return LUX.setDeepObjectValue(obj[e], prop, value);
+		} else {
+			i = parseInt(e.substring(startArrayIndex + 1), 10);
+			e = e.substring(0, startArrayIndex);
+			// If array does not exist, create it
+			if (typeof obj[e] === "undefined") {
+				obj[e] = [];
+			}
+			// If element does not exist, create it
+			if ( typeof obj[e] === "undefined") {
+				obj[e][i] = {};
+			}
+			return LUX.setDeepObjectValue(obj[e][i], prop, value);
+		}
+
+	} else {
+
+		e = prop[0];
+
+		// Check for array elements
+		startArrayIndex = e.indexOf('[');
+		if (startArrayIndex === -1) {
+			obj[e] = value;
+			return obj[e];
+		} else {
+			i = parseInt(e.substring(startArrayIndex + 1), 10);
+			e = e.substring(0, startArrayIndex);
+			// If array does not exist, create it
+			if (typeof obj[e] === "undefined") {
+				obj[e] = [];
+			}
+			obj[e][i] = value;
+			return obj[e][i];
+		}
+	}
+}
+
 // Get attribute values
 //----------------------
 
@@ -428,37 +495,43 @@ LUX.queryDataMaps = function () {
 
 }
 
-function updateParameterValue($element, localMachine, key, dataVarName) {
-	if ($element.attr('data-var-name-added-' + key) != dataVarName) {
-		$element.attr('data-var-name-added-' + key, dataVarName)
-		localMachine.initCyclicReadGroup(LUX.getDataReadGroup($element), dataVarName);
-	}
-	let value = localMachine.value(dataVarName);
-	if ($element.attr('data-machine-value-' + key) != value) {
-		$element.attr('data-machine-value-' + key, value)
-		$element[0][key] = value;
-	}
-}
-function updateParameter($element, elMachine, key, value) {
-	if (typeof value === 'string') {
-		updateParameterValue($element, elMachine, key, value);
-		return
-	}
-
-	if (typeof value === 'object' && value['data-var-name']) {
-		let {
-			['data-var-name']:dataVarName,
-			machine
-		} = value;		
-		let localMachine = window[machine] 
-		if(localMachine == undefined){
-			localMachine = elMachine;
-		} 
-		updateParameterValue($element, localMachine, key, dataVarName);
-		return
-	}
-}
 LUX.updateDataMaps = function () {
+	
+	function updateParameterValue($element, localMachine, key, dataVarName) {
+		let keyname = key.replace('.','-')
+		if ($element.attr('data-var-name-added-' + keyname) != dataVarName) {
+			$element.attr('data-var-name-added-' + keyname, dataVarName)
+			localMachine.initCyclicReadGroup(LUX.getDataReadGroup($element), dataVarName);
+		}
+		let value = localMachine.value(dataVarName);
+		if ($element.attr('data-machine-value-' + keyname) != value) {
+			$element.attr('data-machine-value-' + keyname, value)
+			$element.each((index, val) => {
+				LUX.setDeepObjectValue(val, key, value);			
+			});
+		}
+	}
+	
+	function updateParameter($element, elMachine, key, value) {
+		if (typeof value === 'string') {
+			updateParameterValue($element, elMachine, key, value);
+			return
+		}
+	
+		if (typeof value === 'object' && value['data-var-name']) {
+			let {
+				['data-var-name']:dataVarName,
+				machine
+			} = value;		
+			let localMachine = window[machine] 
+			if(localMachine == undefined){
+				localMachine = elMachine;
+			} 
+			updateParameterValue($element, localMachine, key, dataVarName);
+			return
+		}
+	}
+	
 	LUX.visibleElems.datamap.forEach((el) => {
 		let mapping = el.dataMapObject;
 		if (!mapping) {

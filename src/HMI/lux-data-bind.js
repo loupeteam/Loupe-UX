@@ -102,6 +102,7 @@ function isEqual(in1, in2) {
  * @param {string | [string]} prop The deep property to set. Can be a string or an array of strings
  * @param {any} value 
  * @returns 
+ * @example setDeepObjectValue(obj, 'a.b.c', 1)
  */
 LUX.setDeepObjectValue = function (obj, prop, value) {
 	//Note: This function was pulled out of Lux 

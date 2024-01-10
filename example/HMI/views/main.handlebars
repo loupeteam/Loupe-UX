@@ -1,16 +1,64 @@
 
-<div data-map="{'innerHTML':{'data-var-name':'testData'}}">
-    <h1>Example</h1>
-    <p>Example HMI</p>
-</div>
+<!-- This is an input that -->
+<br/>
+<pre>
+Elements with:
+class="lux-component" 
+data-lux-[attribute name]
+will set the attribute to the value of the variable
+</pre>
+<input class="lux-component" data-lux-value="input.color">
+<input class="lux-component" data-lux-rudder="testData" data-lux-heading="testData2" />
+<br/>
+<br/>
+<pre>
+Elements with:
+data-lux-map="[JSON]"
+JSON:
+{
+    [property name] : [variable name],
+    [property name] : [variable name],
+}
+{
+    [property name] : {
+        'data-var-name' : [variable name],
+        'machine': [machine name]
+    },
+    [property name] : {
+        'data-var-name' : [variable name],
+        'machine': [machine name]
+    }
+}
+{
+    @[attribute name] : [variable name],
+    @[attribute name] : [variable name]
+}
+{
+    @[attribute name] : {
+        'data-var-name' : [variable name],
+        'machine': [machine name]
+    },
+    @[attribute name] : {
+        'data-var-name' : [variable name],
+        'machine': [machine name]
+    }
+}
+</pre>
+<!-- These are std inputs to local variables -->
+<br/>
+color:
+<input class="lux-text-value" data-var-name="input.color" />
+width:
+<input class="lux-text-value" data-var-name="input.width" />
+<br/>
 
-<input class="lux-text-value" data-var-name="input.color"/>
-<input class="lux-text-value" data-var-name="input.width"/>
-<input id="testInput" 
-data-map="{
-    'value':{'data-var-name':'testData'}, 
-    'style.backgroundColor':'input.color',
-    'style.width':'input.width'
-    }"/>
+<input data-lux-map="{'rudder' :'testData', 'heading':'testdata2'}" />
+<input data-lux-map="{'rudder' :{'data-var-name':'testData'}, 'heading':'testdata2'}" />
+<input data-lux-map="{'@rudder':{'data-var-name':'testData'}, 'heading':'testdata2'}" />
+<input data-lux-map="{'value'  :{'data-var-name':'testData'}, 'style.backgroundColor':'input.color', 'style.width':'input.width'}" />
 
-{{> components}}
+
+
+<comp data-heading="machine['myVar']">
+
+    {{> components}}

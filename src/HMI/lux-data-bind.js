@@ -498,61 +498,107 @@ LUX.updateHide = function () {
 }
 
 LUX.queryDataMaps = function () {
-	LUX.elems.datamap = Array.prototype.slice.call(document.querySelectorAll('[data-map]'));
-
+	LUX.elems.datamap = Array.from(document.querySelectorAll('.lux-component, [data-lux-map]')).filter(el => 
+		Array.from(el.attributes).some(attr => attr.name.startsWith('data-lux'))
+	);	
 }
 
-LUX.updateDataMaps = function () {
-	
-	function updateParameterValue($element, localMachine, key, dataVarName) {
-		let keyname = key.replace('.','-')
-		if ($element.attr('data-var-name-added-' + keyname) != dataVarName) {
-			$element.attr('data-var-name-added-' + keyname, dataVarName)
-			localMachine.initCyclicReadGroup(LUX.getDataReadGroup($element), dataVarName);
-		}
-		let value = localMachine.value(dataVarName);
-		if ($element.attr('data-machine-value-' + keyname) != value) {
-			$element.attr('data-machine-value-' + keyname, value)
-			$element.each((index, val) => {
-				LUX.setDeepObjectValue(val, key, value);			
-			});
-		}
-	}
-	
-	function updateParameter($element, elMachine, key, value) {
-		if (typeof value === 'string') {
-			updateParameterValue($element, elMachine, key, value);
-			return
-		}
-	
-		if (typeof value === 'object' && value['data-var-name']) {
-			let {
-				['data-var-name']:dataVarName,
-				machine
-			} = value;		
-			let localMachine = window[machine] 
-			if(localMachine == undefined){
-				localMachine = elMachine;
-			} 
-			updateParameterValue($element, localMachine, key, dataVarName);
-			return
-		}
-	}
-	
+LUX.updateDataMaps = function () {	
 	LUX.visibleElems.datamap.forEach((el) => {
 		let mapping = el.dataMapObject;
 		if (!mapping) {
-			mapping = el.getAttribute('data-map');
-			mapping = mapping.replace(/'/g, '"');
-			mapping = JSON.parse(mapping);
-			el.dataMapObject = mapping;
+			el.dataMapObject = this.updateDataMaps.parseDataMap(el);
 		}
 		let $element = $(el);
 		var localMachine = LUX.getMachine($element); // NOTE: Try this here before migrating everything else...
 		for (let key in mapping) {
-			updateParameter($element, localMachine, key, mapping[key]);
+			this.updateDataMaps.updateParameter($element, localMachine, key, mapping[key]);
 		}
 	});
+}
+
+LUX.updateDataMaps.parseDataMap = function(el) {
+	let map = {};
+	Array.from(el.attributes).forEach(attr => {
+		if (attr.name.startsWith('data-lux')) {
+			let key = attr.name.replace('data-lux-', '').replace('-', '.');
+			if(key == 'map') return;
+			let value = attr.value;
+			map[key] = {'data-var-name':value, attribute:true};
+		}
+	});
+	let dataMap = el.getAttribute('data-lux-map');
+	if(dataMap) {
+		dataMap = dataMap.replace(/'/g, '"');
+		try {
+			dataMap = JSON.parse(dataMap);
+			for (let key in dataMap) {
+				let value = dataMap[key];
+				if (typeof value === 'string') {
+					dataMap[key] = {'data-var-name':value};
+				}
+				if(key.startsWith('@')){
+					let value = dataMap[key];
+					delete dataMap[key];
+					key = key.replace('@', '');
+					dataMap[key] = value;
+					dataMap[key].attribute = true;
+				}
+				else{
+					if( typeof dataMap[key].attribute === 'undefined'){
+						dataMap[key].attribute = false;
+					}
+				}
+					
+			}
+		}
+		catch(e){
+			console.error('Error parsing data-lux-map attribute for element', el, e);
+			dataMap = {};
+		}
+	}
+	return Object.assign(map, dataMap);
+}
+
+LUX.updateDataMaps.updateParameterValue = function($element, localMachine, key, dataVarName) {
+	let keyname = key.replace('.','-')
+	if ($element.attr('data-var-name-added-' + keyname) != dataVarName) {
+		$element.attr('data-var-name-added-' + keyname, dataVarName)
+		localMachine.initCyclicReadGroup(LUX.getDataReadGroup($element), dataVarName);
+	}
+	let value = localMachine.value(dataVarName);
+	if ($element.attr('data-machine-value-' + keyname) != value) {
+		$element.attr('data-machine-value-' + keyname, value)
+		$element.each((index, val) => {
+			if(val.dataMapObject[key].attribute){
+				val.setAttribute(key, value);
+				return;
+			}
+			else{
+				LUX.setDeepObjectValue(val, key, value);			
+			}
+		});
+	}
+}
+
+LUX.updateDataMaps.updateParameter = function($element, elMachine, key, value) {
+	if (typeof value === 'string') {
+		this.updateParameterValue($element, elMachine, key, value);
+		return
+	}
+
+	if (typeof value === 'object' && value['data-var-name']) {
+		let {
+			['data-var-name']:dataVarName,
+			machine
+		} = value;		
+		let localMachine = window[machine] 
+		if(localMachine == undefined){
+			localMachine = elMachine;
+		} 
+		this.updateParameterValue($element, localMachine, key, dataVarName);
+		return
+	}
 }
 // find lock/unlock elems
 LUX.queryLock = function () {
@@ -1293,6 +1339,7 @@ LUX.checkVisibility = function () {
 
 LUX.queryDom = function () {
 	// TODO: insted of querying document for each class, first query document for class*=lux and then sort based on the different types
+	performance.mark('queryDom-start');
 	LUX.queryInputs();
 	LUX.queryToggleButtons();
 	LUX.queryLEDs();
@@ -1302,6 +1349,7 @@ LUX.queryDom = function () {
 	LUX.queryDataMaps();
 	LUX.queryHide();
 	LUX.queryLock();
+	console.log(performance.measure('queryDom', 'queryDom-start'));
 };
 
 LUX.updateHMI = function () {

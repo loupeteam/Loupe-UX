@@ -1,6 +1,6 @@
 {
   "name": "@loupeteam/loupe-ux",
-  "version": "2.0.2",
+  "version": "2.0.2-cypress",
   "description": "The Loupe UX javascript library provides functionality for implementing a web-based HMI for machines",
   "main": "lux.js",
   "scripts": {

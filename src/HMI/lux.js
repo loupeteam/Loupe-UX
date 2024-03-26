@@ -27,14 +27,32 @@ var jQueryImport;
 // jQuery polyfills - Later
 if (typeof jQuery === 'undefined') {
 
-	try {
+	if (typeof module !== 'undefined' && module.exports) {
 		
-		// appease jenkins if possible
-		// jest runs tests in a node environment without the wrapping app that "includes" jQuery
-		jQueryImport = require('jquery');
+		// we are running in a node js environment
+		
+		try {
+			
+			// appease jenkins if possible
+			// jest runs tests in a node environment without the wrapping app that "includes" jQuery
+			jQueryImport = require('jquery');
 
-	} catch {
-		throw new Error('Polyfill not done! Get jQuery!');
+		} catch {
+			throw new Error('Polyfill not done! Get jQuery!');
+		}
+
+	} else {
+		
+		// we are not running in a node js environment
+
+		// try getting jquery from cypress
+		if (typeof Cypress === 'undefined') {
+			throw new Error('Polyfill not done! Get jQuery!');
+		} else {
+			jQueryImport = Cypress.$
+			window.$ = window.jQuery = Cypress.$
+		}
+		
 	}
 
 } else {

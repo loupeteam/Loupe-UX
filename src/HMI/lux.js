@@ -26,8 +26,13 @@ var jQueryImport;
 
 // jQuery polyfills - Later
 if (typeof jQuery === 'undefined') {
+	// check if we are running Cypress
+	if (typeof Cypress !== 'undefined'){
+		jQueryImport = Cypress.$
+		window.$ = window.jQuery = Cypress.$
+	}
 
-	if (typeof module !== 'undefined' && module.exports) {
+	else if (typeof module !== 'undefined' && module.exports) {
 		
 		// we are running in a node js environment
 		
@@ -44,14 +49,7 @@ if (typeof jQuery === 'undefined') {
 	} else {
 		
 		// we are not running in a node js environment
-
-		// try getting jquery from cypress
-		if (typeof Cypress === 'undefined') {
-			throw new Error('Polyfill not done! Get jQuery!');
-		} else {
-			jQueryImport = Cypress.$
-			window.$ = window.jQuery = Cypress.$
-		}
+		throw new Error('Polyfill not done! Get jQuery!');
 		
 	}
 

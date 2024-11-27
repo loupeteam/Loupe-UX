@@ -1,3 +1,5 @@
+2.0.3 - Improve performance of LUX data bind function `updateReadGroupComms`
+
 2.0.2 - Add a new value type that just sets and reads the value of the component
 
 2.0.1 - Fix issue where writing a value to the PLC would not update the HMI if the value was clamped on the PLC to the current value

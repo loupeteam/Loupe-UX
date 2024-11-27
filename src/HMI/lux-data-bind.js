@@ -12,7 +12,7 @@ if (typeof LUX === 'undefined') {
 	throw new Error('LUX data binding requires LUX core');
 }
 
-LUX.dataBindVersion = '2.0.2';
+LUX.dataBindVersion = '2.0.3';
 
 // Check for being a 'number'
 function isNumeric(obj) {

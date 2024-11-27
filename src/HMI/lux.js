@@ -1498,7 +1498,7 @@ LUX.HMI = function (...dataCallbacks) {
 			
 			// add variable if it doesn't exist yet
 			if ( this.value.call(this, variableName) === undefined) {
-				this.writeVariable(variableName, 'undefined');
+				this.writeVariable(variableName, '');
 			}
 
 		}

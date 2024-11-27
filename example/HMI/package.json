@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bootstrap": "3.3.4",
+    "bootstrap": "5.0.0",
     "@loupeteam/tmplits": "*",
     "@loupeteam/tmplit-basic": "*",
     "@loupeteam/tmplits-globalclasses": "^0.1.1",    

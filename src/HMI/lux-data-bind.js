@@ -1083,12 +1083,15 @@ LUX.addVarWriteEvents = function () {
 
 };
 LUX.updateReadGroupComms = function () {
-	if(readGroups.length == 1 && readGroups[0] === 'global') {
-		// This is a short circuit to save time, getting read group elements is expensive
+	if(LUX.machines.every(machine => {
+		const readGroups = machine.getReadGroupList();
+		return (readGroups.length == 1 && readGroups[0] === 'global') // This is a short circuit to save time, getting read group elements is expensive
+		})) {
 		return;
 	}
 	const readGroupElements = new Set(Array.from(document.querySelectorAll('[data-read-group]')).map(el => el.getAttribute('data-read-group')));
 	LUX.machines.forEach(machine => {
+		let readGroups = machine.getReadGroupList()
 		readGroups.forEach(ReadGroupName => {
 			if (ReadGroupName !== 'global') {
 				machine.readGroupShouldManage(ReadGroupName, readGroupElements.has(ReadGroupName));

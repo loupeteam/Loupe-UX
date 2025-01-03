@@ -1,3 +1,5 @@
+2.0.4 - Fix bug in LUX data bind function `updateReadGroupComms` cuasing update failures 
+
 2.0.3 - Improve performance of LUX data bind function `updateReadGroupComms`
 
 2.0.2 - Add a new value type that just sets and reads the value of the component
